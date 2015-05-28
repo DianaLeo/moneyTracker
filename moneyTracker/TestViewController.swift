@@ -17,9 +17,6 @@ class TestViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.grayColor()
         //InitBIDataSetDatabase.writeDataOnce()
-
-        aExpense.addToDatabase()
-        aIncome.addToDatabase()
 //        var query = BIQuery(UTF8StringQuery: "SELECT SUM(Amounts) FROM Income WHERE Month = 5 AND Year = 2015")
 //        query.resultOfQuery()
         //let str = NSDateFormatter.localizedStringFromDate(date, dateStyle: NSDateFormatterStyle.FullStyle, timeStyle: NSDateFormatterStyle.FullStyle)

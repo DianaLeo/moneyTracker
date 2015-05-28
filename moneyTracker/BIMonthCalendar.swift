@@ -8,10 +8,10 @@
 
 import Foundation
 class BIMonthCalender:NSObject {
-    var calendar: NSCalendar?
-    var date: NSDate?
+    private var calendar: NSCalendar?
+    private var date: NSDate?
     convenience init(dateForMonthCalender date: NSDate) {
-        println("BIMonthCalender Will Init")
+        //println("BIMonthCalender Will Init")
         // call designated init first
         self.init()
         // other init job in phase 2
@@ -23,7 +23,7 @@ class BIMonthCalender:NSObject {
         date = NSDate()
         // call super.init(),delegate up to super
         super.init()
-        println("BIMonthCalender Did Init")
+        println("BIMonthCalender Init")
     }
     deinit {
         println("BIMonthCalender Deinit")
@@ -97,7 +97,7 @@ class BIMonthCalender:NSObject {
         //println("differ days from last to current are =\(differentialCompsFromLastToCurrent.day)")
         var differentialCompsFromCurrentToNext:NSDateComponents = self.calendar!.components(NSCalendarUnit.CalendarUnitDay, fromDate: firstDateOfCurrentMonth, toDate: firstDateOfNextMonth, options: NSCalendarOptions.WrapComponents)
         //println("differ days from current to next are =\(differentialCompsFromCurrentToNext.day)")
-
+        
         
         //data generate
         var formattedDateTable: Array<String> = []
@@ -146,25 +146,27 @@ class BIMonthCalender:NSObject {
     }
 }
 
-func dateFor(#year:Int, #month:Int,day:Int = 1 ) -> NSDate {
-    var dateComps = NSDateComponents()
-    let calendar = NSCalendar.currentCalendar()
-    let currentDate = NSDate()
-    dateComps.day = calendar.component(NSCalendarUnit.CalendarUnitDay, fromDate: currentDate)
-    dateComps.month = calendar.component(NSCalendarUnit.CalendarUnitMonth, fromDate: currentDate)
-    dateComps.year = calendar.component(NSCalendarUnit.CalendarUnitYear, fromDate: currentDate)
-    dateComps.hour = calendar.component(NSCalendarUnit.CalendarUnitHour, fromDate: currentDate)
-    dateComps.minute = calendar.component(NSCalendarUnit.CalendarUnitMinute, fromDate: currentDate)
-    dateComps.second = calendar.component(NSCalendarUnit.CalendarUnitSecond, fromDate: currentDate)
-    dateComps.nanosecond = calendar.component(NSCalendarUnit.CalendarUnitNanosecond, fromDate: currentDate)
-    
-    //make a date
-    dateComps.year = year
-    dateComps.month = month
-    dateComps.day = day
-    let constructedDate = calendar.dateFromComponents(dateComps)
-    let weekdayOfConstructedDate = calendar.component(NSCalendarUnit.CalendarUnitWeekday, fromDate: currentDate)
-    println(weekdayOfConstructedDate)
-    println(constructedDate!.description)
-    return constructedDate!
+extension NSDate {
+    class func dateFor(#year:Int, month:Int,day:Int = 1 ) -> NSDate {
+        var dateComps = NSDateComponents()
+        let calendar = NSCalendar.currentCalendar()
+        let currentDate = NSDate()
+        dateComps.day = calendar.component(NSCalendarUnit.CalendarUnitDay, fromDate: currentDate)
+        dateComps.month = calendar.component(NSCalendarUnit.CalendarUnitMonth, fromDate: currentDate)
+        dateComps.year = calendar.component(NSCalendarUnit.CalendarUnitYear, fromDate: currentDate)
+        dateComps.hour = calendar.component(NSCalendarUnit.CalendarUnitHour, fromDate: currentDate)
+        dateComps.minute = calendar.component(NSCalendarUnit.CalendarUnitMinute, fromDate: currentDate)
+        dateComps.second = calendar.component(NSCalendarUnit.CalendarUnitSecond, fromDate: currentDate)
+        dateComps.nanosecond = calendar.component(NSCalendarUnit.CalendarUnitNanosecond, fromDate: currentDate)
+        
+        //make a date
+        dateComps.year = year
+        dateComps.month = month
+        dateComps.day = day
+        let constructedDate = calendar.dateFromComponents(dateComps)
+        let weekdayOfConstructedDate = calendar.component(NSCalendarUnit.CalendarUnitWeekday, fromDate: currentDate)
+        //println(weekdayOfConstructedDate)
+        //println(constructedDate!.description)
+        return constructedDate!
+    }
 }

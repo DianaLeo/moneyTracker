@@ -15,7 +15,6 @@
 
 import UIKit
 //global data set of ExpenseCategory and IncomeCategory, Singleton
-var userDataSet = BIDataSet.sharedInstance()
 class homeViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     //month arrry for calendar
     var monthStrArray: [String]?

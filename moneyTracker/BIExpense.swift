@@ -8,21 +8,54 @@
 
 import Foundation
 class BIExpense: NSObject {
-    let dateComponenets = NSDateComponents()
+    
     var category: String?
     var categoryDetail:String?
     var amounts: Float?
     var receiptImage: NSData?
     var expenseDetail: String?
-    // date related for record
-    let currentDate = NSDate()
-    var currentYear: Int?
-    var currentMonth: Int?
-    var currentDay: Int?
-    var currentHour: Int?
-    var currentMinute: Int?
-    var currentSecond: Int?
+    var yearOfExpense:Int
+    var monthOfExpense:Int
+    var dayOfExpense:Int
+    var hourOfExpense:Int
+    var minuteOfExpense:Int
+    var secondOfExpense:Int
+    struct ExpenseRecord {
+        var cat: String
+        var catDetl: String
+        var amo:Double
+        var amoStr:String
+        let ID:Int
+        init(category:String,categoryDetail:String,amounts:Double,expenseID:Int){
+            amo = amounts
+            cat = category
+            catDetl = categoryDetail
+            amoStr = "-\(amo)"
+            ID = expenseID
+        }
+    }
     
+    // date related for record
+    private let dateComponenets = NSDateComponents()
+    private let currentDate = NSDate()
+    private var currentYear: Int?
+    private var currentMonth: Int?
+    private var currentDay: Int?
+    private var currentHour: Int?
+    private var currentMinute: Int?
+    private var currentSecond: Int?
+    
+    convenience init(year:Int,month:Int,day:Int,category:String, categoryDetail:String?, amounts:Float,expenseDetail:String?,receiptImage:NSData? = nil) {
+        self.init()
+        self.category = category
+        self.categoryDetail = categoryDetail
+        self.amounts = amounts
+        self.expenseDetail = expenseDetail
+        self.receiptImage = receiptImage
+        self.yearOfExpense = year
+        self.monthOfExpense = month
+        self.dayOfExpense = day
+    }
     convenience init(category:String, categoryDetail:String?, amounts:Float,expenseDetail:String?,receiptImage:NSData? = nil) {
         self.init()
         self.category = category
@@ -34,20 +67,26 @@ class BIExpense: NSObject {
     override init() {
         //finish self property init before call super.init.
         var calendar = NSCalendar.currentCalendar()
-        currentYear = calendar.component(NSCalendarUnit.CalendarUnitYear, fromDate: currentDate)
-        currentMonth = calendar.component(NSCalendarUnit.CalendarUnitMonth, fromDate: currentDate)
-        currentDay = calendar.component(NSCalendarUnit.CalendarUnitDay, fromDate: currentDate)
-        currentHour = calendar.component(NSCalendarUnit.CalendarUnitHour, fromDate: currentDate)
-        currentMinute = calendar.component(NSCalendarUnit.CalendarUnitMinute, fromDate: currentDate)
-        currentSecond = calendar.component(NSCalendarUnit.CalendarUnitSecond, fromDate: currentDate)
+        self.currentYear = calendar.component(NSCalendarUnit.CalendarUnitYear, fromDate: currentDate)
+        self.currentMonth = calendar.component(NSCalendarUnit.CalendarUnitMonth, fromDate: currentDate)
+        self.currentDay = calendar.component(NSCalendarUnit.CalendarUnitDay, fromDate: currentDate)
+        self.currentHour = calendar.component(NSCalendarUnit.CalendarUnitHour, fromDate: currentDate)
+        self.currentMinute = calendar.component(NSCalendarUnit.CalendarUnitMinute, fromDate: currentDate)
+        self.currentSecond = calendar.component(NSCalendarUnit.CalendarUnitSecond, fromDate: currentDate)
+        self.yearOfExpense = self.currentYear!
+        self.monthOfExpense = self.currentMonth!
+        self.dayOfExpense = self.currentDay!
+        self.hourOfExpense = self.currentHour!
+        self.minuteOfExpense = self.currentMinute!
+        self.secondOfExpense = self.currentSecond!
         category = "aCategoryEx"
         categoryDetail = "aCategoryDetailEx"
-        amounts = 336.6
-        //NSNumber
-        
+        amounts = 98.3
+        //delegete up
         super.init()
+        
     }
-    func addToDatabase() {
+    private func addToDatabase() {
         //Get Path
         var db: COpaquePointer = nil
         let pathsOfAppDocuments = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
@@ -61,46 +100,44 @@ class BIExpense: NSObject {
             sqlite3_close(db)
         }
         // Add To Table: ExpenseCategory
-        let addSQL = "INSERT INTO Expense(Year,Month,Day,Hour,Minute,Second,Category,CategoryDetail,Amounts,ExpenseDetail) VALUES (\(self.currentYear!),\(self.currentMonth!),\(self.currentDay!),\(self.currentHour!),\(self.currentMinute!),\(self.currentSecond!),'\(self.category!)','\(self.categoryDetail)',\(self.amounts!),'\(self.expenseDetail)')"
+        let addSQL = "INSERT INTO Expense(Year,Month,Day,Hour,Minute,Second,Category,CategoryDetail,Amounts,ExpenseDetail,YearOfExpense,MonthOfExpense,DayOfExpense,HourOfExpense,MinuteOfExpense,SecondOfExpense) VALUES (\(self.currentYear!),\(self.currentMonth!),\(self.currentDay!),\(self.currentHour!),\(self.currentMinute!),\(self.currentSecond!),'\(self.category!)','\(self.categoryDetail)',\(self.amounts!),'\(self.expenseDetail)',\(self.yearOfExpense),\(self.monthOfExpense),\(self.dayOfExpense),\(self.hourOfExpense),\(self.minuteOfExpense),\(self.secondOfExpense))"
         if sqlite3_exec(db, addSQL, nil, nil, nil) == SQLITE_OK {
-            println("add to Expense successful")
+            println("add to Table:Expense successful")
         }else {
-            println("add to Expense failed")
+            println("add to Table:Expense failed")
         }
         //Close Database File
         sqlite3_close(db)
     }
-    class func removeFromDatabase(dataToRemove data: AnyObject?) {
-        let defaultValue = "aCategory"
+    class func removeFromDatabase(expenseID ID: Int) {
         //Get Path
         var db: COpaquePointer = nil
         let pathsOfAppDocuments = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
         let pathOfDatabase = (pathsOfAppDocuments[0] as! String).stringByAppendingString("/BIDatabase")
-        println(pathOfDatabase)
+        //println(pathOfDatabase)
         // Open database file, when unexists, create a new database file
         if sqlite3_open(pathOfDatabase, &db) == SQLITE_OK {
-            println("Database file has been opened successfully!")
+            //println("Database file has been opened successfully!")
         }else{
             println("Database file failed to open!")
             sqlite3_close(db)
         }
         // Remove From Table: ExpenseCategory
-        let removeSQL = "DELETE FROM Expense WHERE expenseCategory = '\(defaultValue)'"
+        let removeSQL = "DELETE FROM Expense WHERE ID = \(ID)"
         if sqlite3_exec(db, removeSQL, nil, nil, nil) == SQLITE_OK {
-            println("remove successful")
+            println("remove Record:ID = \(ID) from Table:Expense successful Or unexists")
         }else {
-            println("remove failed")
+            println("remove Record:ID = \(ID) from Table:Expense failed")
         }
         // Close Databse file
         sqlite3_close(db)
     }
     class func createTableInDatabaseIfNotExists() {
-        //let defaultValue = "aCategory"
         //Get Path
         var db: COpaquePointer = nil
         let pathsOfAppDocuments = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
         let pathOfDatabase = (pathsOfAppDocuments[0] as! String).stringByAppendingString("/BIDatabase")
-        println(pathOfDatabase)
+        //println(pathOfDatabase)
         // Open database file, when unexists, create a new database file
         if sqlite3_open(pathOfDatabase, &db) == SQLITE_OK {
             println("Database file has been opened successfully!")
@@ -109,16 +146,40 @@ class BIExpense: NSObject {
             sqlite3_close(db)
         }
         // Create Table: ExpenseCategory
-        let createSQL:NSString = "CREATE TABLE IF NOT EXISTS Expense(ID INTEGER PRIMARY KEY AUTOINCREMENT, Year INTEGER, Month INTEGER, Day INTEGER, Hour INTEGER, Minute INTEGER, Second INTEGER,Category TEXT,CategoryDetail TEXT,Amounts REAL, ExpenseDetail TEXT)"
+        let createSQL:NSString = "CREATE TABLE IF NOT EXISTS Expense(ID INTEGER PRIMARY KEY AUTOINCREMENT, Year INTEGER, Month INTEGER, Day INTEGER, Hour INTEGER, Minute INTEGER, Second INTEGER,Category TEXT,CategoryDetail TEXT,Amounts REAL, ExpenseDetail TEXT,YearOfExpense INTEGER,MonthOfExpense INTEGER,DayOfExpense INTEGER,HourOfExpense INTEGER,MinuteOfExpense INTEGER,SecondOfExpense INTEGER)"
         if sqlite3_exec(db, createSQL.UTF8String, nil, nil, nil) == SQLITE_OK {
-            println("create table successful")
+            println("create Table:Expense successful")
         }else {
-            println("create table failed")
+            println("create Table:Expense failed")
         }
         //Close Database File
         sqlite3_close(db)
     }
-    class func monthSum(year:Int = 2015, month:Int = 5) -> String {
+    class func deleteTableInDatabase(){
+        var db: COpaquePointer = nil
+        let pathsOfAppDocuments = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
+        let pathOfDatabase = (pathsOfAppDocuments[0] as! String).stringByAppendingString("/BIDatabase")
+        println(pathOfDatabase)
+        
+        // open database file, when unexists, create a new database file
+        if sqlite3_open(pathOfDatabase, &db) == SQLITE_OK {
+            println("Database file has been opened successfully!")
+        }else{
+            println("Database file failed to open!")
+            sqlite3_close(db)
+        }
+        //drop tables: ExpenseCategory IncomeCategory
+        let dropExpenseSQL: NSString = "DROP TABLE Income"
+        if sqlite3_exec(db, dropExpenseSQL.UTF8String, nil, nil, nil) == SQLITE_OK {
+            println("drop old Table:Expense successful")
+        }else{
+            println("drop old table:Expense failed!")
+        }
+        //close database file
+        sqlite3_close(db)
+        
+    }
+    class func monthSum(#year:Int = 2015, #month:Int = 5) -> String {
         let sql: String = "SELECT SUM(Amounts) FROM Expense WHERE Year = \(year) AND Month = \(month)"
         if let monthSum:Double = BIQuery(UTF8StringQuery: sql).resultOfQuery() {
             return "-\(monthSum)"
@@ -126,7 +187,31 @@ class BIExpense: NSObject {
             return "-0.00"
         }
     }
+    class func dailyRecords(#year:Int = 2015,#month:Int = 5,#day:Int = 25) -> [ExpenseRecord]{
+        var expenseRecords: [ExpenseRecord] = []
+        let IDSQL:String = "SELECT ID FROM Expense WHERE YearOfExpense= \(year) AND MonthOfExpense = \(month) AND DayOfExpense = \(day)"
+        let categorySQL:String = "SELECT Category FROM Expense WHERE YearOfExpense= \(year) AND MonthOfExpense = \(month) AND DayOfExpense = \(day)"
+        let categoryDetailSQL:String = "SELECT "
+        let amountsSQL: String = "SELECT Amounts FROM Expense WHERE YearOfExpense= \(year) AND MonthOfExpense = \(month) AND DayOfExpense = \(day)"
+        let recordsID:[Int] = BIQuery(UTF8StringQuery: IDSQL).resultsOfQuery()
+        if  recordsID.count != 0 {
+            //println(recordsID.count)
+            let ids:[Int] = BIQuery(UTF8StringQuery: IDSQL).resultsOfQuery()
+            let categoies:[String] = BIQuery(UTF8StringQuery: categorySQL).resultsOfQuery()
+            let amountsOfAll:[Double] = BIQuery(UTF8StringQuery: amountsSQL).resultsOfQuery()
+            //println("amounts array = \(amountsOfAll)")
+            for i in 1...recordsID.count {
+                expenseRecords.append(ExpenseRecord(category: categoies[i-1], categoryDetail: "BNE", amounts: amountsOfAll[i-1],expenseID:ids[i-1]))
+            }
+        }else{
+            println("No records found in Income for the date provided")
+        }
+        //println(expenseRecords[1].loc)
+        //println(expenseRecords[1].amo)
+        return expenseRecords
+    }
     deinit {
+        self.addToDatabase()
         println("BIExpense deinit")
     }
 }
