@@ -14,7 +14,6 @@
 		CE948F791B171BCE00354CFF /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE948F771B171BCE00354CFF /* LaunchScreen.xib */; };
 		CE948F851B171BCE00354CFF /* moneyTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F841B171BCE00354CFF /* moneyTrackerTests.swift */; };
 		CE948FA11B171CA200354CFF /* BIBillAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F8E1B171CA200354CFF /* BIBillAnalysis.swift */; };
-		CE948FA21B171CA200354CFF /* BIDataSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F8F1B171CA200354CFF /* BIDataSet.swift */; };
 		CE948FA31B171CA200354CFF /* BIExpense.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F901B171CA200354CFF /* BIExpense.swift */; };
 		CE948FA41B171CA200354CFF /* BIIncome.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F911B171CA200354CFF /* BIIncome.swift */; };
 		CE948FA51B171CA200354CFF /* BIMonthCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F921B171CA200354CFF /* BIMonthCalendar.swift */; };
@@ -32,6 +31,7 @@
 		CE948FB21B171CA200354CFF /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948FA01B171CA200354CFF /* TestViewController.swift */; };
 		CE948FB41B171CD700354CFF /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CE948FB31B171CD700354CFF /* libsqlite3.0.dylib */; };
 		CE948FB61B171E0600354CFF /* NewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948FB51B171E0600354CFF /* NewViewController.swift */; };
+		CECCD6E41B17217100BEC851 /* BICategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECCD6E31B17217100BEC851 /* BICategory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,7 +56,6 @@
 		CE948F831B171BCE00354CFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE948F841B171BCE00354CFF /* moneyTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = moneyTrackerTests.swift; sourceTree = "<group>"; };
 		CE948F8E1B171CA200354CFF /* BIBillAnalysis.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BIBillAnalysis.swift; sourceTree = "<group>"; };
-		CE948F8F1B171CA200354CFF /* BIDataSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BIDataSet.swift; sourceTree = "<group>"; };
 		CE948F901B171CA200354CFF /* BIExpense.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BIExpense.swift; sourceTree = "<group>"; };
 		CE948F911B171CA200354CFF /* BIIncome.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BIIncome.swift; sourceTree = "<group>"; };
 		CE948F921B171CA200354CFF /* BIMonthCalendar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BIMonthCalendar.swift; sourceTree = "<group>"; };
@@ -75,6 +74,7 @@
 		CE948FA01B171CA200354CFF /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		CE948FB31B171CD700354CFF /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		CE948FB51B171E0600354CFF /* NewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewViewController.swift; sourceTree = "<group>"; };
+		CECCD6E31B17217100BEC851 /* BICategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BICategory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,7 +164,7 @@
 			isa = PBXGroup;
 			children = (
 				CE948F8E1B171CA200354CFF /* BIBillAnalysis.swift */,
-				CE948F8F1B171CA200354CFF /* BIDataSet.swift */,
+				CECCD6E31B17217100BEC851 /* BICategory.swift */,
 				CE948F901B171CA200354CFF /* BIExpense.swift */,
 				CE948F911B171CA200354CFF /* BIIncome.swift */,
 				CE948F931B171CA200354CFF /* BIQuery.swift */,
@@ -324,9 +324,9 @@
 				CE948FA51B171CA200354CFF /* BIMonthCalendar.swift in Sources */,
 				CE948FB21B171CA200354CFF /* TestViewController.swift in Sources */,
 				CE948FA31B171CA200354CFF /* BIExpense.swift in Sources */,
-				CE948FA21B171CA200354CFF /* BIDataSet.swift in Sources */,
 				CE948FA61B171CA200354CFF /* BIQuery.swift in Sources */,
 				CE948FAE1B171CA200354CFF /* NewCategotyCell.swift in Sources */,
+				CECCD6E41B17217100BEC851 /* BICategory.swift in Sources */,
 				CE948FA81B171CA200354CFF /* DailyTableViewCell.swift in Sources */,
 				CE948F6F1B171BCE00354CFF /* moneyTracker.xcdatamodeld in Sources */,
 				CE948FA71B171CA200354CFF /* calndrCollectionViewCell.swift in Sources */,
