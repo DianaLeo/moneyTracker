@@ -192,12 +192,12 @@
 		CE948FBA1B171EC300354CFF /* NewNotePage */ = {
 			isa = PBXGroup;
 			children = (
-				CE948F9A1B171CA200354CFF /* NewAmountCollectionViewCell.swift */,
 				CE948FB51B171E0600354CFF /* NewViewController.swift */,
-				CE948F9B1B171CA200354CFF /* NewCategoryCollectionViewCell.swift */,
-				CE948F9C1B171CA200354CFF /* NewCategotyCell.swift */,
 				CE948F9D1B171CA200354CFF /* NewCollectionViewCell.swift */,
 				CE948F9E1B171CA200354CFF /* NewDateCollectionViewCell.swift */,
+				CE948F9B1B171CA200354CFF /* NewCategoryCollectionViewCell.swift */,
+				CE948F9C1B171CA200354CFF /* NewCategotyCell.swift */,
+				CE948F9A1B171CA200354CFF /* NewAmountCollectionViewCell.swift */,
 				CE948F9F1B171CA200354CFF /* NewDetailCollectionViewCell.swift */,
 			);
 			name = NewNotePage;
