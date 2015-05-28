@@ -1,0 +1,239 @@
+//
+//  NewTableViewController.swift
+//  moneyTracker
+//
+//  Created by User on 25/05/2015.
+//  Copyright (c) 2015 User. All rights reserved.
+//
+
+
+//备注：代码实现flow layout太尼玛烦了！注意两个全局变量（collectionview & flowlayout）的初始化方法。
+//备注：打开键盘的方法 ⌘K； 批量修改变量名
+
+import UIKit
+
+var didSelectSection0 = false
+var didSelectSection1 = false
+//    var didSelectRow2 = false
+var didSelectSection3 = false
+
+class NewViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,SmallCategoryCellDelegate,UITextFieldDelegate,UITextViewDelegate {
+    
+    var mainCollectionView: UICollectionView?
+
+
+    
+    //高度计算
+    var bgWidth  = UIScreen.mainScreen().bounds.size.width
+    var bgHeight = UIScreen.mainScreen().bounds.size.height
+    var _naviRatio = 0.15 as CGFloat
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        var _naviHeight     = bgHeight * _naviRatio
+        var collectionHeight     = bgHeight * (1 - _naviRatio)
+        var bgTransHeight   = bgHeight * (1 - _naviRatio)
+        
+        //背景
+        var bgImage = UIImageView(frame: CGRect(x: 0, y: 0, width: bgWidth, height: bgHeight))
+        bgImage.image = UIImage(named: "background1")
+        self.view.addSubview(bgImage)
+        var bgTrans = UIImageView(frame: CGRect(x: 0, y: _naviHeight, width: bgWidth, height: bgTransHeight))
+        bgTrans.image = UIImage(named: "background2")
+        self.view.addSubview(bgTrans)
+        
+        //列表 collectionView
+        var flowLayOut = UICollectionViewFlowLayout()
+        //flowLayOut.itemSize = CGSizeMake(130, 130)
+        //flowLayOut.scrollDirection = UICollectionViewScrollDirection.Vertical
+        //flowLayOut.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        //flowLayOut.minimumInteritemSpacing = 10
+        
+        mainCollectionView = UICollectionView(frame: CGRect(x: 0, y: _naviHeight, width: bgWidth, height: collectionHeight), collectionViewLayout: flowLayOut)
+        mainCollectionView!.dataSource = self
+        mainCollectionView!.delegate   = self
+        mainCollectionView?.backgroundColor = UIColor.clearColor()
+        self.view.addSubview(mainCollectionView!)
+    }
+    
+    
+    //详细列表的实现
+    
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 4
+    }
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        
+        var defaultCellHeight = 100 as CGFloat
+        var cellHeight = bgHeight*(1 - _naviRatio) - defaultCellHeight*3
+        
+        if (indexPath.section == 0) && (didSelectSection0 == true) {
+            return CGSize(width: bgWidth, height: cellHeight)
+        }
+        else if (indexPath.section == 1) && (didSelectSection1 == true) {
+            //cellHeight = bgHeight*(1 - _naviRatio) - defaultCellHeight*2
+            //高度根据Category个数改变，每四个加一行，即100
+            return CGSize(width: bgWidth, height: cellHeight)
+        }
+        else if (indexPath.section == 3) && (didSelectSection3 == true) {
+            return CGSize(width: bgWidth, height: cellHeight)
+        }
+        else {
+            return CGSize(width: bgWidth, height: defaultCellHeight)
+        }
+    }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        if (indexPath.section == 0){
+            didSelectSection0 = !didSelectSection0
+            didSelectSection1 = false
+            didSelectSection3 = false
+        }else if(indexPath.section == 1){
+            didSelectSection1 = !didSelectSection1
+            didSelectSection0 = false
+            didSelectSection3 = false
+        }else if(indexPath.section == 2){
+            didSelectSection1 = false
+            didSelectSection0 = false
+            didSelectSection3 = false
+        }else if(indexPath.section == 3){
+            didSelectSection3 = !didSelectSection3
+            didSelectSection0 = false
+            didSelectSection1 = false
+        }
+        collectionView.reloadData()
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        
+        collectionView.registerClass(NewDateCollectionViewCell.self, forCellWithReuseIdentifier: "newDateCell")
+        collectionView.registerClass(NewCategoryCollectionViewCell.self, forCellWithReuseIdentifier: "newCategoryCell")
+        collectionView.registerClass(NewAmountCollectionViewCell.self, forCellWithReuseIdentifier: "newAmountCell")
+        collectionView.registerClass(NewDetailCollectionViewCell.self, forCellWithReuseIdentifier: "newDetailCell")
+        //第一项 日期选择
+        if (indexPath.section == 0){
+            var cell = collectionView.dequeueReusableCellWithReuseIdentifier("newDateCell", forIndexPath: indexPath) as? NewDateCollectionViewCell
+            cell!.leftTextLabel?.text = "Datepicker"
+            if (didSelectSection0 == true){
+                cell!.backgroundColor = UIColor.whiteColor()
+                cell!.datepicker?.hidden = false
+                cell!.rightLabel?.hidden = true
+                return cell!
+            }else{
+                cell!.backgroundColor = UIColor(red: 0.94, green: 0.93, blue: 0.93, alpha: 1)
+                cell!.datepicker?.hidden = true
+                cell!.rightLabel?.hidden = false
+                let dt = cell?.datepicker?.date
+                cell!.rightLabel?.text = NSDateFormatter.localizedStringFromDate(dt!, dateStyle: NSDateFormatterStyle.MediumStyle, timeStyle: NSDateFormatterStyle.NoStyle)
+
+                return cell!
+            }
+        }
+        //第二项 分类
+        else if (indexPath.section == 1){
+            var cell = collectionView.dequeueReusableCellWithReuseIdentifier("newCategoryCell", forIndexPath: indexPath) as? NewCategoryCollectionViewCell
+            cell?.delegate = self
+            cell?.leftTextLabel?.text = "Category"
+            if (didSelectSection1 == true){
+                cell!.backgroundColor = UIColor.whiteColor()
+                cell?.collectionView?.hidden = false
+                cell?.rightImg?.hidden       = true
+                return cell!
+            }else{
+                cell!.backgroundColor = UIColor(red: 0.94, green: 0.93, blue: 0.93, alpha: 1)
+                cell?.collectionView?.hidden = true
+                cell?.rightImg?.hidden       = false
+                return cell!
+            }
+        }
+        //第三项 金额
+        else if (indexPath.section == 2){
+            var cell = collectionView.dequeueReusableCellWithReuseIdentifier("newAmountCell", forIndexPath: indexPath) as? NewAmountCollectionViewCell
+            cell?.leftTextLabel?.text = "Amount"
+            cell?.textField?.delegate = self
+            return cell!
+        }
+        //第四项 详细内容
+        else if (indexPath.section == 3){
+            var cell = collectionView.dequeueReusableCellWithReuseIdentifier("newDetailCell", forIndexPath: indexPath) as? NewDetailCollectionViewCell
+            cell?.leftTextLabel?.text = "Detail"
+            cell?.textView?.delegate = self
+            if (didSelectSection3 == true){
+                cell!.backgroundColor = UIColor.whiteColor()
+                cell?.textView?.hidden = false
+                cell?.rightLabel?.hidden = true
+                return cell!
+            }else{
+                cell!.backgroundColor = UIColor(red: 0.94, green: 0.93, blue: 0.93, alpha: 1)
+                cell?.textView?.hidden = true
+                cell?.rightLabel?.hidden = false
+                //先将 textView.text 保存至数据库，rightLabel.text从数据库调用。这样如果为新建模式，显示空字符串，如果为修改模式，显示现有的字符串
+                cell?.rightLabel?.text = cell?.textView?.text
+
+                return cell!
+            }
+        }
+
+        return UICollectionViewCell()
+
+    }
+    
+    func didSelectSmallCell (#indexPath: NSIndexPath){
+        mainCollectionView?.reloadData()
+    }
+    
+    func textFieldDidBeginEditing(textField: UITextField) {
+        didSelectSection0 = false
+        didSelectSection1 = false
+        didSelectSection3 = false
+        println("textField DidBeginEditing")
+        mainCollectionView?.reloadSections(NSIndexSet(index: 0))
+        mainCollectionView?.reloadSections(NSIndexSet(index: 1))
+        mainCollectionView?.reloadSections(NSIndexSet(index: 3))
+}
+    func textFieldDidEndEditing(textField: UITextField) {
+        println("textField DidEndEditing")
+    }
+    func textViewDidBeginEditing(textView: UITextView) {
+        didSelectSection0 = false
+        didSelectSection1 = false
+        didSelectSection3 = false
+        println("textView DidBeginEditing")
+        self.view.frame.origin.y -= 216
+        var label = UILabel(frame: CGRect(x: 0, y: self.view.frame.height, width: bgWidth, height: 216))
+        label.backgroundColor = UIColor.whiteColor()
+        self.view.addSubview(label)
+    }
+    func textViewDidEndEditing(textView: UITextView) {
+        didSelectSection3 = false
+        self.view.frame.origin.y += 216
+    }
+    
+    
+    //页面即将显示时
+    override func viewWillAppear(animated: Bool) {
+        var naviLabel = self.navigationController?.navigationBar.viewWithTag(1) as! UILabel
+        naviLabel.text = "New Note"
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        // Get the new view controller using [segue destinationViewController].
+        // Pass the selected object to the new view controller.
+    }
+    */
+
+}

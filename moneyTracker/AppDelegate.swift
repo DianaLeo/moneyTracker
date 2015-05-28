@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  moneyTracker
 //
-//  Created by User on 28/05/2015.
+//  Created by User on 23/05/2015.
 //  Copyright (c) 2015 User. All rights reserved.
 //
 
@@ -17,6 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        application.setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
+
         return true
     }
 

@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:../moneyTracker/NewViewController.swift">
+   </FileRef>
+   <FileRef
       location = "self:moneyTracker.xcodeproj">
    </FileRef>
 </Workspace>

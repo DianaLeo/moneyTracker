@@ -9,11 +9,29 @@
 /* Begin PBXBuildFile section */
 		CE948F6C1B171BCE00354CFF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F6B1B171BCE00354CFF /* AppDelegate.swift */; };
 		CE948F6F1B171BCE00354CFF /* moneyTracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CE948F6D1B171BCE00354CFF /* moneyTracker.xcdatamodeld */; };
-		CE948F711B171BCE00354CFF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F701B171BCE00354CFF /* ViewController.swift */; };
 		CE948F741B171BCE00354CFF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE948F721B171BCE00354CFF /* Main.storyboard */; };
 		CE948F761B171BCE00354CFF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE948F751B171BCE00354CFF /* Images.xcassets */; };
 		CE948F791B171BCE00354CFF /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE948F771B171BCE00354CFF /* LaunchScreen.xib */; };
 		CE948F851B171BCE00354CFF /* moneyTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F841B171BCE00354CFF /* moneyTrackerTests.swift */; };
+		CE948FA11B171CA200354CFF /* BIBillAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F8E1B171CA200354CFF /* BIBillAnalysis.swift */; };
+		CE948FA21B171CA200354CFF /* BIDataSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F8F1B171CA200354CFF /* BIDataSet.swift */; };
+		CE948FA31B171CA200354CFF /* BIExpense.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F901B171CA200354CFF /* BIExpense.swift */; };
+		CE948FA41B171CA200354CFF /* BIIncome.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F911B171CA200354CFF /* BIIncome.swift */; };
+		CE948FA51B171CA200354CFF /* BIMonthCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F921B171CA200354CFF /* BIMonthCalendar.swift */; };
+		CE948FA61B171CA200354CFF /* BIQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F931B171CA200354CFF /* BIQuery.swift */; };
+		CE948FA71B171CA200354CFF /* calndrCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F941B171CA200354CFF /* calndrCollectionViewCell.swift */; };
+		CE948FA81B171CA200354CFF /* DailyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F951B171CA200354CFF /* DailyTableViewCell.swift */; };
+		CE948FA91B171CA200354CFF /* DailyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F961B171CA200354CFF /* DailyViewController.swift */; };
+		CE948FAA1B171CA200354CFF /* homeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F971B171CA200354CFF /* homeViewController.swift */; };
+		CE948FAC1B171CA200354CFF /* NewAmountCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F9A1B171CA200354CFF /* NewAmountCollectionViewCell.swift */; };
+		CE948FAD1B171CA200354CFF /* NewCategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F9B1B171CA200354CFF /* NewCategoryCollectionViewCell.swift */; };
+		CE948FAE1B171CA200354CFF /* NewCategotyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F9C1B171CA200354CFF /* NewCategotyCell.swift */; };
+		CE948FAF1B171CA200354CFF /* NewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F9D1B171CA200354CFF /* NewCollectionViewCell.swift */; };
+		CE948FB01B171CA200354CFF /* NewDateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F9E1B171CA200354CFF /* NewDateCollectionViewCell.swift */; };
+		CE948FB11B171CA200354CFF /* NewDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F9F1B171CA200354CFF /* NewDetailCollectionViewCell.swift */; };
+		CE948FB21B171CA200354CFF /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948FA01B171CA200354CFF /* TestViewController.swift */; };
+		CE948FB41B171CD700354CFF /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CE948FB31B171CD700354CFF /* libsqlite3.0.dylib */; };
+		CE948FB61B171E0600354CFF /* NewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948FB51B171E0600354CFF /* NewViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,13 +49,32 @@
 		CE948F6A1B171BCE00354CFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE948F6B1B171BCE00354CFF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE948F6E1B171BCE00354CFF /* moneyTracker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = moneyTracker.xcdatamodel; sourceTree = "<group>"; };
-		CE948F701B171BCE00354CFF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		CE948F731B171BCE00354CFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CE948F751B171BCE00354CFF /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		CE948F781B171BCE00354CFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		CE948F7E1B171BCE00354CFF /* moneyTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = moneyTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE948F831B171BCE00354CFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE948F841B171BCE00354CFF /* moneyTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = moneyTrackerTests.swift; sourceTree = "<group>"; };
+		CE948F8E1B171CA200354CFF /* BIBillAnalysis.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BIBillAnalysis.swift; sourceTree = "<group>"; };
+		CE948F8F1B171CA200354CFF /* BIDataSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BIDataSet.swift; sourceTree = "<group>"; };
+		CE948F901B171CA200354CFF /* BIExpense.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BIExpense.swift; sourceTree = "<group>"; };
+		CE948F911B171CA200354CFF /* BIIncome.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BIIncome.swift; sourceTree = "<group>"; };
+		CE948F921B171CA200354CFF /* BIMonthCalendar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BIMonthCalendar.swift; sourceTree = "<group>"; };
+		CE948F931B171CA200354CFF /* BIQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BIQuery.swift; sourceTree = "<group>"; };
+		CE948F941B171CA200354CFF /* calndrCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = calndrCollectionViewCell.swift; sourceTree = "<group>"; };
+		CE948F951B171CA200354CFF /* DailyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyTableViewCell.swift; sourceTree = "<group>"; };
+		CE948F961B171CA200354CFF /* DailyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyViewController.swift; sourceTree = "<group>"; };
+		CE948F971B171CA200354CFF /* homeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = homeViewController.swift; sourceTree = "<group>"; };
+		CE948F991B171CA200354CFF /* moneyTracker-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "moneyTracker-Bridging-Header.h"; path = "moneyTracker/moneyTracker-Bridging-Header.h"; sourceTree = "<group>"; };
+		CE948F9A1B171CA200354CFF /* NewAmountCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAmountCollectionViewCell.swift; sourceTree = "<group>"; };
+		CE948F9B1B171CA200354CFF /* NewCategoryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewCategoryCollectionViewCell.swift; sourceTree = "<group>"; };
+		CE948F9C1B171CA200354CFF /* NewCategotyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewCategotyCell.swift; sourceTree = "<group>"; };
+		CE948F9D1B171CA200354CFF /* NewCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewCollectionViewCell.swift; sourceTree = "<group>"; };
+		CE948F9E1B171CA200354CFF /* NewDateCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewDateCollectionViewCell.swift; sourceTree = "<group>"; };
+		CE948F9F1B171CA200354CFF /* NewDetailCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewDetailCollectionViewCell.swift; sourceTree = "<group>"; };
+		CE948FA01B171CA200354CFF /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
+		CE948FB31B171CD700354CFF /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
+		CE948FB51B171E0600354CFF /* NewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE948FB41B171CD700354CFF /* libsqlite3.0.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,6 +99,8 @@
 		CE948F5D1B171BCE00354CFF = {
 			isa = PBXGroup;
 			children = (
+				CE948FB31B171CD700354CFF /* libsqlite3.0.dylib */,
+				CE948F991B171CA200354CFF /* moneyTracker-Bridging-Header.h */,
 				CE948F681B171BCE00354CFF /* moneyTracker */,
 				CE948F811B171BCE00354CFF /* moneyTrackerTests */,
 				CE948F671B171BCE00354CFF /* Products */,
@@ -79,11 +119,15 @@
 		CE948F681B171BCE00354CFF /* moneyTracker */ = {
 			isa = PBXGroup;
 			children = (
+				CE948FA01B171CA200354CFF /* TestViewController.swift */,
 				CE948F6B1B171BCE00354CFF /* AppDelegate.swift */,
-				CE948F701B171BCE00354CFF /* ViewController.swift */,
 				CE948F721B171BCE00354CFF /* Main.storyboard */,
-				CE948F751B171BCE00354CFF /* Images.xcassets */,
 				CE948F771B171BCE00354CFF /* LaunchScreen.xib */,
+				CE948FB71B171E5900354CFF /* BIDataModel */,
+				CE948FB81B171E7A00354CFF /* BITimeModel */,
+				CE948FB91B171EA800354CFF /* HomePage */,
+				CE948FBB1B171F0500354CFF /* DailyPage */,
+				CE948FBA1B171EC300354CFF /* NewNotePage */,
 				CE948F6D1B171BCE00354CFF /* moneyTracker.xcdatamodeld */,
 				CE948F691B171BCE00354CFF /* Supporting Files */,
 			);
@@ -93,6 +137,7 @@
 		CE948F691B171BCE00354CFF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				CE948F751B171BCE00354CFF /* Images.xcassets */,
 				CE948F6A1B171BCE00354CFF /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -113,6 +158,58 @@
 				CE948F831B171BCE00354CFF /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CE948FB71B171E5900354CFF /* BIDataModel */ = {
+			isa = PBXGroup;
+			children = (
+				CE948F8E1B171CA200354CFF /* BIBillAnalysis.swift */,
+				CE948F8F1B171CA200354CFF /* BIDataSet.swift */,
+				CE948F901B171CA200354CFF /* BIExpense.swift */,
+				CE948F911B171CA200354CFF /* BIIncome.swift */,
+				CE948F931B171CA200354CFF /* BIQuery.swift */,
+			);
+			name = BIDataModel;
+			sourceTree = "<group>";
+		};
+		CE948FB81B171E7A00354CFF /* BITimeModel */ = {
+			isa = PBXGroup;
+			children = (
+				CE948F921B171CA200354CFF /* BIMonthCalendar.swift */,
+			);
+			name = BITimeModel;
+			sourceTree = "<group>";
+		};
+		CE948FB91B171EA800354CFF /* HomePage */ = {
+			isa = PBXGroup;
+			children = (
+				CE948F971B171CA200354CFF /* homeViewController.swift */,
+				CE948F941B171CA200354CFF /* calndrCollectionViewCell.swift */,
+			);
+			name = HomePage;
+			sourceTree = "<group>";
+		};
+		CE948FBA1B171EC300354CFF /* NewNotePage */ = {
+			isa = PBXGroup;
+			children = (
+				CE948F9A1B171CA200354CFF /* NewAmountCollectionViewCell.swift */,
+				CE948FB51B171E0600354CFF /* NewViewController.swift */,
+				CE948F9B1B171CA200354CFF /* NewCategoryCollectionViewCell.swift */,
+				CE948F9C1B171CA200354CFF /* NewCategotyCell.swift */,
+				CE948F9D1B171CA200354CFF /* NewCollectionViewCell.swift */,
+				CE948F9E1B171CA200354CFF /* NewDateCollectionViewCell.swift */,
+				CE948F9F1B171CA200354CFF /* NewDetailCollectionViewCell.swift */,
+			);
+			name = NewNotePage;
+			sourceTree = "<group>";
+		};
+		CE948FBB1B171F0500354CFF /* DailyPage */ = {
+			isa = PBXGroup;
+			children = (
+				CE948F951B171CA200354CFF /* DailyTableViewCell.swift */,
+				CE948F961B171CA200354CFF /* DailyViewController.swift */,
+			);
+			name = DailyPage;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -215,9 +312,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE948F711B171BCE00354CFF /* ViewController.swift in Sources */,
+				CE948FAC1B171CA200354CFF /* NewAmountCollectionViewCell.swift in Sources */,
+				CE948FA11B171CA200354CFF /* BIBillAnalysis.swift in Sources */,
+				CE948FA91B171CA200354CFF /* DailyViewController.swift in Sources */,
+				CE948FAF1B171CA200354CFF /* NewCollectionViewCell.swift in Sources */,
+				CE948FAA1B171CA200354CFF /* homeViewController.swift in Sources */,
 				CE948F6C1B171BCE00354CFF /* AppDelegate.swift in Sources */,
+				CE948FB11B171CA200354CFF /* NewDetailCollectionViewCell.swift in Sources */,
+				CE948FB01B171CA200354CFF /* NewDateCollectionViewCell.swift in Sources */,
+				CE948FB61B171E0600354CFF /* NewViewController.swift in Sources */,
+				CE948FA51B171CA200354CFF /* BIMonthCalendar.swift in Sources */,
+				CE948FB21B171CA200354CFF /* TestViewController.swift in Sources */,
+				CE948FA31B171CA200354CFF /* BIExpense.swift in Sources */,
+				CE948FA21B171CA200354CFF /* BIDataSet.swift in Sources */,
+				CE948FA61B171CA200354CFF /* BIQuery.swift in Sources */,
+				CE948FAE1B171CA200354CFF /* NewCategotyCell.swift in Sources */,
+				CE948FA81B171CA200354CFF /* DailyTableViewCell.swift in Sources */,
 				CE948F6F1B171BCE00354CFF /* moneyTracker.xcdatamodeld in Sources */,
+				CE948FA71B171CA200354CFF /* calndrCollectionViewCell.swift in Sources */,
+				CE948FA41B171CA200354CFF /* BIIncome.swift in Sources */,
+				CE948FAD1B171CA200354CFF /* NewCategoryCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,6 +461,7 @@
 				INFOPLIST_FILE = moneyTracker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/user/Desktop/moneyTracker/moneyTracker/moneyTracker-Bridging-Header.h";
 			};
 			name = Debug;
 		};
@@ -357,6 +472,7 @@
 				INFOPLIST_FILE = moneyTracker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/user/Desktop/moneyTracker/moneyTracker/moneyTracker-Bridging-Header.h";
 			};
 			name = Release;
 		};
@@ -413,6 +529,7 @@
 				CE948F8A1B171BCE00354CFF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CE948F8B1B171BCE00354CFF /* Build configuration list for PBXNativeTarget "moneyTrackerTests" */ = {
 			isa = XCConfigurationList;
@@ -421,6 +538,7 @@
 				CE948F8D1B171BCE00354CFF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
