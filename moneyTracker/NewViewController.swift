@@ -17,12 +17,11 @@ var didSelectSection0 = false
 var didSelectSection1 = false
 //    var didSelectRow2 = false
 var didSelectSection3 = false
+var isModificationMode = false
 
 class NewViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,SmallCategoryCellDelegate,UITextFieldDelegate,UITextViewDelegate {
     
     var mainCollectionView: UICollectionView?
-
-
     
     //高度计算
     var bgWidth  = UIScreen.mainScreen().bounds.size.width
@@ -31,7 +30,7 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         var _naviHeight     = bgHeight * _naviRatio
         var collectionHeight     = bgHeight * (1 - _naviRatio)
         var bgTransHeight   = bgHeight * (1 - _naviRatio)
@@ -132,6 +131,10 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
                 return cell!
             }else{
                 cell!.backgroundColor = UIColor(red: 0.94, green: 0.93, blue: 0.93, alpha: 1)
+                //判断是“新建”模式还是“修改”模式
+                if (isModificationMode){
+                    //cell?.datepicker?.date = 从数据库里读取
+                }
                 cell!.datepicker?.hidden = true
                 cell!.rightLabel?.hidden = false
                 let dt = cell?.datepicker?.date
@@ -152,6 +155,15 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
                 return cell!
             }else{
                 cell!.backgroundColor = UIColor(red: 0.94, green: 0.93, blue: 0.93, alpha: 1)
+                //判断是“新建”模式还是“修改”模式
+                if (isModificationMode){
+                    if (true) {
+                      cell?.rightImg?.image = UIImage(named: "blankCategory")
+                      cell?.rightText?.text = "小鸡炖蘑菇"
+                    }else{
+//                      cell?.rightImg?.image = 从数据库里读取
+                    }
+                }
                 cell?.collectionView?.hidden = true
                 cell?.rightImg?.hidden       = false
                 return cell!
@@ -162,6 +174,11 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
             var cell = collectionView.dequeueReusableCellWithReuseIdentifier("newAmountCell", forIndexPath: indexPath) as? NewAmountCollectionViewCell
             cell?.leftTextLabel?.text = "Amount"
             cell?.textField?.delegate = self
+            //判断是“新建”模式还是“修改”模式
+            if (isModificationMode){
+                //cell?.textField?.text = 从数据库里读取
+                cell?.textField?.text = "10000000"
+            }
             return cell!
         }
         //第四项 详细内容
@@ -179,8 +196,12 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
                 cell?.textView?.hidden = true
                 cell?.rightLabel?.hidden = false
                 //先将 textView.text 保存至数据库，rightLabel.text从数据库调用。这样如果为新建模式，显示空字符串，如果为修改模式，显示现有的字符串
+                //判断是“新建”模式还是“修改”模式
+                if (isModificationMode){
+                    //cell?.textView?.text = 从数据库里读取
+                    cell?.textView?.text = "小鸡炖蘑菇"
+                }
                 cell?.rightLabel?.text = cell?.textView?.text
-
                 return cell!
             }
         }
@@ -225,8 +246,11 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
     //页面即将显示时
     override func viewWillAppear(animated: Bool) {
         var naviLabel = self.navigationController?.navigationBar.viewWithTag(1) as! UILabel
-        naviLabel.text = "New Note"
-        
+        if isModificationMode {
+            naviLabel.text = "Modification"
+        }else{
+            naviLabel.text = "New Note"
+        }
         var naviBtnSaveRect = CGRect(x: bgWidth - 70, y: 10, width: 55, height: 55)
         var naviBtnSave     = UIButton(frame: naviBtnSaveRect)
         var naviBtnSaveImg  = UIImageView(frame: naviBtnSaveRect)
@@ -253,7 +277,8 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
         var naviBtnSaveImg = self.navigationController?.navigationBar.viewWithTag(3) as! UIImageView
         naviBtnSave.removeFromSuperview()
         naviBtnSaveImg.removeFromSuperview()
-        self.navigationController?.popToRootViewControllerAnimated(true)
+        self.navigationController?.popViewControllerAnimated(true)
+        isModificationMode = false
     }
     
     func naviBtnCancelTouch () {
@@ -261,7 +286,8 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
         var naviBtnSaveImg = self.navigationController?.navigationBar.viewWithTag(3) as! UIImageView
         naviBtnSave.removeFromSuperview()
         naviBtnSaveImg.removeFromSuperview()
-        self.navigationController?.popToRootViewControllerAnimated(true)
+        self.navigationController?.popViewControllerAnimated(true)
+        isModificationMode = false
     }
 
     

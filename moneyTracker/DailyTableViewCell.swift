@@ -22,6 +22,7 @@ class DailyTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
         leftImageView = UIImageView(frame: CGRect(x: 8, y: frame.height - 38, width: 76, height: 76))
         leftTextLabel = UILabel(frame: CGRect(x: 90, y: frame.height/2, width: 100, height: frame.height/2 + 8))
         leftTextLabel?.textColor = UIColor(red: 0.82, green: 0.47, blue: 0.43, alpha: 1)
@@ -38,7 +39,7 @@ class DailyTableViewCell: UITableViewCell {
         
         var accBtnRect = CGRect(x: frame.width + 10, y: frame.height - 10, width: 30, height: 30)
         accBtnImg = UIImageView(frame: accBtnRect)
-        accBtnImg?.image = UIImage(named: "dragdown")
+        accBtnImg?.image = UIImage(named: "arrowRight")
         accessoryBtn = UIButton(frame: accBtnRect)
         
         bottomEdge = UILabel(frame: CGRect(x: 0, y: 0, width: bgWidth, height: 1))
@@ -52,7 +53,8 @@ class DailyTableViewCell: UITableViewCell {
         self.addSubview(accBtnImg!)
         self.addSubview(accessoryBtn!)
     }
-
+    
+    
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

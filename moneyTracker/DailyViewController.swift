@@ -12,9 +12,12 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
 
     var flagExpense = 1
     var listTable = UITableView()
+    var longPressGestureRecognizer: UILongPressGestureRecognizer?
     
     var bgWidth  = UIScreen.mainScreen().bounds.size.width
     var bgHeight = UIScreen.mainScreen().bounds.size.height
+    
+    var listTableDataSource = NSMutableArray(array: ["1","2","3","4"])
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,23 +45,30 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
         tabBtnIn.setTitle("Income", forState: UIControlState.Normal)
         tabBtnEx.addTarget(self, action: "tabBtnExTouch", forControlEvents: UIControlEvents.TouchUpInside)
         tabBtnIn.addTarget(self, action: "tabBtnInTouch", forControlEvents: UIControlEvents.TouchUpInside)
+        
         self.view.addSubview(tabBtnEx)
         self.view.addSubview(tabBtnIn)
         
-        
+
         //详细列表 list
         listTable = UITableView(frame: CGRect(x: 0, y: _naviHeight + tabHeight, width: bgWidth, height: bgHeight - _naviHeight - tabHeight), style: UITableViewStyle.Plain)
         listTable.dataSource = self
         listTable.delegate   = self
         listTable.separatorStyle = UITableViewCellSeparatorStyle.None
-        self.view.addSubview(listTable)
         
+        longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongPressGesture:")
+        longPressGestureRecognizer!.numberOfTouchesRequired = 1
+        longPressGestureRecognizer!.allowableMovement = 50
+        longPressGestureRecognizer!.minimumPressDuration = 0.5
+        
+        listTable.addGestureRecognizer(longPressGestureRecognizer!)
+        self.view.addSubview(listTable)
     }
     
     
     //详细列表 tableView
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        return 50
+        return listTableDataSource.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -98,6 +108,35 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 90
     }
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        listTableDataSource.removeObjectAtIndex(indexPath.row)
+        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        println("shortPress")
+        var naviBtnNew = self.navigationController?.navigationBar.viewWithTag(2) as! UIButton
+        var naviBtnNewImg = self.navigationController?.navigationBar.viewWithTag(3) as! UIImageView
+        naviBtnNew.removeFromSuperview()
+        naviBtnNewImg.removeFromSuperview()
+        //传值：把这一条的ID传过去
+        isModificationMode = true
+        self.navigationController?.pushViewController(NewViewController(), animated: true)
+    }
+    
+    //长按手势识别
+    func handleLongPressGesture(recognizer:UILongPressGestureRecognizer){
+        if (recognizer.state == UIGestureRecognizerState.Began){
+            listTable.setEditing(!listTable.editing, animated: true)
+            println("longPress")
+        }
+    }
+    
     
     //导航栏按钮点击事件 - 不管点哪个都要移除右边的按钮，而左边的按钮自动移除
     func naviBtnNewTouch () {

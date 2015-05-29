@@ -53,7 +53,6 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
         self.addSubview(collectionView!)
     }
     
-    
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return collectionViewDataSource.count + 1
     }
