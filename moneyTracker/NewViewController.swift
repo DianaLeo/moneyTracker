@@ -8,7 +8,8 @@
 
 
 //备注：代码实现flow layout太尼玛烦了！注意两个全局变量（collectionview & flowlayout）的初始化方法。
-//备注：打开键盘的方法 ⌘K； 批量修改变量名
+//备注：打开键盘的方法 ⌘K； 批量修改变量名； 自定义函数传参; uilabel文字换行显示
+//备注：改变模态窗口大小的两种方法（on completion & 背景设透明）但两个view controller不能同时存在，所以还得用添加subview的方式
 
 import UIKit
 
@@ -54,6 +55,7 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
         mainCollectionView!.dataSource = self
         mainCollectionView!.delegate   = self
         mainCollectionView?.backgroundColor = UIColor.clearColor()
+        mainCollectionView?.tag = 0
         self.view.addSubview(mainCollectionView!)
     }
     
@@ -76,8 +78,6 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
             return CGSize(width: bgWidth, height: cellHeight)
         }
         else if (indexPath.section == 1) && (didSelectSection1 == true) {
-            //cellHeight = bgHeight*(1 - _naviRatio) - defaultCellHeight*2
-            //高度根据Category个数改变，每四个加一行，即100
             return CGSize(width: bgWidth, height: cellHeight)
         }
         else if (indexPath.section == 3) && (didSelectSection3 == true) {
@@ -107,6 +107,12 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
             didSelectSection1 = false
         }
         collectionView.reloadData()
+//        var popupWin = PopupViewController()
+//        popupWin.modalTransitionStyle = UIModalTransitionStyle.CoverVertical
+//        popupWin.modalPresentationStyle = UIModalPresentationStyle.FormSheet
+//        self.navigationController?.presentViewController(popupWin, animated: true, completion: { () -> Void in
+//            popupWin.view.superview?.frame = CGRectMake(100, 100, 200, 200)
+//        })
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -183,6 +189,7 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
 
     }
     
+    //自定义代理 SmallCategoryCellDelegate 方法实现
     func didSelectSmallCell (#indexPath: NSIndexPath){
         mainCollectionView?.reloadData()
     }
@@ -219,7 +226,44 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
     override func viewWillAppear(animated: Bool) {
         var naviLabel = self.navigationController?.navigationBar.viewWithTag(1) as! UILabel
         naviLabel.text = "New Note"
+        
+        var naviBtnSaveRect = CGRect(x: bgWidth - 70, y: 10, width: 55, height: 55)
+        var naviBtnSave     = UIButton(frame: naviBtnSaveRect)
+        var naviBtnSaveImg  = UIImageView(frame: naviBtnSaveRect)
+        naviBtnSaveImg.image = UIImage(named: "save")
+        naviBtnSave.addSubview(naviBtnSaveImg)
+        naviBtnSave.addTarget(self, action: "naviBtnSaveTouch", forControlEvents: UIControlEvents.TouchUpInside)
+        naviBtnSave.tag    = 2
+        naviBtnSaveImg.tag = 3
+        self.navigationController?.navigationBar.addSubview(naviBtnSave)
+        self.navigationController?.navigationBar.addSubview(naviBtnSaveImg)
+        
+        var naviBtnCancelRect  = CGRect(x: 0, y: 10, width: 40, height: 35)
+        var naviBtnCancel      = UIButton(frame: naviBtnCancelRect)
+        var naviBtnCancelImg   = UIImageView(frame: naviBtnCancelRect)
+        naviBtnCancelImg.image = UIImage(named: "cancel")
+        naviBtnCancel.addSubview(naviBtnCancelImg)
+        naviBtnCancel.addTarget(self, action: "naviBtnCancelTouch", forControlEvents: UIControlEvents.TouchUpInside)
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: naviBtnCancel)
     }
+    
+    //导航栏按钮点击事件 - 不管点哪个都要移除右边的按钮，而左边的按钮自动移除
+    func naviBtnSaveTouch () {
+        var naviBtnSave = self.navigationController?.navigationBar.viewWithTag(2) as! UIButton
+        var naviBtnSaveImg = self.navigationController?.navigationBar.viewWithTag(3) as! UIImageView
+        naviBtnSave.removeFromSuperview()
+        naviBtnSaveImg.removeFromSuperview()
+        self.navigationController?.popToRootViewControllerAnimated(true)
+    }
+    
+    func naviBtnCancelTouch () {
+        var naviBtnSave = self.navigationController?.navigationBar.viewWithTag(2) as! UIButton
+        var naviBtnSaveImg = self.navigationController?.navigationBar.viewWithTag(3) as! UIImageView
+        naviBtnSave.removeFromSuperview()
+        naviBtnSaveImg.removeFromSuperview()
+        self.navigationController?.popToRootViewControllerAnimated(true)
+    }
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

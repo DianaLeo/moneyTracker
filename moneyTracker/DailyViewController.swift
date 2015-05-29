@@ -99,7 +99,7 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
         return 90
     }
     
-    //按钮点击事件
+    //导航栏按钮点击事件 - 不管点哪个都要移除右边的按钮，而左边的按钮自动移除
     func naviBtnNewTouch () {
         var naviBtnNew = self.navigationController?.navigationBar.viewWithTag(2) as! UIButton
         var naviBtnNewImg = self.navigationController?.navigationBar.viewWithTag(3) as! UIImageView
@@ -126,7 +126,7 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
         listTable.reloadData()
     }
     
-    //导航
+    //导航－页面即将显示
     override func viewWillAppear(animated: Bool) {
         var naviLabel = self.navigationController?.navigationBar.viewWithTag(1) as! UILabel
         naviLabel.text = "25/05/2015"

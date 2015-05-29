@@ -19,9 +19,6 @@ class NewDateCollectionViewCell: NewCollectionViewCell {
         var cellHeight = bgHeight * (1 - 0.15) - 100 * 3
         datepicker = UIDatePicker(frame: CGRect(x: 0, y: 54, width: bgWidth*0.8, height: 0.7*cellHeight))
         datepicker?.datePickerMode = UIDatePickerMode.Date
-        //datepicker?.timeZone = NSTimeZone.systemTimeZone()
-        //datepicker?.locale = NSLocale(localeIdentifier: "English")
-        //datepicker?.addTarget(self, action: "datepickerValueChanged", forControlEvents: UIControlEvents.ValueChanged)
         datepicker?.hidden = true
         
         rightLabel = UILabel(frame: CGRect(x: bgWidth - 400 - 50, y: 25, width: 400, height: 40))
