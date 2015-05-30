@@ -216,21 +216,24 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
     }
     
     func textFieldDidBeginEditing(textField: UITextField) {
-        didSelectSection0 = false
-        didSelectSection1 = false
-        didSelectSection3 = false
         println("textField DidBeginEditing")
-        mainCollectionView?.reloadSections(NSIndexSet(index: 0))
-        mainCollectionView?.reloadSections(NSIndexSet(index: 1))
-        mainCollectionView?.reloadSections(NSIndexSet(index: 3))
-}
+        if didSelectSection0 {
+            didSelectSection0 = false
+            mainCollectionView?.reloadSections(NSIndexSet(index: 0))
+        }
+        if didSelectSection1 {
+            didSelectSection1 = false
+            mainCollectionView?.reloadSections(NSIndexSet(index: 1))
+        }
+        if didSelectSection3 {
+            didSelectSection3 = false
+            mainCollectionView?.reloadSections(NSIndexSet(index: 3))
+        }
+    }
     func textFieldDidEndEditing(textField: UITextField) {
         println("textField DidEndEditing")
     }
     func textViewDidBeginEditing(textView: UITextView) {
-        didSelectSection0 = false
-        didSelectSection1 = false
-        didSelectSection3 = false
         println("textView DidBeginEditing")
         self.view.frame.origin.y -= 216
         var label = UILabel(frame: CGRect(x: 0, y: self.view.frame.height, width: bgWidth, height: 216))
@@ -240,6 +243,7 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
     func textViewDidEndEditing(textView: UITextView) {
         didSelectSection3 = false
         self.view.frame.origin.y += 216
+        println("textView DidEndEditing")
     }
     
     

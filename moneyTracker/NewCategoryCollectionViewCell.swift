@@ -208,6 +208,7 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
         }
     }
     
+    //小弹窗内部功能
     func iconTouch(sender: UIButton){
         println("icon Touched.")
         println("\(popupWin.viewWithTag(2))")
