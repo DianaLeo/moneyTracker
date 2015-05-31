@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol SmallCategoryCellDelegate {
+protocol SmallCategoryCellDelegate :class {
     func didSelectSmallCell (#indexPath: NSIndexPath)
 }
 
@@ -16,23 +16,26 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
     
     var collectionViewDataSource = NSMutableArray(array: ["clothing","food","accomontation","transport","entertainment","grocery","luxury"])
     var userCategoryDS = BICategory.sharedInstance()
+    
+    
     var rightImg: UIImageView?
     var rightText: UILabel?
     var flowLayOut = UICollectionViewFlowLayout()
     var collectionView: UICollectionView?
-    var delegate: SmallCategoryCellDelegate?
+    weak var delegate: SmallCategoryCellDelegate?
     var popupWin = UIView()
     var transpBG = UILabel()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        //data source of Category 
+        // category 
         self.collectionViewDataSource = NSMutableArray(array: userCategoryDS.expenseCategories)
+        println("new category cell init")
         var defaultCellHeight = 100 as CGFloat
         var cellHeight = bgHeight * (1 - 0.15) - defaultCellHeight * 3
         var smallCellW = 80 as CGFloat
         var smallCellH = 100 as CGFloat
-    
+        
         rightImg = UIImageView(frame: CGRect(x: bgWidth - 80 - 45, y: 10, width: smallCellW, height: smallCellW))
         rightText = UILabel(frame: CGRect(x: bgWidth - 65 - 45, y: 25, width: 50, height: 50))
         rightText!.textColor = UIColor.whiteColor()
@@ -59,7 +62,7 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-
+        
         collectionView.registerClass(NewCategotyCell.self, forCellWithReuseIdentifier: "newDateCell")
         var cell = collectionView.dequeueReusableCellWithReuseIdentifier("newDateCell", forIndexPath: indexPath) as! NewCategotyCell
         cell.delegate = self
@@ -68,7 +71,12 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
             cell.img?.image = UIImage(named: "newCategory")
             cell.label?.text = "newCategory"
         }else{
-            cell.img?.image = UIImage(named: "\(collectionViewDataSource[indexPath.row])")
+            //cell.img?.image = UIImage(named: "\(collectionViewDataSource[indexPath.row])")
+            if let imagePath = userCategoryDS.associatedImagePathFor(category: userCategoryDS.expenseCategories[indexPath.row]) {
+                //println(userCategoryDS.expenseCategories)
+                cell.img?.image = UIImage(named: "\(imagePath)")
+            }
+            //cell.img?.image = UIImage(named: "\()")
             if (cell.img?.image == nil){
                 cell.img?.image = UIImage(named: "blankCategory")
             }
@@ -128,7 +136,7 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
             var btn6 = UIButton(frame: CGRect(x:icW*1, y: icY + btnH, width: icW, height: btnH))
             var btn7 = UIButton(frame: CGRect(x:icW*2, y: icY + btnH, width: icW, height: btnH))
             var btn8 = UIButton(frame: CGRect(x:icW*3, y: icY + btnH, width: icW, height: btnH))
-
+            
             img1.image = UIImage(named: "entertainment")
             img2.image = UIImage(named: "grocery")
             img3.image = UIImage(named: "communication")
@@ -153,7 +161,7 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
             txt6.textAlignment = NSTextAlignment.Center; txt6.font = UIFont.systemFontOfSize(15)
             txt7.textAlignment = NSTextAlignment.Center; txt7.font = UIFont.systemFontOfSize(15)
             txt8.textAlignment = NSTextAlignment.Center; txt8.font = UIFont.systemFontOfSize(15)
-           
+            
             btnOK.backgroundColor  = UIColor.brownColor()
             btnOK.setTitle("Add", forState: UIControlState.Normal)
             btnOK.tag = 0
@@ -196,9 +204,13 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
             self.superview?.superview!.addSubview(transpBG)
             self.superview?.superview!.addSubview(popupWin)//将弹窗添加到NewViewController
             self.superview?.userInteractionEnabled = false//大CollectionView不能用，但是Controller能用，所以弹窗是能用的
-
+            
         }else{
             rightImg?.image = UIImage(named: "\(collectionViewDataSource[indexPath.row])")
+            if let imagePath = userCategoryDS.associatedImagePathFor(category: userCategoryDS.expenseCategories[indexPath.row]){
+                rightImg?.image = UIImage(named: "\(imagePath)")
+            }
+            
             if (rightImg?.image == nil){
                 rightImg?.image = UIImage(named: "blankCategory")
                 rightText!.text = "\(collectionViewDataSource[indexPath.row])"
@@ -227,9 +239,22 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
             println("no input")
         }else{
             //如果类别列表中没有选中项
+            //            if !collectionViewDataSource.containsObject(text) {
+            //                collectionViewDataSource.addObject(text)
+            //                println("\(collectionViewDataSource)")
+            //                collectionView!.reloadData()
+            //            }
             if !collectionViewDataSource.containsObject(text) {
-                collectionViewDataSource.addObject(text)
-                println("\(collectionViewDataSource)")
+                
+                userCategoryDS.choosedAssociatedImagePath = text.lowercaseString
+                if userCategoryDS.choosedAssociatedImagePath == "luckymoney" {
+                    userCategoryDS.choosedAssociatedImagePath = "luckyMoney"
+                }
+                //println(userCategoryDS.choosedAssociatedImagePath)
+                userCategoryDS.expenseCategories.append(text)
+                //println(userCategoryDS.expenseCategories)
+                collectionViewDataSource = NSMutableArray(array: userCategoryDS.expenseCategories)
+                //println(collectionViewDataSource)
                 collectionView!.reloadData()
             }
             //如果已经包含选中项，则什么都不做
@@ -241,12 +266,16 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
     
     //自定义代理 LongPressDelegate 方法实现
     func passSmallCellText(#smallCellText: String) {
-        collectionViewDataSource.removeObject(smallCellText)
-        println("\(collectionViewDataSource)")
+        collectionViewDataSource.indexOfObject(smallCellText)
+        userCategoryDS.expenseCategories.removeAtIndex(collectionViewDataSource.indexOfObject(smallCellText))
+        collectionViewDataSource = NSMutableArray(array: userCategoryDS.expenseCategories)
         collectionView?.reloadData()
     }
-
+    
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    deinit {
+        println("new category collection view cell deinit")
     }
 }
