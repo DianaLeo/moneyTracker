@@ -27,7 +27,7 @@ typealias CategoryImagePath = String
 struct BICategoryImagePath {
     static var Clothing:CategoryImagePath = "clothing"
     static var Food:CategoryImagePath = "food"
-    static var Accomdation:CategoryImagePath = "accomontation" // should be accomdation
+    static var Accomdation:CategoryImagePath = "accomdation" // should be accomdation
     static var Travel:CategoryImagePath = "Travel"
     static var Transport:CategoryImagePath = "transport"
     static var Telecommnication:CategoryImagePath = "commnication"
