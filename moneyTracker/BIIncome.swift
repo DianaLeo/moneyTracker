@@ -190,7 +190,7 @@ class BIIncome:NSObject {
             return "+0.00"
         }
     }
-    class func dailyRecords(#year:Int = 2015,#month:Int = 5,#day:Int = 25) -> [IncomeRecord]{
+    class func dailyRecords(#year:Int = 2015,#month:Int = 5,#day:Int = 28) -> [IncomeRecord]{
         var incomeRecords: [IncomeRecord] = []
         let IDSQL:String = "SELECT ID FROM Income WHERE YearOfIncome= \(year) AND MonthOfIncome = \(month) AND DayOfIncome = \(day)"
         let categorySQL:String = "SELECT Category FROM Income WHERE YearOfIncome= \(year) AND MonthOfIncome = \(month) AND DayOfIncome = \(day)"

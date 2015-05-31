@@ -106,6 +106,9 @@ class BIMonthCalender:NSObject {
         //println("start at \(startIndex). end at \(endIndex) ")
         if startIndex != 1 {
             var dayOfLastMonth = differentialCompsFromLastToCurrent.day - (weekdayOfFirstDate-1) + 1 // Max Day In last Month - numsOfDaysCanShowInCalendar + 1
+            if monthTemps == 1 {
+                dayOfLastMonth = 31 - 3
+            }
             for i in 1...startIndex-1 {
                 formattedDateTable.append("\(dayOfLastMonth++)")
             }

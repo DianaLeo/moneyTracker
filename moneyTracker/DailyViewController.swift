@@ -23,10 +23,11 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
     var bgHeight = UIScreen.mainScreen().bounds.size.height
     
     var listTableDataSource = NSMutableArray(array: [1,2,3,4])
-    
+    var userCategoryDS = BICategory.sharedInstance()
+    lazy var dailyExpenseDS = BIExpense.dailyRecords()
+    lazy var dailyIncomeDS = BIIncome.dailyRecords()
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         //高度计算
         var naviHeight      = self.navigationController?.navigationBar.frame.height
         var naviY           = self.navigationController?.navigationBar.frame.origin.y
@@ -73,7 +74,12 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
     
     //详细列表 tableView
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        return listTableDataSource.count
+        //return listTableDataSource.count
+        if flagExpense == 1 {
+            return dailyExpenseDS.count
+        }else {
+            return dailyIncomeDS.count
+        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -90,19 +96,30 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
         var righText = cell?.rightTextLabel
         
         if (flagExpense == 1){
-            image?.image = UIImage(named: "clothing")
-            leftText?.text = "Category"
+            //image?.image = UIImage(named: "clothing")
+            if let imagePath = userCategoryDS.associatedImagePathFor(category: dailyExpenseDS[indexPath.row].cat){
+                image?.image = UIImage(named: imagePath)
+            }else {
+                image?.image = UIImage(named: "blankCategory")
+            }
+            leftText?.text = dailyExpenseDS[indexPath.row].cat//"Category"
             detail?.text = "Location"
-            righText?.text = "-75"
+            righText?.text = dailyExpenseDS[indexPath.row].amoStr//"-75"
         }else{
-            image?.image = UIImage(named: "food")
-            leftText?.text = "Cate2"
+            //image?.image = UIImage(named: "food")
+            //BICategory.associatedImagePathFor("d")
+            if let imagePath = userCategoryDS.associatedImagePathFor(category:dailyIncomeDS[indexPath.row].cat){
+                image?.image = UIImage(named: imagePath)
+            }else {
+                image?.image = UIImage(named: "blankCategory")
+            }
+            leftText?.text = dailyIncomeDS[indexPath.row].cat//"Cate2"
             leftText?.textColor = UIColor(red: 0.82, green: 0.47, blue: 0.43, alpha: 1)
             leftText?.font = UIFont.boldSystemFontOfSize(22)
             detail?.text = "Something"
             detail?.textColor = UIColor(red: 0.53, green: 0.53, blue: 0.53, alpha: 1)
             detail?.font = UIFont.italicSystemFontOfSize(15)
-            righText?.text = "+100"
+            righText?.text = dailyIncomeDS[indexPath.row].amoStr//"+100"
             righText?.textColor = UIColor(red: 0.82, green: 0.47, blue: 0.43, alpha: 1)
             righText?.textAlignment = NSTextAlignment.Right
             righText?.font = UIFont.boldSystemFontOfSize(33)
@@ -197,6 +214,10 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
         naviBtnBack.addSubview(naviBtnBackImg)
         naviBtnBack.addTarget(self, action: "naviBtnBackTouch", forControlEvents: UIControlEvents.TouchUpInside)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: naviBtnBack)
+        
+        dailyExpenseDS = BIExpense.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!)
+        dailyIncomeDS = BIIncome.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!)
+
     }
 
     override func didReceiveMemoryWarning() {
