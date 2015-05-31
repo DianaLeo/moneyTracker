@@ -28,7 +28,7 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
     var bgWidth  = UIScreen.mainScreen().bounds.size.width
     var bgHeight = UIScreen.mainScreen().bounds.size.height
     var _naviRatio = 0.15 as CGFloat
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         var _naviHeight     = bgHeight * _naviRatio
