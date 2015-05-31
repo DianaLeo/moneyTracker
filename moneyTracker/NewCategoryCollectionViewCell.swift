@@ -14,7 +14,7 @@ protocol SmallCategoryCellDelegate :class {
 
 class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,LongPressDelegate {
     
-    var collectionViewDataSource = NSMutableArray(array: ["clothing","food","accomontation","transport","entertainment","grocery","luxury"])
+    var collectionViewDataSource = NSMutableArray()
     var userCategoryDS = BICategory.sharedInstance()
     
     
@@ -28,9 +28,10 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        // category 
+        // category
         self.collectionViewDataSource = NSMutableArray(array: userCategoryDS.expenseCategories)
         println("new category cell init")
+        
         var defaultCellHeight = 100 as CGFloat
         var cellHeight = bgHeight * (1 - 0.15) - defaultCellHeight * 3
         var smallCellW = 80 as CGFloat
@@ -71,12 +72,10 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
             cell.img?.image = UIImage(named: "newCategory")
             cell.label?.text = "newCategory"
         }else{
-            //cell.img?.image = UIImage(named: "\(collectionViewDataSource[indexPath.row])")
             if let imagePath = userCategoryDS.associatedImagePathFor(category: userCategoryDS.expenseCategories[indexPath.row]) {
                 //println(userCategoryDS.expenseCategories)
                 cell.img?.image = UIImage(named: "\(imagePath)")
             }
-            //cell.img?.image = UIImage(named: "\()")
             if (cell.img?.image == nil){
                 cell.img?.image = UIImage(named: "blankCategory")
             }
@@ -210,12 +209,11 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
             if let imagePath = userCategoryDS.associatedImagePathFor(category: userCategoryDS.expenseCategories[indexPath.row]){
                 rightImg?.image = UIImage(named: "\(imagePath)")
             }
-            
             if (rightImg?.image == nil){
                 rightImg?.image = UIImage(named: "blankCategory")
                 rightText!.text = "\(collectionViewDataSource[indexPath.row])"
             }
-            println("\(collectionViewDataSource[indexPath.row])")
+            category = collectionViewDataSource[indexPath.row] as! String
             didSelectSection1 = false
             self.delegate?.didSelectSmallCell(indexPath: indexPath)
         }

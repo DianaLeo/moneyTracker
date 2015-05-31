@@ -17,6 +17,20 @@ struct Income {
     var incomeDetail:String?
     var receiptImage:NSData?
 }
+struct IncomeRecord {
+    var cat: String
+    var catDetl: String
+    var amo:Double
+    var amoStr:String
+    let ID:Int
+    init(category:String,categoryDetail:String,amounts:Double,incomeID:Int){
+        amo = amounts
+        cat = category
+        catDetl = categoryDetail
+        amoStr = "+\(amo)"
+        ID = incomeID
+    }
+}
 class BIIncome:NSObject {
     
     var category: String?
@@ -31,20 +45,20 @@ class BIIncome:NSObject {
     var minuteOfIncome:Int
     var secondOfIncome:Int
     
-    struct IncomeRecord {
-        var cat: String
-        var catDetl: String
-        var amo:Double
-        var amoStr:String
-        let ID:Int
-        init(category:String,categoryDetail:String,amounts:Double,incomeID:Int){
-            amo = amounts
-            cat = category
-            catDetl = categoryDetail
-            amoStr = "+\(amo)"
-            ID = incomeID
-        }
-    }
+//    struct IncomeRecord {
+//        var cat: String
+//        var catDetl: String
+//        var amo:Double
+//        var amoStr:String
+//        let ID:Int
+//        init(category:String,categoryDetail:String,amounts:Double,incomeID:Int){
+//            amo = amounts
+//            cat = category
+//            catDetl = categoryDetail
+//            amoStr = "+\(amo)"
+//            ID = incomeID
+//        }
+//    }
     
     // date related for record
     private let dateComponenets = NSDateComponents()

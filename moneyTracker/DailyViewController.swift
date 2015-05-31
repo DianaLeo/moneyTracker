@@ -136,7 +136,7 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
     }
 
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        listTableDataSource.removeObjectAtIndex(indexPath.row)
+        //listTableDataSource.removeObjectAtIndex(indexPath.row)
         if flagExpense == 1 {
             BIExpense.removeFromDatabase(expenseID: dailyExpenseDS[indexPath.row].ID)
             dailyExpenseDS = BIExpense.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!)
@@ -159,6 +159,18 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
         var newController = NewViewController()
         self.navigationController?.pushViewController(newController, animated: true)
         self.delegate?.passRecordID(recordID: indexPath.row)
+        if self.navigationController?.viewControllers[2] is NewViewController {
+            //println("naviVC.VCs[2] Is new VC")
+            isModificationMode = true
+            if flagExpense == 0 {
+                (self.navigationController?.viewControllers[2] as! NewViewController).incomeRecord = dailyIncomeDS[indexPath.row]
+                (self.navigationController?.viewControllers[2] as! NewViewController).flagExpense = false
+                //println(dailyIncomeDS[indexPath.row].cat)
+            }else{
+                (self.navigationController?.viewControllers[2] as! NewViewController).expenseRecord = dailyExpenseDS[indexPath.row]
+                (self.navigationController?.viewControllers[2] as! NewViewController).flagExpense = true
+            }
+        }
 
     }
     
@@ -178,6 +190,10 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
         naviBtnNew.removeFromSuperview()
         naviBtnNewImg.removeFromSuperview()
         self.navigationController?.pushViewController(NewViewController(), animated: true)
+        if self.navigationController?.viewControllers[2] is NewViewController{
+            //(self.navigationController?.viewControllers[2] as NewViewController)
+            isModificationMode = false
+        }
     }
     
     func naviBtnBackTouch () {

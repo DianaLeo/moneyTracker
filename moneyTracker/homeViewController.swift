@@ -32,11 +32,11 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
     var tabAnalyBtn    = UIButton()
     var currentDate: NSString?
     var mthPickerDSyear:[Int] = []
-
+//    var mthLabExpense:UILabel?
+//    var mthLabIncome:UILabel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        BIExpense(year: 2015, month: 5, day: 29, category: "L", categoryDetail: nil, amounts: 90.9, expenseDetail: nil, receiptImage: nil)
         //picker数据源
         currentDate = NSDate().description as NSString
         selectedYear  = currentDate!.substringToIndex(4).toInt()!
@@ -286,6 +286,8 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
     override func viewWillAppear(animated: Bool) {
         var naviLabel = self.navigationController?.navigationBar.viewWithTag(1) as! UILabel
         naviLabel.text = "Billinfo"
+        self.calndrCollectionView?.reloadData()
+       // self.
     }
     
     override func didReceiveMemoryWarning() {

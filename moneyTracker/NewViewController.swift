@@ -15,20 +15,36 @@ import UIKit
 
 var didSelectSection0 = false
 var didSelectSection1 = false
-//    var didSelectRow2 = false
 var didSelectSection3 = false
 var isModificationMode = false
+var category = ""
 
+var choosedYear = selectedYear
+var choosedMonth = selectedMonth
+var choosedDay = selectedDay
 class NewViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,SmallCategoryCellDelegate,UITextFieldDelegate,UITextViewDelegate,DailyTableViewCellDelegate {
     
     var mainCollectionView: UICollectionView?
+    var naviLabel = UILabel()
+    var btnChooseExpense = UIButton()
     var isFirstLoad = true
-    
+    var flagExpense = true
+    var income = Income()
+    var expense = Expense()
+    var amount = Float()
+    var detail = ""
+    // class inside temp time
+    var selectedYear:Int?
+    var selectedMonth:Int?
+    var selectedDay:Int?
+    //incomeRecord and expenseRecord 
+    var incomeRecord: IncomeRecord?
+    var expenseRecord: ExpenseRecord?
     //高度计算
     var bgWidth  = UIScreen.mainScreen().bounds.size.width
     var bgHeight = UIScreen.mainScreen().bounds.size.height
     var _naviRatio = 0.15 as CGFloat
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         var _naviHeight     = bgHeight * _naviRatio
@@ -45,19 +61,12 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
         
         //列表 collectionView
         var flowLayOut = UICollectionViewFlowLayout()
-        //flowLayOut.itemSize = CGSizeMake(130, 130)
-        //flowLayOut.scrollDirection = UICollectionViewScrollDirection.Vertical
-        //flowLayOut.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
-        //flowLayOut.minimumInteritemSpacing = 10
-        
         mainCollectionView = UICollectionView(frame: CGRect(x: 0, y: _naviHeight, width: bgWidth, height: collectionHeight), collectionViewLayout: flowLayOut)
         mainCollectionView!.dataSource = self
         mainCollectionView!.delegate   = self
         mainCollectionView?.backgroundColor = UIColor.clearColor()
         mainCollectionView?.tag = 0
         self.view.addSubview(mainCollectionView!)
-        
-        
     }
     
     func passRecordID(#recordID: Int) {
@@ -132,24 +141,29 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
                 cell!.backgroundColor = UIColor.whiteColor()
                 cell!.datepicker?.hidden = false
                 cell!.rightLabel?.hidden = true
-                return cell!
             }else{
                 cell!.backgroundColor = UIColor(red: 0.94, green: 0.93, blue: 0.93, alpha: 1)
-                //判断是“新建”模式还是“修改”模式
-                if (isModificationMode){
-                    //cell?.datepicker?.date = 从数据库里读取
-                }
                 cell!.datepicker?.hidden = true
                 cell!.rightLabel?.hidden = false
-                if isModificationMode && isFirstLoad {
-                    cell?.datepicker?.date = NSDate.dateFor(year: selectedYear!, month: selectedMonth!, day: selectedDay!)
-                    isFirstLoad = false
-                }
-                var dt = cell?.datepicker?.date
-                cell!.rightLabel?.text = NSDateFormatter.localizedStringFromDate(dt!, dateStyle: NSDateFormatterStyle.MediumStyle, timeStyle: NSDateFormatterStyle.NoStyle)
-
-                return cell!
             }
+            //判断是“修改”模式还是“新建”模式
+            if isModificationMode && isFirstLoad {
+                cell?.datepicker?.date = NSDate.dateFor(year: choosedYear!, month: choosedMonth!, day: choosedDay!)
+                isFirstLoad = false
+            }
+            var dt = cell?.datepicker?.date
+            cell?.rightLabel?.text = NSDateFormatter.localizedStringFromDate(dt!, dateStyle: NSDateFormatterStyle.MediumStyle, timeStyle: NSDateFormatterStyle.NoStyle)
+            var format = NSDateFormatter()
+            var format2 = NSDateFormatter()
+            format.dateStyle = NSDateFormatterStyle.ShortStyle
+            var dateString = NSString(string: format.stringFromDate(dt!))
+            dateString = "01/06/2015"
+            println(dateString)
+            self.selectedYear  = dateString.substringWithRange(NSRange(location: 6, length: 4)).toInt()
+            self.selectedDay = dateString.substringWithRange(NSRange(location: 0, length: 2)).toInt()
+            self.selectedMonth   = dateString.substringWithRange(NSRange(location: 3, length: 2)).toInt()
+            
+            return cell!
         }
         //第二项 分类
         else if (indexPath.section == 1){
@@ -165,12 +179,29 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
                 cell!.backgroundColor = UIColor(red: 0.94, green: 0.93, blue: 0.93, alpha: 1)
                 //判断是“新建”模式还是“修改”模式
                 if (isModificationMode){
-                    if (true) {
-                      cell?.rightImg?.image = UIImage(named: "blankCategory")
-                      cell?.rightText?.text = "小鸡炖蘑菇"
+                    var userCategoryDS = BICategory.sharedInstance()
+                    if flagExpense == true {
+                        if let expCat = expenseRecord?.cat{
+                            if let imagePath = userCategoryDS.associatedImagePathFor(category: expenseRecord!.cat){
+                                cell?.rightImg?.image = UIImage(named: imagePath)
+                                cell?.rightText?.text = ""
+                            }
+                        }else{
+                            cell?.rightImg?.image = UIImage(named: "blankCategory")
+                            cell?.rightText?.text = ""
+                        }
                     }else{
-//                      cell?.rightImg?.image = 从数据库里读取
+                        if let incCat = incomeRecord?.cat{
+                            if let imagePath = userCategoryDS.associatedImagePathFor(category: incomeRecord!.cat){
+                                cell?.rightImg?.image = UIImage(named: imagePath)
+                                cell?.rightText?.text = ""
+                            }
+                        }else{
+                            cell?.rightImg?.image = UIImage(named: "blankCategory")
+                            cell?.rightText?.text = ""
+                        }
                     }
+
                 }
                 cell?.collectionView?.hidden = true
                 cell?.rightImg?.hidden       = false
@@ -184,9 +215,14 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
             cell?.textField?.delegate = self
             //判断是“新建”模式还是“修改”模式
             if (isModificationMode){
-                //cell?.textField?.text = 从数据库里读取
-                cell?.textField?.text = "10000000"
+                if flagExpense == true {
+                    cell?.textField?.text = expenseRecord?.amoStr ?? "unknown"
+                }else{
+                    cell?.textField?.text = incomeRecord?.amoStr ?? "unknown"
+                }
+                
             }
+            amount = NSString(string: (cell?.textField?.text)!).floatValue
             return cell!
         }
         //第四项 详细内容
@@ -198,20 +234,24 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
                 cell!.backgroundColor = UIColor.whiteColor()
                 cell?.textView?.hidden = false
                 cell?.rightLabel?.hidden = true
-                return cell!
             }else{
                 cell!.backgroundColor = UIColor(red: 0.94, green: 0.93, blue: 0.93, alpha: 1)
                 cell?.textView?.hidden = true
                 cell?.rightLabel?.hidden = false
-                //先将 textView.text 保存至数据库，rightLabel.text从数据库调用。这样如果为新建模式，显示空字符串，如果为修改模式，显示现有的字符串
-                //判断是“新建”模式还是“修改”模式
-                if (isModificationMode){
-                    //cell?.textView?.text = 从数据库里读取
-                    cell?.textView?.text = "小鸡炖蘑菇"
-                }
-                cell?.rightLabel?.text = cell?.textView?.text
-                return cell!
             }
+            //判断是“新建”模式还是“修改”模式
+            if (isModificationMode){
+                //cell?.textView?.text = 从数据库里读取
+                if flagExpense == true {
+                    cell?.textView?.text = expenseRecord?.catDetl
+                }else {
+                    cell?.textView?.text = incomeRecord?.catDetl
+                }
+                
+            }
+            cell?.rightLabel?.text = cell?.textView?.text
+            detail = (cell?.textView?.text)!
+            return cell!
         }
 
         return UICollectionViewCell()
@@ -259,12 +299,21 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
     override func viewWillAppear(animated: Bool) {
         (self.navigationController?.viewControllers[1] as! DailyViewController).delegate = self
 
-        var naviLabel = self.navigationController?.navigationBar.viewWithTag(1) as! UILabel
-        if isModificationMode {
-            naviLabel.text = "Modification"
-        }else{
-            naviLabel.text = "New Note"
-        }
+        naviLabel = self.navigationController?.navigationBar.viewWithTag(1) as! UILabel
+        
+        naviLabel.text = "Expense"
+
+//        if isModificationMode {
+//            naviLabel.text = "Modification"
+//        }else{
+//            naviLabel.text = "New Note"
+//        }
+        
+        btnChooseExpense = UIButton(frame: CGRect(x: bgWidth/2 + 100, y: 20, width: 20, height: 20))
+        btnChooseExpense.backgroundColor = UIColor.whiteColor()
+        btnChooseExpense.addTarget(self, action: "btnChooseExpenseTouch", forControlEvents: UIControlEvents.TouchUpInside)
+        self.navigationController?.navigationBar.addSubview(btnChooseExpense)
+        
         var naviBtnSaveRect = CGRect(x: bgWidth - 70, y: 10, width: 55, height: 55)
         var naviBtnSave     = UIButton(frame: naviBtnSaveRect)
         var naviBtnSaveImg  = UIImageView(frame: naviBtnSaveRect)
@@ -286,16 +335,45 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
     }
     
     //导航栏按钮点击事件 - 不管点哪个都要移除右边的按钮，而左边的按钮自动移除
+    func btnChooseExpenseTouch(){
+        flagExpense = !flagExpense
+        if flagExpense{
+            naviLabel.text = "Expense"
+        }else{
+            naviLabel.text = "Income"
+        }
+    }
+    
     func naviBtnSaveTouch () {
+//        println(self.selectedYear)
+//        println(self.selectedMonth)
+//        println(self.selectedDay)
+//        println(category)
+//        println(amount)
+        
         var naviBtnSave = self.navigationController?.navigationBar.viewWithTag(2) as! UIButton
         var naviBtnSaveImg = self.navigationController?.navigationBar.viewWithTag(3) as! UIImageView
         naviBtnSave.removeFromSuperview()
         naviBtnSaveImg.removeFromSuperview()
+        
         self.navigationController?.popViewControllerAnimated(true)
         if isModificationMode {
-            var listTable = (self.navigationController?.viewControllers[1] as! DailyViewController).listTable
-            listTable.deselectRowAtIndexPath(listTable.indexPathForSelectedRow()!, animated: false)
+//            var listTable = (self.navigationController?.viewControllers[1] as! DailyViewController).listTable
+//            listTable.deselectRowAtIndexPath(listTable.indexPathForSelectedRow()!, animated: false)
             isModificationMode = false
+            if flagExpense == true {
+                var newExpense = Expense(year: self.selectedYear!, month: selectedMonth!, day: self.selectedDay!, category: expenseRecord!.cat, categoryDetail: nil, amount: Float(expenseRecord!.amo), expenseDetail: expenseRecord?.catDetl, receiptImage: nil)
+                BIExpense.updateToDatabase(expenseID: expenseRecord!.ID, expense: newExpense)
+            }else{
+                var newIncome = Income(year: self.selectedYear!, month: selectedMonth!, day: self.selectedDay!, category: incomeRecord!.cat, categoryDetail: nil, amount: Float(incomeRecord!.amo), incomeDetail: incomeRecord?.catDetl, receiptImage: nil)
+                BIIncome.updateToDatabase(incomeID: incomeRecord!.ID, income: newIncome)
+            }
+        }else {
+            if flagExpense{
+                BIExpense(year: self.selectedYear!, month: self.selectedMonth!, day: self.selectedDay!, category: category, categoryDetail: nil, amounts: amount, expenseDetail: detail, receiptImage: nil)
+            }else{
+                BIIncome(year: self.selectedYear!, month: self.selectedMonth!, day: self.selectedDay!, category: category, categoryDetail: nil, amounts: amount, incomeDetail: detail, receiptImage: nil)
+            }
         }
     }
     

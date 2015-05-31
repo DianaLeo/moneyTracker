@@ -17,6 +17,20 @@ struct Expense {
     var expenseDetail:String?
     var receiptImage:NSData?
 }
+struct ExpenseRecord {
+    var cat: String
+    var catDetl: String
+    var amo:Double
+    var amoStr:String
+    let ID:Int
+    init(category:String,categoryDetail:String,amounts:Double,expenseID:Int){
+        amo = amounts
+        cat = category
+        catDetl = categoryDetail
+        amoStr = "-\(amo)"
+        ID = expenseID
+    }
+}
 class BIExpense: NSObject {
     
     var category: String?
@@ -30,20 +44,20 @@ class BIExpense: NSObject {
     var hourOfExpense:Int
     var minuteOfExpense:Int
     var secondOfExpense:Int
-    struct ExpenseRecord {
-        var cat: String
-        var catDetl: String
-        var amo:Double
-        var amoStr:String
-        let ID:Int
-        init(category:String,categoryDetail:String,amounts:Double,expenseID:Int){
-            amo = amounts
-            cat = category
-            catDetl = categoryDetail
-            amoStr = "-\(amo)"
-            ID = expenseID
-        }
-    }
+//    struct ExpenseRecord {
+//        var cat: String
+//        var catDetl: String
+//        var amo:Double
+//        var amoStr:String
+//        let ID:Int
+//        init(category:String,categoryDetail:String,amounts:Double,expenseID:Int){
+//            amo = amounts
+//            cat = category
+//            catDetl = categoryDetail
+//            amoStr = "-\(amo)"
+//            ID = expenseID
+//        }
+//    }
     
     // date related for record
     private let dateComponenets = NSDateComponents()
