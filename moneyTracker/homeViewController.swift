@@ -15,6 +15,10 @@
 
 import UIKit
 //global data set of ExpenseCategory and IncomeCategory, Singleton
+var selectedYear: Int?
+var selectedMonth: Int?
+var selectedDay: Int?
+
 class homeViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIPickerViewDataSource,UIPickerViewDelegate {
 
     var monthStrArray: NSArray?
@@ -27,9 +31,6 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
     var tabCalndrBtn   = UIButton()
     var tabAnalyBtn    = UIButton()
     var currentDate: NSString?
-    var currentYear: Int?
-    var currentMonth: Int?
-    var currentDay: Int?
     var mthPickerDSyear:[Int] = []
 
     
@@ -37,11 +38,11 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
         super.viewDidLoad()
         //picker数据源
         currentDate = NSDate().description as NSString
-        currentYear  = currentDate!.substringToIndex(4).toInt()!
-        currentMonth = currentDate!.substringWithRange(NSRange(location: 5, length: 2)).toInt()!
-        println("\(currentMonth)")
+        selectedYear  = currentDate!.substringToIndex(4).toInt()!
+        selectedMonth = currentDate!.substringWithRange(NSRange(location: 5, length: 2)).toInt()!
+        println("\(selectedMonth)")
         for i in 0...99 {
-            mthPickerDSyear.append(currentYear! - 99 + i)
+            mthPickerDSyear.append(selectedYear! - 99 + i)
         }
         
         //高度计算
@@ -69,7 +70,7 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
         //导航 navi
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "Navigator"), forBarMetrics: UIBarMetrics.Default)
         var naviImage   = UIImageView(frame: CGRect(x: 0, y: naviHeight!, width: bgWidth, height: naviImageHeight))
-        var naviLabel   = UILabel(frame: CGRect(x: bgWidth/2 - 75, y: 0, width: 150, height: _naviHeight - 20))
+        var naviLabel   = UILabel(frame: CGRect(x: bgWidth/2 - 100, y: 0, width: 200, height: _naviHeight - 20))
         
         naviImage.image = UIImage(named: "Navigator")
         naviLabel.text  = "Billinfo"
@@ -96,14 +97,14 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
         mthPicker?.backgroundColor = UIColor.whiteColor()
         mthPicker?.hidden = true
         mthPicker!.selectRow(mthPickerDSyear.count - 1, inComponent: 0, animated: false)
-        mthPicker!.selectRow(currentMonth! - 1, inComponent: 1, animated: false)
+        mthPicker!.selectRow(selectedMonth! - 1, inComponent: 1, animated: false)
         
         bgMask = UILabel(frame: CGRect(x: 0, y: _naviHeight + mthHeight, width: bgWidth, height: bgHeight))
         bgMask!.backgroundColor = UIColor(white: 0.2, alpha: 0.3)
         bgMask?.hidden = true
         
         mthBtn.backgroundColor = UIColor.clearColor()
-        mthBtn.setTitle("\(currentYear!)-\(currentMonth!)", forState: UIControlState.Normal)
+        mthBtn.setTitle("\(selectedYear!)-\(selectedMonth!)", forState: UIControlState.Normal)
         mthBtn.addTarget(self, action: "mtnBtnTouch", forControlEvents: UIControlEvents.TouchUpInside)
         mthBtnImage.image = UIImage(named: "btnMonth")
         
@@ -168,7 +169,7 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
         
         //月历
-        self.monthStrArray = NSArray(array: BIMonthCalender(dateForMonthCalender: NSDate.dateFor(year: currentYear!, month: currentMonth!)).monthCalender())
+        self.monthStrArray = NSArray(array: BIMonthCalender(dateForMonthCalender: NSDate.dateFor(year: selectedYear!, month: selectedMonth!)).monthCalender())
         indexOfFirstDay = self.monthStrArray?.indexOfObject("1")
         indexOfLastDay = (self.monthStrArray?.indexOfObject("1", inRange: NSRange(location: indexOfFirstDay! + 1, length: 41 - indexOfFirstDay!)))! - 1
         println("\(indexOfFirstDay) and \(indexOfLastDay)")
@@ -196,9 +197,9 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
     }
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if (component == 0){
-            currentYear  = mthPickerDSyear[row]
+            selectedYear  = mthPickerDSyear[row]
         }else{
-            currentMonth = row + 1
+            selectedMonth = row + 1
         }
     }
     func mtnBtnTouch() {
@@ -215,8 +216,8 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
         }else{
             mthPicker!.hidden = true
             bgMask?.hidden = true
-            mthBtn.setTitle("\(currentYear!)-\(currentMonth!)", forState: UIControlState.Normal)
-            monthStrArray = NSArray(array: BIMonthCalender(dateForMonthCalender: NSDate.dateFor(year: currentYear!, month: currentMonth!)).monthCalender())
+            mthBtn.setTitle("\(selectedYear!)-\(selectedMonth!)", forState: UIControlState.Normal)
+            monthStrArray = NSArray(array: BIMonthCalender(dateForMonthCalender: NSDate.dateFor(year: selectedYear!, month: selectedMonth!)).monthCalender())
             indexOfFirstDay = self.monthStrArray?.indexOfObject("1")
             indexOfLastDay = (self.monthStrArray?.indexOfObject("1", inRange: NSRange(location: indexOfFirstDay! + 1, length: 41 - indexOfFirstDay!)))! - 1
             println("\(indexOfFirstDay) and \(indexOfLastDay)")
@@ -238,15 +239,15 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
         collectionView.registerClass(calndrCollectionViewCell.self, forCellWithReuseIdentifier: "myCell")
         var cell = collectionView.dequeueReusableCellWithReuseIdentifier("myCell", forIndexPath: indexPath) as? calndrCollectionViewCell
         cell?.textLabel?.text = self.monthStrArray?.objectAtIndex(indexPath.item) as? String
-        currentDay = cell?.textLabel?.text?.toInt()
+        selectedDay = cell?.textLabel?.text?.toInt()
 
         //当前月之内
         if (indexPath.item >= indexOfFirstDay && indexPath.item <= indexOfLastDay) {
             cell?.textLabel?.textColor = UIColor.darkGrayColor()
-            if (BIExpense.dailyRecords(year: currentYear!, month: currentMonth!, day: currentDay!).count != 0){
+            if (BIExpense.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!).count != 0){
                 cell?.textLabel?.textColor = UIColor.blueColor()
             }
-            if (BIIncome.dailyRecords(year: currentYear!, month: currentMonth!, day: (cell?.textLabel?.text?.toInt())!).count != 0){
+            if (BIIncome.dailyRecords(year: selectedYear!, month: selectedMonth!, day: (cell?.textLabel?.text?.toInt())!).count != 0){
                 cell?.textLabel?.backgroundColor = UIColor.clearColor()
             }
         //上个月和下个月的部分
@@ -274,9 +275,8 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         //当前月之内
         if (indexPath.item >= indexOfFirstDay && indexPath.item <= indexOfLastDay) {
-            currentDay = (self.monthStrArray?.objectAtIndex(indexPath.item) as! String).toInt()
+            selectedDay = (self.monthStrArray?.objectAtIndex(indexPath.item) as! String).toInt()
             self.navigationController?.pushViewController(DailyViewController(), animated: true)
-            (self.navigationController?.viewControllers[1].navigationController!!.navigationBar.viewWithTag(1) as! UILabel).text = "\(currentDay!)/\(currentMonth!)/\(currentYear!)"
         }
     }
     

@@ -9,7 +9,7 @@
 
 //备注：代码实现flow layout太尼玛烦了！注意两个全局变量（collectionview & flowlayout）的初始化方法。
 //备注：打开键盘的方法 ⌘K； 批量修改变量名； 自定义函数传参; uilabel文字换行显示
-//备注：改变模态窗口大小的两种方法（on completion & 背景设透明）但两个view controller不能同时存在，所以还得用添加subview的方式
+//备注：改变模态窗口大小的两种方法（on completion & 背景设透明）但两个view controller不能同时存在，所以还得用添加subview的方式;返回时取消上一界面cell的选种状态；
 
 import UIKit
 
@@ -22,6 +22,7 @@ var isModificationMode = false
 class NewViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,SmallCategoryCellDelegate,UITextFieldDelegate,UITextViewDelegate,DailyTableViewCellDelegate {
     
     var mainCollectionView: UICollectionView?
+    var isFirstLoad = true
     
     //高度计算
     var bgWidth  = UIScreen.mainScreen().bounds.size.width
@@ -55,6 +56,8 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
         mainCollectionView?.backgroundColor = UIColor.clearColor()
         mainCollectionView?.tag = 0
         self.view.addSubview(mainCollectionView!)
+        
+        
     }
     
     func passRecordID(#recordID: Int) {
@@ -138,7 +141,11 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
                 }
                 cell!.datepicker?.hidden = true
                 cell!.rightLabel?.hidden = false
-                let dt = cell?.datepicker?.date
+                if isModificationMode && isFirstLoad {
+                    cell?.datepicker?.date = NSDate.dateFor(year: selectedYear!, month: selectedMonth!, day: selectedDay!)
+                    isFirstLoad = false
+                }
+                var dt = cell?.datepicker?.date
                 cell!.rightLabel?.text = NSDateFormatter.localizedStringFromDate(dt!, dateStyle: NSDateFormatterStyle.MediumStyle, timeStyle: NSDateFormatterStyle.NoStyle)
 
                 return cell!
@@ -285,7 +292,11 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
         naviBtnSave.removeFromSuperview()
         naviBtnSaveImg.removeFromSuperview()
         self.navigationController?.popViewControllerAnimated(true)
-        isModificationMode = false
+        if isModificationMode {
+            var listTable = (self.navigationController?.viewControllers[1] as! DailyViewController).listTable
+            listTable.deselectRowAtIndexPath(listTable.indexPathForSelectedRow()!, animated: false)
+            isModificationMode = false
+        }
     }
     
     func naviBtnCancelTouch () {
@@ -294,7 +305,11 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
         naviBtnSave.removeFromSuperview()
         naviBtnSaveImg.removeFromSuperview()
         self.navigationController?.popViewControllerAnimated(true)
-        isModificationMode = false
+        if isModificationMode {
+            var listTable = (self.navigationController?.viewControllers[1] as! DailyViewController).listTable
+            listTable.deselectRowAtIndexPath(listTable.indexPathForSelectedRow()!, animated: false)
+            isModificationMode = false
+        }
     }
 
     

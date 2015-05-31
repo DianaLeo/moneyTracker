@@ -176,6 +176,9 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
     
     //导航－页面即将显示
     override func viewWillAppear(animated: Bool) {
+        var naviLabel = self.navigationController?.navigationBar.viewWithTag(1) as! UILabel
+        naviLabel.text = "\(selectedDay!)/\(selectedMonth!)/\(selectedYear!)"
+        
         var naviBtnNewRect = CGRect(x: bgWidth - 70, y: 10, width: 55, height: 55)
         var naviBtnNew     = UIButton(frame: naviBtnNewRect)
         var naviBtnNewImg  = UIImageView(frame: naviBtnNewRect)
