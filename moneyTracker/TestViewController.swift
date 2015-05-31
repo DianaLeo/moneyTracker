@@ -16,6 +16,7 @@ class TestViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.grayColor()
+        BIExpense(year: 2015, month: 5, day: 29, category: "L", categoryDetail: nil, amounts: 90.9, expenseDetail: nil, receiptImage: nil)
         //createDatabaseOnceIfNotExists()
         //InitBIDataSetDatabase.writeDataOnce()
 //        var query = BIQuery(UTF8StringQuery: "SELECT SUM(Amounts) FROM Income WHERE Month = 5 AND Year = 2015")

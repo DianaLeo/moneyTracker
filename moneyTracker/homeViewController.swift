@@ -36,6 +36,7 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        BIExpense(year: 2015, month: 5, day: 29, category: "L", categoryDetail: nil, amounts: 90.9, expenseDetail: nil, receiptImage: nil)
         //picker数据源
         currentDate = NSDate().description as NSString
         selectedYear  = currentDate!.substringToIndex(4).toInt()!
