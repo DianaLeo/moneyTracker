@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="4K9-Bc-nCt">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Home View Controller-->
@@ -16,54 +15,9 @@
                     <view key="view" contentMode="scaleToFill" id="SOU-ud-gg5">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FkW-Gf-D0j">
-                                <rect key="frame" x="26" y="300" width="548" height="250"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="250" id="3bm-be-Flt"/>
-                                    <constraint firstAttribute="width" constant="300" id="4Om-qJ-jX6"/>
-                                </constraints>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mDZ-DR-op4">
-                                    <size key="itemSize" width="50" height="50"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                </collectionViewFlowLayout>
-                                <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="myCell" id="bBg-0I-P9W">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </view>
-                                    </collectionViewCell>
-                                </cells>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="4Om-qJ-jX6"/>
-                                    </mask>
-                                </variation>
-                            </collectionView>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="FkW-Gf-D0j" secondAttribute="trailing" constant="10" id="8L6-Co-3sc"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="FkW-Gf-D0j" secondAttribute="trailing" constant="10" id="atr-Sy-JET"/>
-                            <constraint firstItem="FkW-Gf-D0j" firstAttribute="top" secondItem="SOU-ud-gg5" secondAttribute="topMargin" constant="300" id="nEC-J2-Vtz"/>
-                            <constraint firstItem="FkW-Gf-D0j" firstAttribute="leading" secondItem="SOU-ud-gg5" secondAttribute="leadingMargin" constant="10" id="zjC-j2-Dhq"/>
-                        </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="8L6-Co-3sc"/>
-                            </mask>
-                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="bQf-YG-01c"/>
-                    <connections>
-                        <outlet property="calndrCollectionView" destination="FkW-Gf-D0j" id="Jtr-1n-UUW"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5og-HP-Nh1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

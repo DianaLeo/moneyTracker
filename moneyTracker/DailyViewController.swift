@@ -8,16 +8,21 @@
 
 import UIKit
 
+protocol DailyTableViewCellDelegate: class {
+    func passRecordID (#recordID: Int)
+}
+
 class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
 
     var flagExpense = 1
     var listTable = UITableView()
     var longPressGestureRecognizer: UILongPressGestureRecognizer?
+    weak var delegate: DailyTableViewCellDelegate?
     
     var bgWidth  = UIScreen.mainScreen().bounds.size.width
     var bgHeight = UIScreen.mainScreen().bounds.size.height
     
-    var listTableDataSource = NSMutableArray(array: ["1","2","3","4"])
+    var listTableDataSource = NSMutableArray(array: [1,2,3,4])
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -126,7 +131,11 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
         naviBtnNewImg.removeFromSuperview()
         //传值：把这一条的ID传过去
         isModificationMode = true
-        self.navigationController?.pushViewController(NewViewController(), animated: true)
+        println("Daily page -> New page. passRecordID called.")
+        var newController = NewViewController()
+        self.navigationController?.pushViewController(newController, animated: true)
+        self.delegate?.passRecordID(recordID: indexPath.row)
+
     }
     
     //长按手势识别
@@ -167,9 +176,6 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
     
     //导航－页面即将显示
     override func viewWillAppear(animated: Bool) {
-        var naviLabel = self.navigationController?.navigationBar.viewWithTag(1) as! UILabel
-        naviLabel.text = "25/05/2015"
-        
         var naviBtnNewRect = CGRect(x: bgWidth - 70, y: 10, width: 55, height: 55)
         var naviBtnNew     = UIButton(frame: naviBtnNewRect)
         var naviBtnNewImg  = UIImageView(frame: naviBtnNewRect)

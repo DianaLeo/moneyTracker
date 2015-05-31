@@ -19,7 +19,7 @@ var didSelectSection1 = false
 var didSelectSection3 = false
 var isModificationMode = false
 
-class NewViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,SmallCategoryCellDelegate,UITextFieldDelegate,UITextViewDelegate {
+class NewViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,SmallCategoryCellDelegate,UITextFieldDelegate,UITextViewDelegate,DailyTableViewCellDelegate {
     
     var mainCollectionView: UICollectionView?
     
@@ -30,7 +30,6 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         var _naviHeight     = bgHeight * _naviRatio
         var collectionHeight     = bgHeight * (1 - _naviRatio)
         var bgTransHeight   = bgHeight * (1 - _naviRatio)
@@ -58,9 +57,11 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
         self.view.addSubview(mainCollectionView!)
     }
     
+    func passRecordID(#recordID: Int) {
+        println("\(recordID)")
+    }
     
     //详细列表的实现
-    
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 4
     }
@@ -249,6 +250,8 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
     
     //页面即将显示时
     override func viewWillAppear(animated: Bool) {
+        (self.navigationController?.viewControllers[1] as! DailyViewController).delegate = self
+
         var naviLabel = self.navigationController?.navigationBar.viewWithTag(1) as! UILabel
         if isModificationMode {
             naviLabel.text = "Modification"

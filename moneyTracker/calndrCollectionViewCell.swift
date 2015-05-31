@@ -23,7 +23,7 @@ class calndrCollectionViewCell: UICollectionViewCell {
         textLabel = UILabel(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
         textLabel?.backgroundColor = UIColor.whiteColor()
         textLabel?.textAlignment = NSTextAlignment.Center
-        textLabel?.textColor = UIColor.grayColor()
+        //textLabel?.textColor = UIColor.lightGrayColor()
         self.addSubview(imageView!)
         self.addSubview(textLabel!)
     }
