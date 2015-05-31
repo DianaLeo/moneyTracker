@@ -7,6 +7,20 @@
 //
 
 import Foundation
+//struct IncomeRecord {
+//    var cat: String
+//    var catDetl: String
+//    var amo:Double
+//    var amoStr:String
+//    let ID:Int
+//    init(category:String,categoryDetail:String,amounts:Double,incomeID:Int){
+//        amo = amounts
+//        cat = category
+//        catDetl = categoryDetail
+//        amoStr = "+\(amo)"
+//        ID = incomeID
+//    }
+//}
 class BIIncome:NSObject {
     
     var category: String?
@@ -135,6 +149,29 @@ class BIIncome:NSObject {
         // Close Databse file
         sqlite3_close(db)
     }
+    class func updateToDatabase(incomeID ID: Int,income:Income) {
+        //Get Path
+        var db: COpaquePointer = nil
+        let pathsOfAppDocuments = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
+        let pathOfDatabase = (pathsOfAppDocuments[0] as! String).stringByAppendingString("/BIDatabase")
+        //println(pathOfDatabase)
+        // Open database file, when unexists, create a new database file
+        if sqlite3_open(pathOfDatabase, &db) == SQLITE_OK {
+            //println("Database file has been opened successfully!")
+        }else{
+            println("Database file failed to open!")
+            sqlite3_close(db)
+        }
+        // Update Table: IncomeCategory
+        let updateSQL = "UPDATE Income SET Category = '\(income.category)',CategoryDetail = '\(income.categoryDetail)',Amounts = \(income.amount),IncomeDetail = '\(income.incomeDetail)',YearOfIncome = \(income.year),MonthOfIncome = \(income.month),DayOfIncome = \(income.day) WHERE ID = \(ID)"
+        if sqlite3_exec(db, updateSQL, nil, nil, nil) == SQLITE_OK {
+            println("update Record: ID = \(ID) into Table: Income successful Or unexists")
+        }else {
+            println("update Record: ID = \(ID) into Table: Income failed")
+        }
+        // Close Databse file
+        sqlite3_close(db)
+    }
     class func createTableInDatabaseIfNotExists() {
         //Get Path
         var db: COpaquePointer = nil
@@ -207,7 +244,7 @@ class BIIncome:NSObject {
                 incomeRecords.append(IncomeRecord(category: categoies[i-1], categoryDetail: "BNE", amounts: amountsOfAll[i-1],incomeID: ids[i-1]))
             }
         }else{
-            println("No records found in Income for the date provided")
+            //println("No records found in Income for the date provided")
         }
         //println(incomeRecords[1].loc)
         //println(incomeRecords[1].amo)

@@ -25,20 +25,27 @@ extension Array{
 }
 typealias CategoryImagePath = String
 struct BICategoryImagePath {
-    static var Clothing:CategoryImagePath = "Clothing"
-    static var Food:CategoryImagePath = "Food"
-    static var Accomdation:CategoryImagePath = "Accomdation"
+    static var Clothing:CategoryImagePath = "clothing"
+    static var Food:CategoryImagePath = "food"
+    static var Accomdation:CategoryImagePath = "accomontation" // should be accomdation
     static var Travel:CategoryImagePath = "Travel"
-    static var Telecommnication:CategoryImagePath = "Telecommnication"
-    static var Entertainment:CategoryImagePath = "Entertainment"
+    static var Transport:CategoryImagePath = "transport"
+    static var Telecommnication:CategoryImagePath = "commnication"
+    static var Entertainment:CategoryImagePath = "entertainment"
+    static var Grocery:CategoryImagePath = "grocery"
+    static var Luxury:CategoryImagePath = "luxury"
+    static var Gift:CategoryImagePath = "gift"
+    static var Health:CategoryImagePath = "health"
+    static var MakeUp:CategoryImagePath = "makeup"
+    
     
     static var PartTime:CategoryImagePath = "PartTime"
-    static var LuckyMoney:CategoryImagePath = "LuckyMoney"
+    static var LuckyMoney:CategoryImagePath = "luckyMoney"
     static var Wage:CategoryImagePath = "Wage"
     static var Scholarship:CategoryImagePath = "Scholarship"
     static var Rent:CategoryImagePath = "Rent"
     
-    static var Default:CategoryImagePath = "Default"
+    static var Default:CategoryImagePath = "blankCategory"
     
     
 }
@@ -53,7 +60,7 @@ class BICategory: NSObject {
         }
         dispatch_once( &SingletonStruct.dispatchOnceT, { () in
             SingletonStruct.instance = BICategory()
-            println("BIDataSet Singleton Pointer = \(SingletonStruct.instance!)")
+            println("BICategory Singleton Pointer = \(SingletonStruct.instance!)")
         })
         return SingletonStruct.instance!
     }
@@ -247,7 +254,7 @@ class BICategory: NSObject {
         self.incomeCategories = self.tmpInCategories
     }
     deinit {
-        println("BIDataSet deinit")
+        println("BICategory deinit")
     }
     
 }
@@ -293,11 +300,11 @@ func createDatabaseOnceIfNotExists() {
         println("BIDataSet Table failed to create!")
     }
     //insert default data to table
-    let expenseCategories = ["Clothing","Food","Accomdation","Travel","Entertainment","Telecommunication"]
-    let associatedImagePathsForExpenseCategories = [BICategoryImagePath.Clothing,BICategoryImagePath.Food,BICategoryImagePath.Accomdation,BICategoryImagePath.Travel,BICategoryImagePath.Entertainment,BICategoryImagePath.Telecommnication];
+    let expenseCategories = ["Clothing","Food","Accomdation","Transport","Entertainment","Grocery","Luxury"]
+    let associatedImagePathsForExpenseCategories = [BICategoryImagePath.Clothing,BICategoryImagePath.Food,BICategoryImagePath.Accomdation,BICategoryImagePath.Transport,BICategoryImagePath.Entertainment,BICategoryImagePath.Grocery,BICategoryImagePath.Luxury];
     var i = 0
     for expenseCategory in expenseCategories {
-        let insertSQL:NSString = "INSERT INTO ExpenseCategory(ExpenseCategory,AssociatedImagePath) VALUES('\(expenseCategory)','\(associatedImagePathsForExpenseCategories[i])')"
+        let insertSQL:NSString = "REPLACE INTO ExpenseCategory(ExpenseCategory,AssociatedImagePath) VALUES('\(expenseCategory)','\(associatedImagePathsForExpenseCategories[i])')"
         if sqlite3_exec(db, insertSQL.UTF8String, nil, nil, nil) == SQLITE_OK {
             println("insert \(expenseCategory) to Table: ExpenseCategory successful!")
         }else {

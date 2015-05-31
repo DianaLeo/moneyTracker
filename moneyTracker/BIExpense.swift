@@ -7,6 +7,20 @@
 //
 
 import Foundation
+//struct ExpenseRecord {
+//    var cat: String
+//    var catDetl: String
+//    var amo:Double
+//    var amoStr:String
+//    let ID:Int
+//    init(category:String,categoryDetail:String,amounts:Double,expenseID:Int){
+//        amo = amounts
+//        cat = category
+//        catDetl = categoryDetail
+//        amoStr = "-\(amo)"
+//        ID = expenseID
+//    }
+//}
 class BIExpense: NSObject {
     
     var category: String?
@@ -132,6 +146,29 @@ class BIExpense: NSObject {
         // Close Databse file
         sqlite3_close(db)
     }
+    class func updateToDatabase(expenseID ID: Int,expense:Expense) {
+        //Get Path
+        var db: COpaquePointer = nil
+        let pathsOfAppDocuments = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
+        let pathOfDatabase = (pathsOfAppDocuments[0] as! String).stringByAppendingString("/BIDatabase")
+        //println(pathOfDatabase)
+        // Open database file, when unexists, create a new database file
+        if sqlite3_open(pathOfDatabase, &db) == SQLITE_OK {
+            //println("Database file has been opened successfully!")
+        }else{
+            println("Database file failed to open!")
+            sqlite3_close(db)
+        }
+        // Update Table: IncomeCategory
+        let updateSQL = "UPDATE Expense SET Category = '\(expense.category)',CategoryDetail = '\(expense.categoryDetail)',Amounts = \(expense.amount),ExpenseDetail = '\(expense.expenseDetail)',YearOfExpense = \(expense.year),MonthOfExpense = \(expense.month),DayOfExpense = \(expense.day) WHERE ID = \(ID)"
+        if sqlite3_exec(db, updateSQL, nil, nil, nil) == SQLITE_OK {
+            println("update Record: ID = \(ID) into Table: Expense successful Or unexists")
+        }else {
+            println("update Record: ID = \(ID) into Table: Expense failed")
+        }
+        // Close Databse file
+        sqlite3_close(db)
+    }
     class func createTableInDatabaseIfNotExists() {
         //Get Path
         var db: COpaquePointer = nil
@@ -169,7 +206,7 @@ class BIExpense: NSObject {
             sqlite3_close(db)
         }
         //drop tables: ExpenseCategory IncomeCategory
-        let dropExpenseSQL: NSString = "DROP TABLE Income"
+        let dropExpenseSQL: NSString = "DROP TABLE Expense"
         if sqlite3_exec(db, dropExpenseSQL.UTF8String, nil, nil, nil) == SQLITE_OK {
             println("drop old Table:Expense successful")
         }else{
@@ -204,7 +241,7 @@ class BIExpense: NSObject {
                 expenseRecords.append(ExpenseRecord(category: categoies[i-1], categoryDetail: "BNE", amounts: amountsOfAll[i-1],expenseID:ids[i-1]))
             }
         }else{
-            println("No records found in Income for the date provided")
+            //println("No records found in Income for the date provided")
         }
         //println(expenseRecords[1].loc)
         //println(expenseRecords[1].amo)
