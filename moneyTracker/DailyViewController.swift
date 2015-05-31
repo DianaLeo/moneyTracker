@@ -137,6 +137,13 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
 
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         listTableDataSource.removeObjectAtIndex(indexPath.row)
+        if flagExpense == 1 {
+            BIExpense.removeFromDatabase(expenseID: dailyExpenseDS[indexPath.row].ID)
+            dailyExpenseDS = BIExpense.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!)
+        }else {
+            BIIncome.removeFromDatabase(incomeID: dailyIncomeDS[indexPath.row].ID)
+            dailyIncomeDS = BIIncome.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!)
+        }
         tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
     }
     
