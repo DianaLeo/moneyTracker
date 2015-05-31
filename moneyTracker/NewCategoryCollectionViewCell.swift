@@ -15,7 +15,7 @@ protocol SmallCategoryCellDelegate {
 class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,LongPressDelegate {
     
     var collectionViewDataSource = NSMutableArray(array: ["clothing","food","accomontation","transport","entertainment","grocery","luxury"])
-    
+    var userCategoryDS = BICategory.sharedInstance()
     var rightImg: UIImageView?
     var rightText: UILabel?
     var flowLayOut = UICollectionViewFlowLayout()
@@ -26,7 +26,8 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-
+        //data source of Category 
+        self.collectionViewDataSource = NSMutableArray(array: userCategoryDS.expenseCategories)
         var defaultCellHeight = 100 as CGFloat
         var cellHeight = bgHeight * (1 - 0.15) - defaultCellHeight * 3
         var smallCellW = 80 as CGFloat
@@ -136,14 +137,14 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
             img6.image = UIImage(named: "health")
             img7.image = UIImage(named: "makeup")
             img8.image = UIImage(named: "luckyMoney")
-            txt1.text = "entertainment"; txt1.textColor = UIColor.grayColor(); txt1.tag = 1
-            txt2.text = "grocery";       txt2.textColor = UIColor.grayColor(); txt2.tag = 1
-            txt3.text = "communication"; txt3.textColor = UIColor.grayColor(); txt3.tag = 1
-            txt4.text = "luxury";        txt4.textColor = UIColor.grayColor(); txt4.tag = 1
-            txt5.text = "gift";          txt5.textColor = UIColor.grayColor(); txt5.tag = 1
-            txt6.text = "health";        txt6.textColor = UIColor.grayColor(); txt6.tag = 1
-            txt7.text = "makeup";        txt7.textColor = UIColor.grayColor(); txt7.tag = 1
-            txt8.text = "luckyMoney";    txt8.textColor = UIColor.grayColor(); txt8.tag = 1
+            txt1.text = "Entertainment"; txt1.textColor = UIColor.grayColor(); txt1.tag = 1
+            txt2.text = "Grocery";       txt2.textColor = UIColor.grayColor(); txt2.tag = 1
+            txt3.text = "Communication"; txt3.textColor = UIColor.grayColor(); txt3.tag = 1
+            txt4.text = "Luxury";        txt4.textColor = UIColor.grayColor(); txt4.tag = 1
+            txt5.text = "Gift";          txt5.textColor = UIColor.grayColor(); txt5.tag = 1
+            txt6.text = "Health";        txt6.textColor = UIColor.grayColor(); txt6.tag = 1
+            txt7.text = "Makeup";        txt7.textColor = UIColor.grayColor(); txt7.tag = 1
+            txt8.text = "LuckyMoney";    txt8.textColor = UIColor.grayColor(); txt8.tag = 1
             txt1.textAlignment = NSTextAlignment.Center; txt1.font = UIFont.systemFontOfSize(15)
             txt2.textAlignment = NSTextAlignment.Center; txt2.font = UIFont.systemFontOfSize(15)
             txt3.textAlignment = NSTextAlignment.Center; txt3.font = UIFont.systemFontOfSize(15)

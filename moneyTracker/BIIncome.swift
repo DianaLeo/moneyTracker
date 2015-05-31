@@ -7,20 +7,16 @@
 //
 
 import Foundation
-//struct IncomeRecord {
-//    var cat: String
-//    var catDetl: String
-//    var amo:Double
-//    var amoStr:String
-//    let ID:Int
-//    init(category:String,categoryDetail:String,amounts:Double,incomeID:Int){
-//        amo = amounts
-//        cat = category
-//        catDetl = categoryDetail
-//        amoStr = "+\(amo)"
-//        ID = incomeID
-//    }
-//}
+struct Income {
+    var year:Int = 0
+    var month:Int = 0
+    var day:Int = 0
+    var category:String = ""
+    var categoryDetail:String?
+    var amount:Float = 0
+    var incomeDetail:String?
+    var receiptImage:NSData?
+}
 class BIIncome:NSObject {
     
     var category: String?
