@@ -38,6 +38,9 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
     override func viewDidLoad() {
         super.viewDidLoad()
         //database create is not exists
+//        deleteDatabase()
+//        BIExpense.deleteTableInDatabase()
+//        BIIncome.deleteTableInDatabase()
         createDatabaseOnceIfNotExists()
         //picker数据源
         currentDate = NSDate().description as NSString
