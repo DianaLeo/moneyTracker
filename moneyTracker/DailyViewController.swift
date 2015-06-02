@@ -113,13 +113,13 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
             }else {
                 image?.image = UIImage(named: "blankCategory")
             }
-            leftText?.text = "+\(dailyIncomeDS[indexPath.row].cat)"//"Cate2"
+            leftText?.text = dailyIncomeDS[indexPath.row].cat//"Cate2"
             leftText?.textColor = UIColor(red: 0.82, green: 0.47, blue: 0.43, alpha: 1)
             leftText?.font = UIFont.boldSystemFontOfSize(22)
             detail?.text = dailyIncomeDS[indexPath.row].detl
             detail?.textColor = UIColor(red: 0.53, green: 0.53, blue: 0.53, alpha: 1)
             detail?.font = UIFont.italicSystemFontOfSize(15)
-            righText?.text = dailyIncomeDS[indexPath.row].amoStr//"+100"
+            righText?.text = "+\(dailyIncomeDS[indexPath.row].amoStr)"//"+100"
             righText?.textColor = UIColor(red: 0.82, green: 0.47, blue: 0.43, alpha: 1)
             righText?.textAlignment = NSTextAlignment.Right
             righText?.font = UIFont.boldSystemFontOfSize(33)

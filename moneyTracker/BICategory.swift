@@ -27,7 +27,7 @@ typealias CategoryImagePath = String
 struct BICategoryImagePath {
     static var Clothing:CategoryImagePath = "clothing"
     static var Food:CategoryImagePath = "food"
-    static var Accomdation:CategoryImagePath = "accomdation" // should be accomdation
+    static var Accommodation:CategoryImagePath = "accommodation" // should be accomdation
     static var Travel:CategoryImagePath = "Travel"
     static var Transport:CategoryImagePath = "transport"
     static var Telecommnication:CategoryImagePath = "commnication"
@@ -382,8 +382,8 @@ func insertDefaultDatabaseOnceIfNotExists() {
         println("BIDataSet Table failed to create!")
     }
     //insert default data to table
-    let expenseCategories = ["Clothing","Food","Accomdation","Transport","Entertainment","Grocery","Luxury"]
-    let associatedImagePathsForExpenseCategories = [BICategoryImagePath.Clothing,BICategoryImagePath.Food,BICategoryImagePath.Accomdation,BICategoryImagePath.Transport,BICategoryImagePath.Entertainment,BICategoryImagePath.Grocery,BICategoryImagePath.Luxury];
+    let expenseCategories = ["Clothing","Food","Accommodation","Transport","Entertainment","Grocery","Luxury"]
+    let associatedImagePathsForExpenseCategories = [BICategoryImagePath.Clothing,BICategoryImagePath.Food,BICategoryImagePath.Accommodation,BICategoryImagePath.Transport,BICategoryImagePath.Entertainment,BICategoryImagePath.Grocery,BICategoryImagePath.Luxury];
     var i = 0
     for expenseCategory in expenseCategories {
         let insertSQL:NSString = "REPLACE INTO ExpenseCategory(ExpenseCategory,AssociatedImagePath) VALUES('\(expenseCategory)','\(associatedImagePathsForExpenseCategories[i])')"

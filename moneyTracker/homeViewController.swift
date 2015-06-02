@@ -37,6 +37,8 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //database create is not exists
+        createDatabaseOnceIfNotExists()
         //picker数据源
         currentDate = NSDate().description as NSString
         selectedYear  = currentDate!.substringToIndex(4).toInt()!
@@ -111,12 +113,12 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
         mthLabExpense.backgroundColor = UIColor.clearColor()
         mthLabExpense.textColor = UIColor.whiteColor()
-        mthLabExpense.text = BIExpense.monthSum()//"-3,000"
+        mthLabExpense.text = BIExpense.monthSum(year: selectedYear!, month: selectedMonth!)//"-3,000"
         mthLabExpense.textAlignment = NSTextAlignment.Center
         mthLabExpenseImage.image = UIImage(named: "label")
         
         mthLabIncome.backgroundColor = UIColor.clearColor()
-        mthLabIncome.text  = BIIncome.monthSum()//"+1,000"
+        mthLabIncome.text  = BIIncome.monthSum(year: selectedYear!, month: selectedMonth!)//"+1,000"
         mthLabIncome.textColor = UIColor.whiteColor()
         mthLabIncome.textAlignment = NSTextAlignment.Center
         mthLabIncomeImage.image  = UIImage(named: "label")
