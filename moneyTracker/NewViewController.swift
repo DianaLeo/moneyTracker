@@ -243,9 +243,9 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
             if (isModificationMode){
                 //cell?.textView?.text = 从数据库里读取
                 if flagExpense == true {
-                    cell?.textView?.text = expenseRecord?.catDetl
+                    cell?.textView?.text = expenseRecord?.detl
                 }else {
-                    cell?.textView?.text = incomeRecord?.catDetl
+                    cell?.textView?.text = incomeRecord?.detl
                 }
                 
             }
@@ -362,10 +362,10 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
 //            listTable.deselectRowAtIndexPath(listTable.indexPathForSelectedRow()!, animated: false)
             isModificationMode = false
             if flagExpense == true {
-                var newExpense = Expense(year: self.selectedYear!, month: selectedMonth!, day: self.selectedDay!, category: expenseRecord!.cat, categoryDetail: nil, amount: Float(expenseRecord!.amo), expenseDetail: expenseRecord?.catDetl, receiptImage: nil)
+                var newExpense = Expense(year: self.selectedYear!, month: selectedMonth!, day: self.selectedDay!, category: expenseRecord!.cat, categoryDetail: nil, amount: Float(expenseRecord!.amo), expenseDetail: expenseRecord?.detl ?? "", receiptImage: nil)
                 BIExpense.updateToDatabase(expenseID: expenseRecord!.ID, expense: newExpense)
             }else{
-                var newIncome = Income(year: self.selectedYear!, month: selectedMonth!, day: self.selectedDay!, category: incomeRecord!.cat, categoryDetail: nil, amount: Float(incomeRecord!.amo), incomeDetail: incomeRecord?.catDetl, receiptImage: nil)
+                var newIncome = Income(year: self.selectedYear!, month: selectedMonth!, day: self.selectedDay!, category: incomeRecord!.cat, categoryDetail: nil, amount: Float(incomeRecord!.amo), incomeDetail: incomeRecord?.detl ?? "", receiptImage: nil)
                 BIIncome.updateToDatabase(incomeID: incomeRecord!.ID, income: newIncome)
             }
         }else {

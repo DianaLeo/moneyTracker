@@ -14,20 +14,20 @@ struct Income {
     var category:String = ""
     var categoryDetail:String?
     var amount:Float = 0
-    var incomeDetail:String?
+    var incomeDetail:String = ""
     var receiptImage:NSData?
 }
 struct IncomeRecord {
     var cat: String
-    var catDetl: String
+    var detl: String
     var amo:Double
     var amoStr:String
     let ID:Int
-    init(category:String,categoryDetail:String,amounts:Double,incomeID:Int){
+    init(category:String,detail:String,amounts:Double,incomeID:Int){
         amo = amounts
         cat = category
-        catDetl = categoryDetail
-        amoStr = "+\(amo)"
+        detl = detail
+        amoStr = "\(amo)"
         ID = incomeID
     }
 }
@@ -75,7 +75,7 @@ class BIIncome:NSObject {
         self.category = category
         self.categoryDetail = categoryDetail
         self.amounts = amounts
-        self.incomeDetail = incomeDetail
+        self.incomeDetail = incomeDetail ?? ""
         self.receiptImage = receiptImage
         //time related
         self.yearOfIncome = year
@@ -127,7 +127,7 @@ class BIIncome:NSObject {
             sqlite3_close(db)
         }
         // Add To Table: ExpenseCategory
-        let addSQL = "INSERT INTO Income(Year,Month,Day,Hour,Minute,Second,Category,CategoryDetail,Amounts,IncomeDetail,YearOfIncome,MonthOfIncome,DayOfIncome,HourOfIncome,MinuteOfIncome,SecondOfIncome) VALUES (\(self.currentYear!),\(self.currentMonth!),\(self.currentDay!),\(self.currentHour!),\(self.currentMinute!),\(self.currentSecond!),'\(self.category!)','\(self.categoryDetail)',\(self.amounts!),'\(self.incomeDetail)',\(self.yearOfIncome),\(self.monthOfIncome),\(self.dayOfIncome),\(self.hourOfIncome),\(self.minuteOfIncome),\(self.secondOfIncome))"
+        let addSQL = "INSERT INTO Income(Year,Month,Day,Hour,Minute,Second,Category,CategoryDetail,Amounts,IncomeDetail,YearOfIncome,MonthOfIncome,DayOfIncome,HourOfIncome,MinuteOfIncome,SecondOfIncome) VALUES (\(self.currentYear!),\(self.currentMonth!),\(self.currentDay!),\(self.currentHour!),\(self.currentMinute!),\(self.currentSecond!),'\(self.category!)','\(self.categoryDetail)',\(self.amounts!),'\(self.incomeDetail!)',\(self.yearOfIncome),\(self.monthOfIncome),\(self.dayOfIncome),\(self.hourOfIncome),\(self.minuteOfIncome),\(self.secondOfIncome))"
         if sqlite3_exec(db, addSQL, nil, nil, nil) == SQLITE_OK {
             println("add to Table:Income successful")
         }else {
@@ -241,17 +241,18 @@ class BIIncome:NSObject {
         var incomeRecords: [IncomeRecord] = []
         let IDSQL:String = "SELECT ID FROM Income WHERE YearOfIncome= \(year) AND MonthOfIncome = \(month) AND DayOfIncome = \(day)"
         let categorySQL:String = "SELECT Category FROM Income WHERE YearOfIncome= \(year) AND MonthOfIncome = \(month) AND DayOfIncome = \(day)"
-        let categoryDetailSQL:String = "SELECT "
+        let incomeDetailSQL:String = "SELECT IncomeDetail From Income WHERE YearOfIncome= \(year) AND MonthOfIncome = \(month) AND DayOfIncome = \(day)"
         let amountsSQL: String = "SELECT Amounts FROM Income WHERE YearOfIncome= \(year) AND MonthOfIncome = \(month) AND DayOfIncome = \(day)"
         let recordsID:[Int] = BIQuery(UTF8StringQuery: IDSQL).resultsOfQuery()
         if  recordsID.count != 0 {
             //println(recordsID.count)
             let ids:[Int] = BIQuery(UTF8StringQuery: IDSQL).resultsOfQuery()
             let categoies:[String] = BIQuery(UTF8StringQuery: categorySQL).resultsOfQuery()
+            let incomeDetail:[String] = BIQuery(UTF8StringQuery: incomeDetailSQL).resultsOfQuery()
             let amountsOfAll:[Double] = BIQuery(UTF8StringQuery: amountsSQL).resultsOfQuery()
             //println("amounts array = \(amountsOfAll)")
             for i in 1...recordsID.count {
-                incomeRecords.append(IncomeRecord(category: categoies[i-1], categoryDetail: "BNE", amounts: amountsOfAll[i-1],incomeID: ids[i-1]))
+                incomeRecords.append(IncomeRecord(category: categoies[i-1], detail: incomeDetail[i-1] ?? "", amounts: amountsOfAll[i-1],incomeID: ids[i-1]))
             }
         }else{
             //println("No records found in Income for the date provided")

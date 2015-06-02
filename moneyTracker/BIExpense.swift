@@ -14,20 +14,20 @@ struct Expense {
     var category:String = ""
     var categoryDetail:String?
     var amount:Float = 0
-    var expenseDetail:String?
+    var expenseDetail:String = ""
     var receiptImage:NSData?
 }
 struct ExpenseRecord {
     var cat: String
-    var catDetl: String
+    var detl: String
     var amo:Double
     var amoStr:String
     let ID:Int
-    init(category:String,categoryDetail:String,amounts:Double,expenseID:Int){
+    init(category:String,detail:String,amounts:Double,expenseID:Int){
         amo = amounts
         cat = category
-        catDetl = categoryDetail
-        amoStr = "-\(amo)"
+        detl = detail
+        amoStr = "\(amo)"
         ID = expenseID
     }
 }
@@ -74,7 +74,7 @@ class BIExpense: NSObject {
         self.category = category
         self.categoryDetail = categoryDetail
         self.amounts = amounts
-        self.expenseDetail = expenseDetail
+        self.expenseDetail = expenseDetail ?? ""
         self.receiptImage = receiptImage
         self.yearOfExpense = year
         self.monthOfExpense = month
@@ -124,7 +124,7 @@ class BIExpense: NSObject {
             sqlite3_close(db)
         }
         // Add To Table: ExpenseCategory
-        let addSQL = "INSERT INTO Expense(Year,Month,Day,Hour,Minute,Second,Category,CategoryDetail,Amounts,ExpenseDetail,YearOfExpense,MonthOfExpense,DayOfExpense,HourOfExpense,MinuteOfExpense,SecondOfExpense) VALUES (\(self.currentYear!),\(self.currentMonth!),\(self.currentDay!),\(self.currentHour!),\(self.currentMinute!),\(self.currentSecond!),'\(self.category!)','\(self.categoryDetail)',\(self.amounts!),'\(self.expenseDetail)',\(self.yearOfExpense),\(self.monthOfExpense),\(self.dayOfExpense),\(self.hourOfExpense),\(self.minuteOfExpense),\(self.secondOfExpense))"
+        let addSQL = "INSERT INTO Expense(Year,Month,Day,Hour,Minute,Second,Category,CategoryDetail,Amounts,ExpenseDetail,YearOfExpense,MonthOfExpense,DayOfExpense,HourOfExpense,MinuteOfExpense,SecondOfExpense) VALUES (\(self.currentYear!),\(self.currentMonth!),\(self.currentDay!),\(self.currentHour!),\(self.currentMinute!),\(self.currentSecond!),'\(self.category!)','\(self.categoryDetail)',\(self.amounts!),'\(self.expenseDetail!)',\(self.yearOfExpense),\(self.monthOfExpense),\(self.dayOfExpense),\(self.hourOfExpense),\(self.minuteOfExpense),\(self.secondOfExpense))"
         if sqlite3_exec(db, addSQL, nil, nil, nil) == SQLITE_OK {
             println("add to Table:Expense successful")
         }else {
@@ -238,17 +238,18 @@ class BIExpense: NSObject {
         var expenseRecords: [ExpenseRecord] = []
         let IDSQL:String = "SELECT ID FROM Expense WHERE YearOfExpense= \(year) AND MonthOfExpense = \(month) AND DayOfExpense = \(day)"
         let categorySQL:String = "SELECT Category FROM Expense WHERE YearOfExpense= \(year) AND MonthOfExpense = \(month) AND DayOfExpense = \(day)"
-        let categoryDetailSQL:String = "SELECT "
+        let expenseDetailSQL:String = "SELECT ExpenseDetail From Expense WHERE YearOfExpense= \(year) AND MonthOfExpense = \(month) AND DayOfExpense = \(day)"
         let amountsSQL: String = "SELECT Amounts FROM Expense WHERE YearOfExpense= \(year) AND MonthOfExpense = \(month) AND DayOfExpense = \(day)"
         let recordsID:[Int] = BIQuery(UTF8StringQuery: IDSQL).resultsOfQuery()
         if  recordsID.count != 0 {
             //println(recordsID.count)
             let ids:[Int] = BIQuery(UTF8StringQuery: IDSQL).resultsOfQuery()
             let categoies:[String] = BIQuery(UTF8StringQuery: categorySQL).resultsOfQuery()
+            let expenseDetail:[String] = BIQuery(UTF8StringQuery: expenseDetailSQL).resultsOfQuery()
             let amountsOfAll:[Double] = BIQuery(UTF8StringQuery: amountsSQL).resultsOfQuery()
             //println("amounts array = \(amountsOfAll)")
             for i in 1...recordsID.count {
-                expenseRecords.append(ExpenseRecord(category: categoies[i-1], categoryDetail: "BNE", amounts: amountsOfAll[i-1],expenseID:ids[i-1]))
+                expenseRecords.append(ExpenseRecord(category: categoies[i-1], detail: expenseDetail[i-1] ?? "", amounts: amountsOfAll[i-1],expenseID:ids[i-1]))
             }
         }else{
             //println("No records found in Income for the date provided")
