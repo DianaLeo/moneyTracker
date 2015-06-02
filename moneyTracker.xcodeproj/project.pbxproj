@@ -119,7 +119,6 @@
 		CE948F681B171BCE00354CFF /* moneyTracker */ = {
 			isa = PBXGroup;
 			children = (
-				CE948FA01B171CA200354CFF /* TestViewController.swift */,
 				CE948F6B1B171BCE00354CFF /* AppDelegate.swift */,
 				CE948F721B171BCE00354CFF /* Main.storyboard */,
 				CE948F771B171BCE00354CFF /* LaunchScreen.xib */,
@@ -163,6 +162,7 @@
 		CE948FB71B171E5900354CFF /* BIDataModel */ = {
 			isa = PBXGroup;
 			children = (
+				CE948FA01B171CA200354CFF /* TestViewController.swift */,
 				CE948F8E1B171CA200354CFF /* BIBillAnalysis.swift */,
 				CECCD6E31B17217100BEC851 /* BICategory.swift */,
 				CE948F901B171CA200354CFF /* BIExpense.swift */,

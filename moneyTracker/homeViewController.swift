@@ -170,6 +170,7 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
         
         //月历
+//        self.monthStrArray = NSArray(array: BIMonthCalender(dateForMonthCalender: NSDate.dateFor(year: 2015, month: 6, day: 1)).monthCalender())
         self.monthStrArray = NSArray(array: BIMonthCalender(dateForMonthCalender: NSDate.dateFor(year: selectedYear!, month: selectedMonth!)).monthCalender())
         indexOfFirstDay = self.monthStrArray?.indexOfObject("1")
         indexOfLastDay = (self.monthStrArray?.indexOfObject("1", inRange: NSRange(location: indexOfFirstDay! + 1, length: 41 - indexOfFirstDay!)))! - 1
@@ -204,6 +205,9 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
         }
     }
     func mtnBtnTouch() {
+        //test
+        //self.navigationController?.pushViewController(TestViewController(), animated: true)
+        
         //展开
         if mthPicker!.hidden {
             mthPicker!.hidden = false

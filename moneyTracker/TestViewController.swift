@@ -10,27 +10,14 @@ import UIKit
 
 class TestViewController: UIViewController {
     
-    let aIncome = BIIncome()
-    let aExpense = BIExpense()
-    var name: NSString?
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.grayColor()
-        BIExpense(year: 2015, month: 5, day: 29, category: "L", categoryDetail: nil, amounts: 90.9, expenseDetail: nil, receiptImage: nil)
-        //createDatabaseOnceIfNotExists()
-        //InitBIDataSetDatabase.writeDataOnce()
-//        var query = BIQuery(UTF8StringQuery: "SELECT SUM(Amounts) FROM Income WHERE Month = 5 AND Year = 2015")
-//        query.resultOfQuery()
-        //let str = NSDateFormatter.localizedStringFromDate(date, dateStyle: NSDateFormatterStyle.FullStyle, timeStyle: NSDateFormatterStyle.FullStyle)
-        //println(str)
-        //var mC = BIMonthCalender(dateForMonthCalender: date)
-        //mC.monthCalender()
-        //var dataSet = BIDataSet.sharedInstance()
-//        dispatch_async(dispatch_get_main_queue(), { () in
-//            self.name = "TestVC"
-//            println("set name in other thread")
-//            var dataSet1 = BIDataSet.sharedInstance()
-//            })
+        deleteDatabase()
+        BIIncome.deleteTableInDatabase()
+        BIExpense.deleteTableInDatabase()
+        createDatabaseOnceIfNotExists()
+//        BIExpense(year: 2015, month: 5, day: 29, category: "L", categoryDetail: nil, amounts: 90.9, expenseDetail: nil, receiptImage: nil)
         }
         // Do any additional setup after loading the view.
 

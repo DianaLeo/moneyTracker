@@ -240,6 +240,7 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
         
         dailyExpenseDS = BIExpense.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!)
         dailyIncomeDS = BIIncome.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!)
+        self.listTable.reloadData()
 
     }
 
