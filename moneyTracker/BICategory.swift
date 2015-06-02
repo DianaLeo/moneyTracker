@@ -250,20 +250,14 @@ class BICategory: NSObject {
         super.init()
         //call self method after super.init
         self.loadFromDatabase()
-        if self.tmpExCategories.count == 0 {
+        if self.tmpExCategories.count == 0 && self.tmpInCategories.count == 0{
             //println("tmp ex . count = 0")
-            insertDefaultExpenseCategoryDatabaseOnceIfNotExists()
+            insertDefaultDatabaseOnceIfNotExists()
             self.loadFromDatabase()
-        }
-        if self.tmpInCategories.count == 0 {
-            //tmpInCategories = ["PartTime","LuckyMoney","Wage","Scholarship","Rent"]
-            insertDefaultIncomeCategoryDatabaseOnceIfNotExists()
-            self.loadFromDatabase()
-            
         }
         self.expenseCategories = self.tmpExCategories
         self.incomeCategories = self.tmpInCategories
-        println(self.expenseCategories)
+        //println(self.expenseCategories)
     }
     deinit {
         println("BICategory deinit")
@@ -361,7 +355,7 @@ func createDatabaseOnceIfNotExists() {
     //close database
     sqlite3_close(db)
 }
-func insertDefaultExpenseCategoryDatabaseOnceIfNotExists() {
+func insertDefaultDatabaseOnceIfNotExists() {
     var db: COpaquePointer = nil
     let pathsOfAppDocuments = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
     let pathOfDatabase = (pathsOfAppDocuments[0] as! String).stringByAppendingString("/BIDatabase")
@@ -397,62 +391,9 @@ func insertDefaultExpenseCategoryDatabaseOnceIfNotExists() {
             println("insert \(expenseCategory) to Table: ExpenseCategory successful!")
         }else {
             println("insert \(expenseCategory ) to Table: ExpenseCategory failed!")
-            }
-            i++
         }
-        i = 0
-        let incomeCategories = ["PartTime","LuckyMoney","Wage","Scholarship","Rent"]
-        let associatedImagePathsForIncomeCategories = [BICategoryImagePath.PartTime,BICategoryImagePath.LuckyMoney,BICategoryImagePath.Wage,BICategoryImagePath.Scholarship,BICategoryImagePath.Rent]
-//        for incomeCategory in incomeCategories {
-//            let insertSQL:NSString = "INSERT INTO IncomeCategory(IncomeCategory,AssociatedImagePath) VALUES('\(incomeCategory)','\(associatedImagePathsForIncomeCategories[i])')"
-//            if sqlite3_exec(db, insertSQL.UTF8String, nil, nil, nil) == SQLITE_OK {
-//                println("insert \(incomeCategory) to Table: IncomeCategory successful!")
-//            }else {
-//                println("insert \(incomeCategory) to Table: IncomeCategory failed!")
-//            }
-//            i++
-//    }
-    sqlite3_close(db)
-}
-func insertDefaultIncomeCategoryDatabaseOnceIfNotExists() {
-    var db: COpaquePointer = nil
-    let pathsOfAppDocuments = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
-    let pathOfDatabase = (pathsOfAppDocuments[0] as! String).stringByAppendingString("/BIDatabase")
-    println(pathOfDatabase)
-    
-    // open database file, when unexists, create a new database file
-    if sqlite3_open(pathOfDatabase, &db) == SQLITE_OK {
-        println("Database file has been opened successfully!")
-    }else{
-        println("Database file failed to open!")
-        sqlite3_close(db)
+        i++
     }
-    //create new if not exists
-    let createExpenseCategorySQL: NSString = "CREATE TABLE IF NOT EXISTS ExpenseCategory(ID INTEGER PRIMARY KEY AUTOINCREMENT, ExpenseCategory TEXT,AssociatedImagePath TEXT)"
-    if sqlite3_exec(db, createExpenseCategorySQL.UTF8String, nil, nil, nil) == SQLITE_OK {
-        println("create new BIDataSet Table or already has an table!")
-    }else{
-        println("BIDataSet Table failed to create!")
-    }
-    let createIncomeCategorySQL: NSString = "CREATE TABLE IF NOT EXISTS IncomeCategory(ID INTEGER PRIMARY KEY AUTOINCREMENT, IncomeCategory TEXT,AssociatedImagePath TEXT)"
-    if sqlite3_exec(db, createIncomeCategorySQL.UTF8String, nil, nil, nil) == SQLITE_OK {
-        println("create new BIDataSet Table or already has an table!")
-    }else{
-        println("BIDataSet Table failed to create!")
-    }
-    //insert default data to table
-    let expenseCategories = ["Clothing","Food","Accomdation","Transport","Entertainment","Grocery","Luxury"]
-    let associatedImagePathsForExpenseCategories = [BICategoryImagePath.Clothing,BICategoryImagePath.Food,BICategoryImagePath.Accomdation,BICategoryImagePath.Transport,BICategoryImagePath.Entertainment,BICategoryImagePath.Grocery,BICategoryImagePath.Luxury];
-    var i = 0
-//    for expenseCategory in expenseCategories {
-//        let insertSQL:NSString = "REPLACE INTO ExpenseCategory(ExpenseCategory,AssociatedImagePath) VALUES('\(expenseCategory)','\(associatedImagePathsForExpenseCategories[i])')"
-//        if sqlite3_exec(db, insertSQL.UTF8String, nil, nil, nil) == SQLITE_OK {
-//            println("insert \(expenseCategory) to Table: ExpenseCategory successful!")
-//        }else {
-//            println("insert \(expenseCategory ) to Table: ExpenseCategory failed!")
-//        }
-//        i++
-//    }
     i = 0
     let incomeCategories = ["PartTime","LuckyMoney","Wage","Scholarship","Rent"]
     let associatedImagePathsForIncomeCategories = [BICategoryImagePath.PartTime,BICategoryImagePath.LuckyMoney,BICategoryImagePath.Wage,BICategoryImagePath.Scholarship,BICategoryImagePath.Rent]

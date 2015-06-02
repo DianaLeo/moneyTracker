@@ -206,7 +206,7 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
     }
     func mtnBtnTouch() {
         //test
-        //self.navigationController?.pushViewController(TestViewController(), animated: true)
+        self.navigationController?.pushViewController(TestViewController(), animated: true)
         
         //展开
         if mthPicker!.hidden {
