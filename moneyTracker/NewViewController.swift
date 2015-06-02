@@ -37,7 +37,7 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
     var selectedYear:Int?
     var selectedMonth:Int?
     var selectedDay:Int?
-    //incomeRecord and expenseRecord 
+    //incomeRecord and expenseRecord
     var incomeRecord: IncomeRecord?
     var expenseRecord: ExpenseRecord?
     //高度计算
@@ -148,11 +148,12 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
             }
             //判断是“修改”模式还是“新建”模式
             if isModificationMode && isFirstLoad {
+                println("cell0: isfirstload?\(isFirstLoad)")
                 cell?.datepicker?.date = NSDate.dateFor(year: choosedYear!, month: choosedMonth!, day: choosedDay!)
-                isFirstLoad = false
             }
             var dt = cell?.datepicker?.date
             cell?.rightLabel?.text = NSDateFormatter.localizedStringFromDate(dt!, dateStyle: NSDateFormatterStyle.MediumStyle, timeStyle: NSDateFormatterStyle.NoStyle)
+            //存储
             var format = NSDateFormatter()
             var format2 = NSDateFormatter()
             format.dateStyle = NSDateFormatterStyle.ShortStyle
@@ -174,11 +175,11 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
                 cell!.backgroundColor = UIColor.whiteColor()
                 cell?.collectionView?.hidden = false
                 cell?.rightImg?.hidden       = true
-                return cell!
             }else{
                 cell!.backgroundColor = UIColor(red: 0.94, green: 0.93, blue: 0.93, alpha: 1)
                 //判断是“新建”模式还是“修改”模式
-                if (isModificationMode){
+                if (isModificationMode && isFirstLoad){
+                    println("cell1: isfirstload?\(isFirstLoad)")
                     var userCategoryDS = BICategory.sharedInstance()
                     if flagExpense == true {
                         if let expCat = expenseRecord?.cat{
@@ -205,8 +206,8 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
                 }
                 cell?.collectionView?.hidden = true
                 cell?.rightImg?.hidden       = false
-                return cell!
             }
+            return cell!
         }
         //第三项 金额
         else if (indexPath.section == 2){
@@ -214,13 +215,13 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
             cell?.leftTextLabel?.text = "Amount"
             cell?.textField?.delegate = self
             //判断是“新建”模式还是“修改”模式
-            if (isModificationMode){
+            if (isModificationMode && isFirstLoad){
+                println("cell2: isfirstload?\(isFirstLoad)")
                 if flagExpense == true {
                     cell?.textField?.text = expenseRecord?.amoStr ?? "unknown"
                 }else{
                     cell?.textField?.text = incomeRecord?.amoStr ?? "unknown"
                 }
-                
             }
             amount = NSString(string: (cell?.textField?.text)!).floatValue
             return cell!
@@ -240,7 +241,9 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
                 cell?.rightLabel?.hidden = false
             }
             //判断是“新建”模式还是“修改”模式
-            if (isModificationMode){
+            if (isModificationMode && isFirstLoad){
+                isFirstLoad = false
+                println("cell3: isfirstload?\(isFirstLoad)")
                 //cell?.textView?.text = 从数据库里读取
                 if flagExpense == true {
                     cell?.textView?.text = expenseRecord?.detl
@@ -300,14 +303,11 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
         (self.navigationController?.viewControllers[1] as! DailyViewController).delegate = self
 
         naviLabel = self.navigationController?.navigationBar.viewWithTag(1) as! UILabel
-        
-        naviLabel.text = "Expense"
-
-//        if isModificationMode {
-//            naviLabel.text = "Modification"
-//        }else{
-//            naviLabel.text = "New Note"
-//        }
+        if flagExpense{
+            naviLabel.text = "Expense"
+        }else{
+            naviLabel.text = "Income"
+        }
         
         btnChooseExpense = UIButton(frame: CGRect(x: bgWidth/2 + 100, y: 20, width: 20, height: 20))
         btnChooseExpense.backgroundColor = UIColor.whiteColor()
@@ -362,10 +362,10 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
 //            listTable.deselectRowAtIndexPath(listTable.indexPathForSelectedRow()!, animated: false)
             isModificationMode = false
             if flagExpense == true {
-                var newExpense = Expense(year: self.selectedYear!, month: selectedMonth!, day: self.selectedDay!, category: expenseRecord!.cat, categoryDetail: nil, amount: Float(expenseRecord!.amo), expenseDetail: expenseRecord?.detl ?? "", receiptImage: nil)
+                var newExpense = Expense(year: self.selectedYear!, month: selectedMonth!, day: self.selectedDay!, category: category, categoryDetail: nil, amount: amount, expenseDetail: detail, receiptImage: nil)
                 BIExpense.updateToDatabase(expenseID: expenseRecord!.ID, expense: newExpense)
             }else{
-                var newIncome = Income(year: self.selectedYear!, month: selectedMonth!, day: self.selectedDay!, category: incomeRecord!.cat, categoryDetail: nil, amount: Float(incomeRecord!.amo), incomeDetail: incomeRecord?.detl ?? "", receiptImage: nil)
+                var newIncome = Income(year: self.selectedYear!, month: selectedMonth!, day: self.selectedDay!, category: category, categoryDetail: nil, amount: amount, incomeDetail: detail, receiptImage: nil)
                 BIIncome.updateToDatabase(incomeID: incomeRecord!.ID, income: newIncome)
             }
         }else {

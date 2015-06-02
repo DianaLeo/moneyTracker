@@ -13,7 +13,7 @@ protocol DailyTableViewCellDelegate: class {
 }
 
 class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
-
+    
     var flagExpense = 1
     var listTable = UITableView()
     var longPressGestureRecognizer: UILongPressGestureRecognizer?
@@ -35,7 +35,7 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
         var _naviHeight     = bgHeight * _naviRatio
         var naviImageHeight = _naviHeight - naviY! - naviHeight!
         var tabHeight       = 50.0 as CGFloat
-
+        
         //背景
         var bgImage = UIImageView(frame: CGRect(x: 0, y: 0, width: bgWidth, height: bgHeight))
         bgImage.image = UIImage(named: "background1")
@@ -55,7 +55,7 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
         self.view.addSubview(tabBtnEx)
         self.view.addSubview(tabBtnIn)
         
-
+        
         //详细列表 list
         listTable = UITableView(frame: CGRect(x: 0, y: _naviHeight + tabHeight, width: bgWidth, height: bgHeight - _naviHeight - tabHeight), style: UITableViewStyle.Plain)
         listTable.dataSource = self
@@ -134,7 +134,7 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
-
+    
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         //listTableDataSource.removeObjectAtIndex(indexPath.row)
         if flagExpense == 1 {
@@ -153,25 +153,21 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
         var naviBtnNewImg = self.navigationController?.navigationBar.viewWithTag(3) as! UIImageView
         naviBtnNew.removeFromSuperview()
         naviBtnNewImg.removeFromSuperview()
-        //传值：把这一条的ID传过去
         isModificationMode = true
-        println("Daily page -> New page. passRecordID called.")
-        var newController = NewViewController()
-        self.navigationController?.pushViewController(newController, animated: true)
+        var newViewController = NewViewController()
+        self.navigationController?.pushViewController(newViewController, animated: true)
         self.delegate?.passRecordID(recordID: indexPath.row)
-        if self.navigationController?.viewControllers[2] is NewViewController {
-            //println("naviVC.VCs[2] Is new VC")
-            isModificationMode = true
-            if flagExpense == 0 {
-                (self.navigationController?.viewControllers[2] as! NewViewController).incomeRecord = dailyIncomeDS[indexPath.row]
-                (self.navigationController?.viewControllers[2] as! NewViewController).flagExpense = false
-                //println(dailyIncomeDS[indexPath.row].cat)
-            }else{
-                (self.navigationController?.viewControllers[2] as! NewViewController).expenseRecord = dailyExpenseDS[indexPath.row]
-                (self.navigationController?.viewControllers[2] as! NewViewController).flagExpense = true
-            }
+        if flagExpense == 0 {
+            newViewController.incomeRecord = dailyIncomeDS[indexPath.row]
+            newViewController.flagExpense  = false
+            //            (self.navigationController?.viewControllers[2] as! NewViewController).incomeRecord = dailyIncomeDS[indexPath.row]
+            //            (self.navigationController?.viewControllers[2] as! NewViewController).flagExpense = false
+        }else{
+            newViewController.expenseRecord = dailyExpenseDS[indexPath.row]
+            newViewController.flagExpense   = true
+            //            (self.navigationController?.viewControllers[2] as! NewViewController).expenseRecord = dailyExpenseDS[indexPath.row]
+            //            (self.navigationController?.viewControllers[2] as! NewViewController).flagExpense = true
         }
-
     }
     
     //长按手势识别
@@ -241,59 +237,59 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
         dailyExpenseDS = BIExpense.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!)
         dailyIncomeDS = BIIncome.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!)
         self.listTable.reloadData()
-
+        
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     // MARK: - Table view data source
-
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the specified item to be editable.
-        return true
+    // Return NO if you do not want the specified item to be editable.
+    return true
     }
     */
-
+    
     /*
     // Override to support editing the table view.
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    if editingStyle == .Delete {
+    // Delete the row from the data source
+    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+    } else if editingStyle == .Insert {
+    // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+    }
     }
     */
-
+    
     /*
     // Override to support rearranging the table view.
     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
+    
     }
     */
-
+    
     /*
     // Override to support conditional rearranging of the table view.
     override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the item to be re-orderable.
-        return true
+    // Return NO if you do not want the item to be re-orderable.
+    return true
     }
     */
-
+    
     /*
     // MARK: - Navigation
-
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
     }
     */
-
+    
 }
