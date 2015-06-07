@@ -27,6 +27,7 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
     var mainCollectionView: UICollectionView?
     var naviLabel = UILabel()
     var btnChooseExpense = UIButton()
+    var label = UILabel()
     var isFirstLoad = true
     var flagExpense = true
     var income = Income()
@@ -67,6 +68,11 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
         mainCollectionView?.backgroundColor = UIColor.clearColor()
         mainCollectionView?.tag = 0
         self.view.addSubview(mainCollectionView!)
+        
+        label = UILabel(frame: CGRect(x: 0, y: self.view.frame.height, width: bgWidth, height: 216))
+        label.backgroundColor = UIColor.whiteColor()
+        label.hidden = true
+        self.view.addSubview(label)
     }
     
     func passRecordID(#recordID: Int) {
@@ -156,13 +162,13 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
             //存储
             var format = NSDateFormatter()
             var format2 = NSDateFormatter()
-            format.dateStyle = NSDateFormatterStyle.ShortStyle
+            format.dateFormat = "yyyyMMddhhmmss"
+            //format.dateStyle = NSDateFormatterStyle.ShortStyle
             var dateString = NSString(string: format.stringFromDate(dt!))
-            dateString = "01/06/2015"
             println(dateString)
-            self.selectedYear  = dateString.substringWithRange(NSRange(location: 6, length: 4)).toInt()
-            self.selectedDay = dateString.substringWithRange(NSRange(location: 0, length: 2)).toInt()
-            self.selectedMonth   = dateString.substringWithRange(NSRange(location: 3, length: 2)).toInt()
+            self.selectedYear  = dateString.substringWithRange(NSRange(location: 0, length: 4)).toInt()
+            self.selectedMonth = dateString.substringWithRange(NSRange(location: 4, length: 2)).toInt()
+            self.selectedDay   = dateString.substringWithRange(NSRange(location: 6, length: 2)).toInt()
             
             return cell!
         }
@@ -189,8 +195,9 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
                             }
                         }else{
                             cell?.rightImg?.image = UIImage(named: "blankCategory")
-                            cell?.rightText?.text = ""
+                            cell?.rightText?.text = expenseRecord?.cat
                         }
+                        category = expenseRecord?.cat ?? ""
                     }else{
                         if let incCat = incomeRecord?.cat{
                             if let imagePath = userCategoryDS.associatedImagePathFor(category: incomeRecord!.cat){
@@ -199,10 +206,10 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
                             }
                         }else{
                             cell?.rightImg?.image = UIImage(named: "blankCategory")
-                            cell?.rightText?.text = ""
+                            cell?.rightText?.text = incomeRecord?.cat
                         }
+                        category = incomeRecord?.cat ?? ""
                     }
-
                 }
                 cell?.collectionView?.hidden = true
                 cell?.rightImg?.hidden       = false
@@ -283,13 +290,12 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
     }
     func textFieldDidEndEditing(textField: UITextField) {
         println("textField DidEndEditing")
+        label.hidden = true
     }
     func textViewDidBeginEditing(textView: UITextView) {
         println("textView DidBeginEditing")
         self.view.frame.origin.y -= 216
-        var label = UILabel(frame: CGRect(x: 0, y: self.view.frame.height, width: bgWidth, height: 216))
-        label.backgroundColor = UIColor.whiteColor()
-        self.view.addSubview(label)
+        label.hidden = false
     }
     func textViewDidEndEditing(textView: UITextView) {
         didSelectSection3 = false
@@ -312,6 +318,7 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
         btnChooseExpense = UIButton(frame: CGRect(x: bgWidth/2 + 100, y: 20, width: 20, height: 20))
         btnChooseExpense.backgroundColor = UIColor.whiteColor()
         btnChooseExpense.addTarget(self, action: "btnChooseExpenseTouch", forControlEvents: UIControlEvents.TouchUpInside)
+        btnChooseExpense.tag = 4
         self.navigationController?.navigationBar.addSubview(btnChooseExpense)
         
         var naviBtnSaveRect = CGRect(x: bgWidth - 70, y: 10, width: 55, height: 55)
@@ -350,11 +357,13 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
 //        println(self.selectedDay)
 //        println(category)
 //        println(amount)
-        
+        amount = NSString(string: ((mainCollectionView?.cellForItemAtIndexPath(NSIndexPath(forItem: 0, inSection: 2)) as! NewAmountCollectionViewCell).textField?.text)!).floatValue
         var naviBtnSave = self.navigationController?.navigationBar.viewWithTag(2) as! UIButton
         var naviBtnSaveImg = self.navigationController?.navigationBar.viewWithTag(3) as! UIImageView
+        var btnChooseExpense = self.navigationController?.navigationBar.viewWithTag(4) as! UIButton
         naviBtnSave.removeFromSuperview()
         naviBtnSaveImg.removeFromSuperview()
+        btnChooseExpense.removeFromSuperview()
         
         self.navigationController?.popViewControllerAnimated(true)
         if isModificationMode {
@@ -380,8 +389,11 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
     func naviBtnCancelTouch () {
         var naviBtnSave = self.navigationController?.navigationBar.viewWithTag(2) as! UIButton
         var naviBtnSaveImg = self.navigationController?.navigationBar.viewWithTag(3) as! UIImageView
+        var btnChooseExpense = self.navigationController?.navigationBar.viewWithTag(4) as! UIButton
         naviBtnSave.removeFromSuperview()
         naviBtnSaveImg.removeFromSuperview()
+        btnChooseExpense.removeFromSuperview()
+
         self.navigationController?.popViewControllerAnimated(true)
         if isModificationMode {
             var listTable = (self.navigationController?.viewControllers[1] as! DailyViewController).listTable

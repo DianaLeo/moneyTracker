@@ -98,9 +98,11 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
         if (flagExpense == 1){
             //image?.image = UIImage(named: "clothing")
             if let imagePath = userCategoryDS.associatedImagePathFor(category: dailyExpenseDS[indexPath.row].cat){
-                image?.image = UIImage(named: imagePath)
-            }else {
-                image?.image = UIImage(named: "blankCategory")
+                if defaultCategoryImages.containsObject(imagePath) {
+                    image?.image = UIImage(named: imagePath)
+                }else{
+                    image?.image = UIImage(named: "blankCategory")
+                }
             }
             leftText?.text = dailyExpenseDS[indexPath.row].cat//"Category"
             detail?.text = dailyExpenseDS[indexPath.row].detl
@@ -109,9 +111,11 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
             //image?.image = UIImage(named: "food")
             //BICategory.associatedImagePathFor("d")
             if let imagePath = userCategoryDS.associatedImagePathFor(category:dailyIncomeDS[indexPath.row].cat){
-                image?.image = UIImage(named: imagePath)
-            }else {
-                image?.image = UIImage(named: "blankCategory")
+                if defaultCategoryImages.containsObject(imagePath) {
+                    image?.image = UIImage(named: imagePath)
+                }else{
+                    image?.image = UIImage(named: "blankCategory")
+                }
             }
             leftText?.text = dailyIncomeDS[indexPath.row].cat//"Cate2"
             leftText?.textColor = UIColor(red: 0.82, green: 0.47, blue: 0.43, alpha: 1)
@@ -160,13 +164,9 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
         if flagExpense == 0 {
             newViewController.incomeRecord = dailyIncomeDS[indexPath.row]
             newViewController.flagExpense  = false
-            //            (self.navigationController?.viewControllers[2] as! NewViewController).incomeRecord = dailyIncomeDS[indexPath.row]
-            //            (self.navigationController?.viewControllers[2] as! NewViewController).flagExpense = false
         }else{
             newViewController.expenseRecord = dailyExpenseDS[indexPath.row]
             newViewController.flagExpense   = true
-            //            (self.navigationController?.viewControllers[2] as! NewViewController).expenseRecord = dailyExpenseDS[indexPath.row]
-            //            (self.navigationController?.viewControllers[2] as! NewViewController).flagExpense = true
         }
     }
     
@@ -185,10 +185,13 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
         var naviBtnNewImg = self.navigationController?.navigationBar.viewWithTag(3) as! UIImageView
         naviBtnNew.removeFromSuperview()
         naviBtnNewImg.removeFromSuperview()
-        self.navigationController?.pushViewController(NewViewController(), animated: true)
-        if self.navigationController?.viewControllers[2] is NewViewController{
-            //(self.navigationController?.viewControllers[2] as NewViewController)
-            isModificationMode = false
+        var newViewController = NewViewController()
+        self.navigationController?.pushViewController(newViewController, animated: true)
+        isModificationMode = false
+        if flagExpense == 0 {
+            newViewController.flagExpense  = false
+        }else{
+            newViewController.flagExpense   = true
         }
     }
     
@@ -236,6 +239,8 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
         
         dailyExpenseDS = BIExpense.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!)
         dailyIncomeDS = BIIncome.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!)
+        
+        self.listTable.setEditing(false, animated: false)
         self.listTable.reloadData()
         
     }

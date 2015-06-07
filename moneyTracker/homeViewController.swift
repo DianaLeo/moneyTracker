@@ -250,15 +250,17 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
         var cell = collectionView.dequeueReusableCellWithReuseIdentifier("myCell", forIndexPath: indexPath) as? calndrCollectionViewCell
         cell?.textLabel?.text = self.monthStrArray?.objectAtIndex(indexPath.item) as? String
         selectedDay = cell?.textLabel?.text?.toInt()
-
+        println(selectedDay)
         //当前月之内
         if (indexPath.item >= indexOfFirstDay && indexPath.item <= indexOfLastDay) {
             cell?.textLabel?.textColor = UIColor.darkGrayColor()
             if (BIExpense.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!).count != 0){
                 cell?.textLabel?.textColor = UIColor.blueColor()
             }
-            if (BIIncome.dailyRecords(year: selectedYear!, month: selectedMonth!, day: (cell?.textLabel?.text?.toInt())!).count != 0){
+            if (BIIncome.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!).count != 0){
                 cell?.textLabel?.backgroundColor = UIColor.clearColor()
+                println(BIIncome.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!).count)
+                println("\(indexPath.item),\(selectedDay)")
             }
         //上个月和下个月的部分
         }else{
@@ -314,5 +316,8 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
     // Pass the selected object to the new view controller.
     }
     */
-    
+    override func viewDidAppear(animated: Bool) {
+        self.calndrCollectionView?.reloadData()
+        //self.calndrCollectionView?.reloadData()
+    }
 }

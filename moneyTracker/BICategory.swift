@@ -24,6 +24,8 @@ extension Array{
     }
 }
 typealias CategoryImagePath = String
+let defaultCategoryImages = NSArray(array: ["clothing","food","accommodation","transport","commnication","entertainment","grocery","luxury","gift","health","makeup","luckyMoney"])
+
 struct BICategoryImagePath {
     static var Clothing:CategoryImagePath = "clothing"
     static var Food:CategoryImagePath = "food"
@@ -38,7 +40,6 @@ struct BICategoryImagePath {
     static var Health:CategoryImagePath = "health"
     static var MakeUp:CategoryImagePath = "makeup"
     
-    
     static var PartTime:CategoryImagePath = "PartTime"
     static var LuckyMoney:CategoryImagePath = "luckyMoney"
     static var Wage:CategoryImagePath = "Wage"
@@ -46,8 +47,6 @@ struct BICategoryImagePath {
     static var Rent:CategoryImagePath = "Rent"
     
     static var Default:CategoryImagePath = "blankCategory"
-    
-    
 }
 class BICategory: NSObject {
     //Singleton Mode, Saved in independent file or database
