@@ -179,7 +179,7 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
         self.monthStrArray = NSArray(array: BIMonthCalender(dateForMonthCalender: NSDate.dateFor(year: selectedYear!, month: selectedMonth!)).monthCalender())
         indexOfFirstDay = self.monthStrArray?.indexOfObject("1")
         indexOfLastDay = (self.monthStrArray?.indexOfObject("1", inRange: NSRange(location: indexOfFirstDay! + 1, length: 41 - indexOfFirstDay!)))! - 1
-        println("\(indexOfFirstDay) and \(indexOfLastDay)")
+        //println("\(indexOfFirstDay) and \(indexOfLastDay)")
     }
     
     //UIPickerView
@@ -211,7 +211,7 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
     }
     func mtnBtnTouch() {
         //test
-        //self.navigationController?.pushViewController(TestViewController(), animated: true)
+        self.navigationController?.pushViewController(TestViewController(), animated: true)
         
         //展开
         if mthPicker!.hidden {
@@ -250,7 +250,7 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
         var cell = collectionView.dequeueReusableCellWithReuseIdentifier("myCell", forIndexPath: indexPath) as? calndrCollectionViewCell
         cell?.textLabel?.text = self.monthStrArray?.objectAtIndex(indexPath.item) as? String
         selectedDay = cell?.textLabel?.text?.toInt()
-        println(selectedDay)
+        //println(selectedDay)
         //当前月之内
         if (indexPath.item >= indexOfFirstDay && indexPath.item <= indexOfLastDay) {
             cell?.textLabel?.textColor = UIColor.darkGrayColor()
@@ -259,8 +259,8 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
             }
             if (BIIncome.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!).count != 0){
                 cell?.textLabel?.backgroundColor = UIColor.clearColor()
-                println(BIIncome.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!).count)
-                println("\(indexPath.item),\(selectedDay)")
+                //println(BIIncome.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!).count)
+                //println("\(indexPath.item),\(selectedDay)")
             }
         //上个月和下个月的部分
         }else{
