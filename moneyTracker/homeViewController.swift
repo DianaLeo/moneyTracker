@@ -37,10 +37,7 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //database create is not exists
-//        deleteDatabase()
-//        BIExpense.deleteTableInDatabase()
-//        BIIncome.deleteTableInDatabase()
+        //create database if not exists
         createDatabaseOnceIfNotExists()
         //picker数据源
         currentDate = NSDate().description as NSString
@@ -211,7 +208,7 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
     }
     func mtnBtnTouch() {
         //test
-        self.navigationController?.pushViewController(TestViewController(), animated: true)
+        //self.navigationController?.pushViewController(TestViewController(), animated: true)
         
         //展开
         if mthPicker!.hidden {

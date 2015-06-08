@@ -343,20 +343,17 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
     
     //导航栏按钮点击事件 - 不管点哪个都要移除右边的按钮，而左边的按钮自动移除
     func btnChooseExpenseTouch(){
-        flagExpense = !flagExpense
-        if flagExpense{
-            naviLabel.text = "Expense"
-        }else{
-            naviLabel.text = "Income"
+        if !isModificationMode {
+            flagExpense = !flagExpense
+            if flagExpense{
+                naviLabel.text = "Expense"
+            }else{
+                naviLabel.text = "Income"
+            }
         }
     }
     
     func naviBtnSaveTouch () {
-//        println(self.selectedYear)
-//        println(self.selectedMonth)
-//        println(self.selectedDay)
-//        println(category)
-//        println(amount)
         amount = NSString(string: ((mainCollectionView?.cellForItemAtIndexPath(NSIndexPath(forItem: 0, inSection: 2)) as! NewAmountCollectionViewCell).textField?.text)!).floatValue
         var naviBtnSave = self.navigationController?.navigationBar.viewWithTag(2) as! UIButton
         var naviBtnSaveImg = self.navigationController?.navigationBar.viewWithTag(3) as! UIImageView
@@ -367,12 +364,11 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
         
         self.navigationController?.popViewControllerAnimated(true)
         if isModificationMode {
-//            var listTable = (self.navigationController?.viewControllers[1] as! DailyViewController).listTable
-//            listTable.deselectRowAtIndexPath(listTable.indexPathForSelectedRow()!, animated: false)
             isModificationMode = false
             if flagExpense == true {
                 var newExpense = Expense(year: self.selectedYear!, month: selectedMonth!, day: self.selectedDay!, category: category, categoryDetail: nil, amount: amount, expenseDetail: detail, receiptImage: nil)
                 BIExpense.updateToDatabase(expenseID: expenseRecord!.ID, expense: newExpense)
+                
             }else{
                 var newIncome = Income(year: self.selectedYear!, month: selectedMonth!, day: self.selectedDay!, category: category, categoryDetail: nil, amount: amount, incomeDetail: detail, receiptImage: nil)
                 BIIncome.updateToDatabase(incomeID: incomeRecord!.ID, income: newIncome)
