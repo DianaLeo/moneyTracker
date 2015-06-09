@@ -42,12 +42,16 @@ class BIBillAnalysis: NSObject {
             let incSQL:String = "SELECT SUM(Amounts) FROM Income WHERE YearOfExpense = \(year) AND MonthOfExpense = \(month) AND Category = '\(catS)'"
             self.incAmtByUsedCat.append(BIQuery(UTF8StringQuery: incSQL).resultOfQuery() ?? 0.0)
         }
-        
-        sortCatsAndAmt()
-        self.expAmtPercentage = amtToPercentage(self.expAmtByUsedCat)
-        self.incAmtPercentage = amtToPercentage(self.incAmtByUsedCat)
-        makeExpSix()
-        makeIncSix()
+        if self.expUsedCategories.count > 0 {
+            sortCatsAndAmt()
+            self.expAmtPercentage = amtToPercentage(self.expAmtByUsedCat)
+            self.incAmtPercentage = amtToPercentage(self.incAmtByUsedCat)
+            makeExpSix()
+            makeIncSix()
+        }else{
+            self.expCatSix = ["EmptyCategory","","","","",""]
+            self.expSix = [1,0,0,0,0,0]
+        }
     }
     private func amtToPercentage(amtAry:[Double]) -> [Double]{
         var sum:Double = 0
