@@ -20,7 +20,7 @@ var selectedMonth: Int?
 var selectedDay: Int?
 
 class homeViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIPickerViewDataSource,UIPickerViewDelegate {
-
+    
     var monthStrArray: NSArray?
     var indexOfFirstDay: Int?
     var indexOfLastDay: Int?
@@ -32,12 +32,29 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
     var tabAnalyBtn    = UIButton()
     var currentDate: NSString?
     var mthPickerDSyear:[Int] = []
-//    var mthLabExpense:UILabel?
-//    var mthLabIncome:UILabel?
+    var scrollView: UIScrollView?
+    var tabTransL = UIImageView()
+    var tabTransR = UIImageView()
+    //    var mthLabExpense:UILabel?
+    //    var mthLabIncome:UILabel?
+    //高度计算
+    var bgWidth  = UIScreen.mainScreen().bounds.size.width
+    var bgHeight = UIScreen.mainScreen().bounds.size.height
+    var naviHeight      = CGFloat()
+    var naviY           = CGFloat()
+    var _naviRatio      = 0.15 as CGFloat
+    var _naviHeight     = CGFloat()
+    var naviImageHeight = CGFloat()
+    var bgTransHeight   = CGFloat()
+    var tabHeight       = CGFloat()
+    var mthHeight       = 60.0 as CGFloat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //create database if not exists
+        //database create is not exists
+        //        deleteDatabase()
+        //        BIExpense.deleteTableInDatabase()
+        //        BIIncome.deleteTableInDatabase()
         createDatabaseOnceIfNotExists()
         //picker数据源
         currentDate = NSDate().description as NSString
@@ -49,17 +66,13 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
         }
         
         //高度计算
-        var bgWidth  = UIScreen.mainScreen().bounds.size.width
-        var bgHeight = UIScreen.mainScreen().bounds.size.height
         var naviHeight      = self.navigationController?.navigationBar.frame.height
         var naviY           = self.navigationController?.navigationBar.frame.origin.y
-        var _naviRatio      = 0.15 as CGFloat
         var _naviHeight     = bgHeight * _naviRatio
         var naviImageHeight = _naviHeight - naviY! - naviHeight!
         var bgTransHeight   = bgHeight * (1 - _naviRatio)
-        var tabHeight = bgHeight*0.15
-        var mthHeight       = 60.0 as CGFloat
-
+        var tabHeight       = bgHeight*0.15
+        
         
         //背景 bg
         var bgImage = UIImageView(frame: CGRect(x: 0, y: 0, width: bgWidth, height: bgHeight))
@@ -69,7 +82,7 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
         var bgTrans = UIImageView(frame: CGRect(x: 0, y: _naviHeight, width: bgWidth, height: bgTransHeight))
         bgTrans.image = UIImage(named: "background2")
         self.view.addSubview(bgTrans)
-
+        
         //导航 navi
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "Navigator"), forBarMetrics: UIBarMetrics.Default)
         var naviImage   = UIImageView(frame: CGRect(x: 0, y: naviHeight!, width: bgWidth, height: naviImageHeight))
@@ -136,35 +149,51 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
         self.view.addSubview(mthLine2)
         self.view.addSubview(mthPicker!)
         self.view.addSubview(bgMask!)
-
+        
         
         //日历 calndr
         var flowLayOut = UICollectionViewFlowLayout()
-        calndrCollectionView = UICollectionView(frame: CGRect(x: 26, y: 300, width: bgWidth - 50, height: 250), collectionViewLayout: flowLayOut)
+        calndrCollectionView = UICollectionView(frame: CGRect(x: 26, y: (bgHeight - _naviHeight - mthHeight - tabHeight - 200)*0.5, width: bgWidth - 50, height: 250), collectionViewLayout: flowLayOut)
         calndrCollectionView!.dataSource = self
         calndrCollectionView!.delegate   = self
         calndrCollectionView?.backgroundColor = UIColor.clearColor()
         var calndrBG = UIImageView(frame: CGRect(x: calndrCollectionView!.frame.origin.x - 11, y: calndrCollectionView!.frame.origin.y - 50, width: calndrCollectionView!.frame.width + 20, height: calndrCollectionView!.frame.height + 50))
         calndrBG.image = UIImage(named: "calendarBG2")
-        self.view.addSubview(calndrBG)
-        self.view.addSubview(calndrCollectionView!)
         
+        
+        //ScrollView
+        scrollView = UIScrollView(frame: CGRect(x: 0, y: _naviHeight + mthHeight, width: bgWidth, height: bgHeight - _naviHeight - mthHeight - tabHeight))
+        scrollView?.indicatorStyle = UIScrollViewIndicatorStyle.Default
+        scrollView?.pagingEnabled = true
+        scrollView?.scrollEnabled = false
+        scrollView?.showsHorizontalScrollIndicator = false
+        scrollView?.contentSize = CGSize(width: bgWidth*2, height: bgHeight - _naviHeight - mthHeight - tabHeight)
+        var view = UIView(frame: CGRect(x: bgWidth, y: 0, width: bgWidth, height: bgHeight - _naviHeight - mthHeight - tabHeight))
+        scrollView?.addSubview(view)
+        scrollView?.addSubview(calndrBG)
+        scrollView?.addSubview(calndrCollectionView!)
+        self.view.addSubview(scrollView!)
         
         //下标签 tab
-        var tabCalndrTransR   = UIImageView(frame: CGRect(x: bgWidth/2, y: bgHeight - tabHeight, width: bgWidth/2, height: tabHeight))
-        tabCalndrTransR.image = UIImage(named: "tabTransR")
-        
+        tabTransL   = UIImageView(frame: CGRect(x: 0, y: bgHeight - tabHeight, width: bgWidth/2, height: tabHeight))
+        tabTransL.image = UIImage(named: "tabTransL")
+        tabTransL.hidden = true
         var tabCalndrImage = UIImageView(frame: CGRect(x: bgWidth/4 - tabHeight/2, y: bgHeight - tabHeight*0.9, width: tabHeight*0.8, height: tabHeight*0.8))
         tabCalndrImage.image = UIImage(named: "calendar")
         tabCalndrBtn   = UIButton(frame: CGRect(x: 0, y: bgHeight - tabHeight, width: bgWidth/2, height: tabHeight))
         tabCalndrBtn.backgroundColor = UIColor.clearColor()
+        tabCalndrBtn.addTarget(self, action: "tabCalndrBtnTouch", forControlEvents: UIControlEvents.TouchDown)
         
+        tabTransR   = UIImageView(frame: CGRect(x: bgWidth/2, y: bgHeight - tabHeight, width: bgWidth/2, height: tabHeight))
+        tabTransR.image = UIImage(named: "tabTransR")
         var tabAnalyImage  = UIImageView(frame: CGRect(x: bgWidth/4*3 - tabHeight/2, y: bgHeight - tabHeight*0.9, width: tabHeight*0.8, height: tabHeight*0.8))
         tabAnalyImage.image = UIImage(named: "analysis2")
         tabAnalyBtn    = UIButton(frame: CGRect(x: bgWidth/2, y: bgHeight - tabHeight, width: bgWidth/2, height: tabHeight))
         tabAnalyBtn.backgroundColor = UIColor.clearColor()
-
-        self.view.addSubview(tabCalndrTransR)
+        tabAnalyBtn.addTarget(self, action: "tabAnalyBtnTouch", forControlEvents: UIControlEvents.TouchDown)
+        
+        self.view.addSubview(tabTransR)
+        self.view.addSubview(tabTransL)
         self.view.addSubview(tabCalndrImage)
         self.view.addSubview(tabCalndrBtn)
         self.view.addSubview(tabAnalyImage)
@@ -172,17 +201,26 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
         
         //月历
-//        self.monthStrArray = NSArray(array: BIMonthCalender(dateForMonthCalender: NSDate.dateFor(year: 2015, month: 6, day: 1)).monthCalender())
+        //        self.monthStrArray = NSArray(array: BIMonthCalender(dateForMonthCalender: NSDate.dateFor(year: 2015, month: 6, day: 1)).monthCalender())
         self.monthStrArray = NSArray(array: BIMonthCalender(dateForMonthCalender: NSDate.dateFor(year: selectedYear!, month: selectedMonth!)).monthCalender())
         indexOfFirstDay = self.monthStrArray?.indexOfObject("1")
         indexOfLastDay = (self.monthStrArray?.indexOfObject("1", inRange: NSRange(location: indexOfFirstDay! + 1, length: 41 - indexOfFirstDay!)))! - 1
-        //println("\(indexOfFirstDay) and \(indexOfLastDay)")
+    }
+    
+    func tabCalndrBtnTouch (){
+        scrollView?.scrollRectToVisible(CGRect(x: 0, y: 0, width: bgWidth, height: bgHeight - _naviHeight - mthHeight - tabHeight), animated: false)
+        tabTransL.hidden = true
+        tabTransR.hidden = false
+    }
+    
+    func tabAnalyBtnTouch(){
+        scrollView?.scrollRectToVisible(CGRect(x: bgWidth, y: 0, width: bgWidth, height: bgHeight - _naviHeight - mthHeight - tabHeight), animated: false)
+        tabTransL.hidden = false
+        tabTransR.hidden = true
     }
     
     //UIPickerView
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
-        println("2 columns")
-
         return 2
     }
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
@@ -219,7 +257,7 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
             calndrCollectionView?.userInteractionEnabled = false
             tabCalndrBtn.userInteractionEnabled = false
             tabAnalyBtn.userInteractionEnabled = false
-        //关闭
+            //关闭
         }else{
             mthPicker!.hidden = true
             bgMask?.hidden = true
@@ -228,7 +266,7 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
             indexOfFirstDay = self.monthStrArray?.indexOfObject("1")
             indexOfLastDay = (self.monthStrArray?.indexOfObject("1", inRange: NSRange(location: indexOfFirstDay! + 1, length: 41 - indexOfFirstDay!)))! - 1
             println("\(indexOfFirstDay) and \(indexOfLastDay)")
-
+            
             calndrCollectionView?.reloadData()
             calndrCollectionView?.userInteractionEnabled = true
             tabCalndrBtn.userInteractionEnabled = true
@@ -247,19 +285,28 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
         var cell = collectionView.dequeueReusableCellWithReuseIdentifier("myCell", forIndexPath: indexPath) as? calndrCollectionViewCell
         cell?.textLabel?.text = self.monthStrArray?.objectAtIndex(indexPath.item) as? String
         selectedDay = cell?.textLabel?.text?.toInt()
-        //println(selectedDay)
         //当前月之内
         if (indexPath.item >= indexOfFirstDay && indexPath.item <= indexOfLastDay) {
             cell?.textLabel?.textColor = UIColor.darkGrayColor()
-            if (BIExpense.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!).count != 0){
+            if (BIExpense.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!).count != 0)&&(BIIncome.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!).count != 0){
                 cell?.textLabel?.textColor = UIColor.blueColor()
-            }
-            if (BIIncome.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!).count != 0){
                 cell?.textLabel?.backgroundColor = UIColor.clearColor()
-                //println(BIIncome.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!).count)
-                //println("\(indexPath.item),\(selectedDay)")
             }
-        //上个月和下个月的部分
+            else if (BIExpense.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!).count != 0){
+                cell?.textLabel?.textColor = UIColor.blueColor()
+                //cell?.textLabel?.font = UIFont.boldSystemFontOfSize(20)
+                println("expense:\(indexPath.item),\(selectedDay!)")
+            }
+            else if (BIIncome.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!).count != 0){
+                cell?.textLabel?.backgroundColor = UIColor.clearColor()
+                //cell?.textLabel?.textColor = UIColor.magentaColor()
+                //cell?.textLabel?.font = UIFont.boldSystemFontOfSize(20)
+                println("income:\(indexPath.item),\(selectedDay!)")
+            }
+            else{
+                cell?.textLabel?.backgroundColor = UIColor.whiteColor()
+            }
+            //上个月和下个月的部分
         }else{
             cell?.textLabel?.textColor = UIColor.lightGrayColor()
             cell?.textLabel?.backgroundColor = UIColor.whiteColor()
@@ -294,8 +341,7 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
     override func viewWillAppear(animated: Bool) {
         var naviLabel = self.navigationController?.navigationBar.viewWithTag(1) as! UILabel
         naviLabel.text = "Billinfo"
-        self.calndrCollectionView?.reloadData()
-       // self.
+        //self.calndrCollectionView?.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
