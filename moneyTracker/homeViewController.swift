@@ -161,9 +161,10 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
         calndrBG.image = UIImage(named: "calendarBG2")
         
         //月账分析
+        var analysis = BIBillAnalysis(year: selectedYear!, month: selectedMonth!)
         var analysisView = AnalysisView(frame: CGRect(x: bgWidth, y: 0, width: bgWidth, height: bgHeight - _naviHeight - mthHeight - tabHeight))
         analysisView.backgroundColor = UIColor.clearColor()
-        analysisView.passValue(passedCategories: ["1","2"], passedRatios: [0.3,0.25,0.2,0.1,0.05,0.05])
+        analysisView.passValue(passedCategories: analysis.expCatSix, passedRatios: analysis.expSix)
 
         
         //ScrollView
@@ -346,6 +347,7 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
         var naviLabel = self.navigationController?.navigationBar.viewWithTag(1) as! UILabel
         naviLabel.text = "Billinfo"
         //self.calndrCollectionView?.reloadData()
+    
     }
     
     override func didReceiveMemoryWarning() {

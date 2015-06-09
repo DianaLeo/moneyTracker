@@ -14,9 +14,9 @@ class TestViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.grayColor()
         
-        var analysis = BIBillAnalysis(year: 2015, month: 6)
-        println(analysis.usedCategories)
-        println(analysis.expAmtByUsedCat)
+//        var analysis = BIBillAnalysis(year: 2015, month: 6)
+//        println(analysis.usedCategories)
+//        println(analysis.expAmtByUsedCat)
         
 //        deleteDatabase()
 //        BIIncome.deleteTableInDatabase()
