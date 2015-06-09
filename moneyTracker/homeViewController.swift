@@ -163,7 +163,7 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
         //月账分析
         var analysisView = AnalysisView(frame: CGRect(x: bgWidth, y: 0, width: bgWidth, height: bgHeight - _naviHeight - mthHeight - tabHeight))
         analysisView.backgroundColor = UIColor.clearColor()
-        analysisView.passValue(color: UIColor.greenColor())
+        analysisView.passValue(passedCategories: ["1","2"], passedRatios: [0.3,0.25,0.2,0.1,0.05,0.05])
 
         
         //ScrollView
