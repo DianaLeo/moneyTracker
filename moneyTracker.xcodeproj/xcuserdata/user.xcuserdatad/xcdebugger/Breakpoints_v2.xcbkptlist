@@ -27,10 +27,15 @@
             timestampString = "455427730.898703"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
+<<<<<<< silver
             startingLineNumber = "196"
             endingLineNumber = "196"
             landmarkName = "pickerView(_:titleForRow:forComponent:)"
             landmarkType = "5">
+=======
+            startingLineNumber = "234"
+            endingLineNumber = "234">
+>>>>>>> local
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -87,6 +92,7 @@
             timestampString = "455427730.898703"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
+<<<<<<< silver
             startingLineNumber = "261"
             endingLineNumber = "261"
             landmarkName = "collectionView(_:cellForItemAtIndexPath:)"
@@ -123,6 +129,10 @@
             endingLineNumber = "297"
             landmarkName = "viewWillAppear(_:)"
             landmarkType = "5">
+=======
+            startingLineNumber = "344"
+            endingLineNumber = "344">
+>>>>>>> local
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -135,10 +145,15 @@
             timestampString = "455427730.898703"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
+<<<<<<< silver
             startingLineNumber = "317"
             endingLineNumber = "317"
             landmarkName = "viewDidAppear(_:)"
             landmarkType = "5">
+=======
+            startingLineNumber = "363"
+            endingLineNumber = "363">
+>>>>>>> local
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -152,9 +167,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "169"
-            endingLineNumber = "169"
-            landmarkName = "collectionView(_:cellForItemAtIndexPath:)"
-            landmarkType = "5">
+            endingLineNumber = "169">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -279,10 +292,15 @@
             timestampString = "455423293.490863"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
+<<<<<<< silver
             startingLineNumber = "374"
             endingLineNumber = "374"
             landmarkName = "naviBtnSaveTouch()"
             landmarkType = "5">
+=======
+            startingLineNumber = "360"
+            endingLineNumber = "360">
+>>>>>>> local
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
