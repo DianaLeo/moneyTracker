@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE2B4AC51B26CD1A0049545B /* AnalysisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2B4AC41B26CD1A0049545B /* AnalysisView.swift */; };
 		CE948F6C1B171BCE00354CFF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F6B1B171BCE00354CFF /* AppDelegate.swift */; };
 		CE948F6F1B171BCE00354CFF /* moneyTracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CE948F6D1B171BCE00354CFF /* moneyTracker.xcdatamodeld */; };
 		CE948F741B171BCE00354CFF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE948F721B171BCE00354CFF /* Main.storyboard */; };
@@ -45,6 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CE2B4AC41B26CD1A0049545B /* AnalysisView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalysisView.swift; sourceTree = "<group>"; };
 		CE948F661B171BCE00354CFF /* moneyTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = moneyTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE948F6A1B171BCE00354CFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE948F6B1B171BCE00354CFF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -185,6 +187,7 @@
 			children = (
 				CE948F971B171CA200354CFF /* homeViewController.swift */,
 				CE948F941B171CA200354CFF /* calndrCollectionViewCell.swift */,
+				CE2B4AC41B26CD1A0049545B /* AnalysisView.swift */,
 			);
 			name = HomePage;
 			sourceTree = "<group>";
@@ -314,6 +317,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE948FAC1B171CA200354CFF /* NewAmountCollectionViewCell.swift in Sources */,
+				CE2B4AC51B26CD1A0049545B /* AnalysisView.swift in Sources */,
 				CE948FA11B171CA200354CFF /* BIBillAnalysis.swift in Sources */,
 				CE948FA91B171CA200354CFF /* DailyViewController.swift in Sources */,
 				CE948FAF1B171CA200354CFF /* NewCollectionViewCell.swift in Sources */,

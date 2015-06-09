@@ -160,6 +160,11 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
         var calndrBG = UIImageView(frame: CGRect(x: calndrCollectionView!.frame.origin.x - 11, y: calndrCollectionView!.frame.origin.y - 50, width: calndrCollectionView!.frame.width + 20, height: calndrCollectionView!.frame.height + 50))
         calndrBG.image = UIImage(named: "calendarBG2")
         
+        //月账分析
+        var analysisView = AnalysisView(frame: CGRect(x: bgWidth, y: 0, width: bgWidth, height: bgHeight - _naviHeight - mthHeight - tabHeight))
+        analysisView.backgroundColor = UIColor.clearColor()
+        analysisView.passValue(color: UIColor.greenColor())
+
         
         //ScrollView
         scrollView = UIScrollView(frame: CGRect(x: 0, y: _naviHeight + mthHeight, width: bgWidth, height: bgHeight - _naviHeight - mthHeight - tabHeight))
@@ -168,10 +173,9 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
         scrollView?.scrollEnabled = false
         scrollView?.showsHorizontalScrollIndicator = false
         scrollView?.contentSize = CGSize(width: bgWidth*2, height: bgHeight - _naviHeight - mthHeight - tabHeight)
-        var view = UIView(frame: CGRect(x: bgWidth, y: 0, width: bgWidth, height: bgHeight - _naviHeight - mthHeight - tabHeight))
-        scrollView?.addSubview(view)
         scrollView?.addSubview(calndrBG)
         scrollView?.addSubview(calndrCollectionView!)
+        scrollView?.addSubview(analysisView)
         self.view.addSubview(scrollView!)
         
         //下标签 tab
