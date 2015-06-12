@@ -45,12 +45,18 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
     var bgWidth  = UIScreen.mainScreen().bounds.size.width
     var bgHeight = UIScreen.mainScreen().bounds.size.height
     var _naviRatio = 0.15 as CGFloat
+    var _naviHeight = CGFloat()
+    var defaultCellHeight = CGFloat()
+    var cellHeight = CGFloat()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        var _naviHeight     = bgHeight * _naviRatio
-        var collectionHeight     = bgHeight * (1 - _naviRatio)
-        var bgTransHeight   = bgHeight * (1 - _naviRatio)
+        //高度计算
+        _naviHeight     = bgHeight * _naviRatio
+        var collectionHeight = bgHeight * (1 - _naviRatio)
+        var bgTransHeight    = bgHeight * (1 - _naviRatio)
+        defaultCellHeight    = bgWidth*0.27
+        cellHeight           = bgWidth*0.71
         
         //背景
         var bgImage = UIImageView(frame: CGRect(x: 0, y: 0, width: bgWidth, height: bgHeight))
@@ -70,7 +76,7 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
         mainCollectionView?.tag = 0
         self.view.addSubview(mainCollectionView!)
         
-        label = UILabel(frame: CGRect(x: 0, y: self.view.frame.height, width: bgWidth, height: 216))
+        label = UILabel(frame: CGRect(x: 0, y: _naviHeight - defaultCellHeight*2.5 + collectionHeight, width: bgWidth, height: bgHeight*0.33))
         label.backgroundColor = UIColor.whiteColor()
         label.hidden = true
         self.view.addSubview(label)
@@ -85,9 +91,6 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        
-        var defaultCellHeight = bgWidth*0.27 as CGFloat
-        var cellHeight = bgWidth*0.71
         
         if (indexPath.section == 0) && (didSelectSection0 == true) {
             return CGSize(width: bgWidth, height: cellHeight)
@@ -221,7 +224,6 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
                     cell?.textField?.text = incomeRecord?.amoStr ?? "unknown"
                 }
             }
-            amount = NSString(string: (cell?.textField?.text)!).floatValue
             return cell!
         }
         //第四项 详细内容
@@ -278,20 +280,19 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
             didSelectSection3 = false
             mainCollectionView?.reloadSections(NSIndexSet(index: 3))
         }
+        mainCollectionView?.frame.origin.y = _naviHeight - defaultCellHeight*1.2
     }
     func textFieldDidEndEditing(textField: UITextField) {
-        println("textField DidEndEditing")
-        label.hidden = true
+        mainCollectionView?.frame.origin.y = _naviHeight
     }
     func textViewDidBeginEditing(textView: UITextView) {
-        println("textView DidBeginEditing")
-        self.view.frame.origin.y -= 216
         label.hidden = false
+        mainCollectionView?.frame.origin.y = _naviHeight - defaultCellHeight*2.5
     }
     func textViewDidEndEditing(textView: UITextView) {
+        label.hidden = true
         didSelectSection3 = false
-        self.view.frame.origin.y += 216
-        println("textView DidEndEditing")
+        mainCollectionView?.frame.origin.y = _naviHeight
     }
     
     
@@ -360,7 +361,6 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
             naviBtnSave.removeFromSuperview()
             naviBtnSaveImg.removeFromSuperview()
             
-            self.navigationController?.popViewControllerAnimated(true)
             if isModificationMode {
                 isModificationMode = false
                 if flagExpense == true {
@@ -380,6 +380,19 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
                 var btnChooseExpense = self.navigationController?.navigationBar.viewWithTag(4) as! UIButton
                 btnChooseExpense.removeFromSuperview()
             }
+            //月账分析－更新
+            var analysisViewEx = (self.navigationController?.viewControllers[0] as! homeViewController).analysisViewEx
+            var analysisViewIn = (self.navigationController?.viewControllers[0] as! homeViewController).analysisViewIn
+            var analysis = BIBillAnalysis(year: selectedYear!, month: selectedMonth!)
+            analysisViewEx.passValue(passedCategories: analysis.expCatSix, passedRatios: analysis.expSix)
+            analysisViewIn.passValue(passedCategories: analysis.incCatSix, passedRatios: analysis.incSix)
+            println(analysis.incSix)
+            analysisViewEx.drawLegends()
+            analysisViewIn.drawLegends()
+            analysisViewEx.setNeedsDisplay()
+            analysisViewIn.setNeedsDisplay()
+            self.navigationController?.popViewControllerAnimated(true)
+
         }
     }
     

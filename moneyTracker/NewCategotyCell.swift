@@ -44,7 +44,7 @@ class NewCategotyCell: UICollectionViewCell,UIAlertViewDelegate {
 
     //长按手势识别
     func handleLongPressGesture(recognizer:UILongPressGestureRecognizer){
-        if ((recognizer.state == UIGestureRecognizerState.Began)&&(label?.text != "New")){
+        if ((recognizer.state == UIGestureRecognizerState.Began)&&(label?.text != "New")&&(label?.text != "Clothing")&&(label?.text != "Food")&&(label?.text != "Accommodation")&&(label?.text != "Transport")){
             var alert:UIAlertView? = UIAlertView(title: "Delete", message: "Are you sure you want to delete \((label?.text)!) category?", delegate: self, cancelButtonTitle: "Cancel", otherButtonTitles: "Yes")
             alert!.show()
             println("longPress")

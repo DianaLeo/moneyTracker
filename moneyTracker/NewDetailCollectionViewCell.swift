@@ -17,8 +17,8 @@ class NewDetailCollectionViewCell: NewCollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        var cellHeight = bgHeight * (1 - 0.15) - 100 * 3
-        textView = UITextView(frame: CGRect(x: 20, y: 60, width: bgWidth-40, height: cellHeight - 95))
+        var cellHeight = bgWidth*0.71
+        textView = UITextView(frame: CGRect(x: 20, y: 60, width: bgWidth-40, height: cellHeight - 80))
         textView?.backgroundColor = UIColor(white: 0.95, alpha: 1)
         textView?.font = UIFont.systemFontOfSize(20)
         textView?.hidden = true
