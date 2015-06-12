@@ -227,8 +227,9 @@ class BIExpense: NSObject {
         
     }
     class func monthSum(#year:Int = 2015, #month:Int = 5) -> String {
-        let sql: String = "SELECT SUM(Amounts) FROM Expense WHERE Year = \(year) AND Month = \(month)"
+        let sql: String = "SELECT SUM(Amounts) FROM Expense WHERE YearOfExpense = \(year) AND MonthOfExpense = \(month)"
         if let monthSum:Double = BIQuery(UTF8StringQuery: sql).resultOfQuery() {
+            println("\(monthSum)")
             return "-\(monthSum)"
         }else {
             return "-0.00"

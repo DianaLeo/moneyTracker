@@ -17,7 +17,6 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
     var collectionViewDataSource = NSMutableArray()
     var userCategoryDS = BICategory.sharedInstance()
     
-    
     var rightImg: UIImageView?
     var rightText: UILabel?
     var flowLayOut = UICollectionViewFlowLayout()
@@ -34,9 +33,10 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
         
         var defaultCellHeight = 100 as CGFloat
         var cellHeight = bgHeight * (1 - 0.15) - defaultCellHeight * 3
-        var smallCellW = 80 as CGFloat
-        var smallCellH = 100 as CGFloat
+        var smallCellW = bgWidth*0.21 as CGFloat
+        var smallCellH = bgWidth*0.26 as CGFloat
         
+        leftTextLabel?.text = "Category"
         rightImg = UIImageView(frame: CGRect(x: bgWidth - 80 - 45, y: 10, width: smallCellW, height: smallCellW))
         rightText = UILabel(frame: CGRect(x: bgWidth - 65 - 45, y: 25, width: 50, height: 50))
         rightText!.textColor = UIColor.whiteColor()
@@ -70,7 +70,7 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
         //最后一个icon始终为“新建”
         if (indexPath.row == collectionViewDataSource.count) {
             cell.img?.image = UIImage(named: "newCategory")
-            cell.label?.text = "newCategory"
+            cell.label?.text = "New"
         }else{
             if let imagePath = userCategoryDS.associatedImagePathFor(category: userCategoryDS.expenseCategories[indexPath.row]) {
                 //println(userCategoryDS.expenseCategories)
@@ -90,27 +90,27 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
             transpBG = UILabel(frame: CGRect(x: 0, y: 0, width: bgWidth, height: bgHeight))
             transpBG.backgroundColor = UIColor(white: 0.2, alpha: 0.3)
             
-            popupWin = UIView(frame: CGRect(x: 15, y: 100, width: bgWidth - 30, height: 350))
+            popupWin = UIView(frame: CGRect(x: bgWidth*0.04, y: bgWidth*0.267, width: bgWidth*0.92, height: bgWidth*0.93))
+            popupWin.backgroundColor = UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1)
             
-            var lab = UILabel(frame: CGRect(x: 0, y: 0, width: bgWidth - 30, height: 350))
-            lab.backgroundColor = UIColor(red: 1, green: 0.9, blue: 0.9, alpha: 1)
-            
-            var title = UILabel(frame: CGRect(x: 0, y: 15, width: bgWidth - 30, height: 30))
+            var title = UILabel(frame: CGRect(x: 0, y: bgWidth*0.04, width: bgWidth - 30, height: 30))
             title.text = "New Category"
-            title.font = UIFont.boldSystemFontOfSize(20)
             title.textAlignment = NSTextAlignment.Center
+            title.textColor = UIColor.darkGrayColor()
+            title.font = UIFont.boldSystemFontOfSize(20)
             
-            var tip1 = UILabel(frame: CGRect(x: 8, y: 45, width: bgWidth - 30, height: 30))
-            tip1.text = "Please pick one from the following:"
+            var tip1 = UILabel(frame: CGRect(x: 8, y: bgWidth*0.12, width: bgWidth - 30, height: 30))
+            tip1.text = "Pick one from the following:"
+            tip1.textColor = UIColor.darkGrayColor()
             tip1.font = UIFont.systemFontOfSize(17)
             
-            var icW = 80  //icon 位置
-            var icH = 80
-            var icY = 70
-            var txH = 20
-            var txY = icY + icH - 10
-            var btnH = icH + txH
-            var btnOK  = UIButton(frame: CGRect(x:220, y: 300, width: 80, height: 30))
+            var icW = bgWidth*0.214  //icon 位置
+            var icH = bgWidth*0.214
+            var icY = bgWidth*0.187
+            var txH = bgWidth*0.05
+            var txY = icH - bgWidth*0.02
+            var btnW = bgWidth*0.23
+            var btnH = icH + txH - bgWidth*0.02
             var img1 = UIImageView(frame: CGRect(x:0, y: 0, width: icW, height: icH))
             var img2 = UIImageView(frame: CGRect(x:0, y: 0, width: icW, height: icH))
             var img3 = UIImageView(frame: CGRect(x:0, y: 0, width: icW, height: icH))
@@ -119,22 +119,22 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
             var img6 = UIImageView(frame: CGRect(x:0, y: 0, width: icW, height: icH))
             var img7 = UIImageView(frame: CGRect(x:0, y: 0, width: icW, height: icH))
             var img8 = UIImageView(frame: CGRect(x:0, y: 0, width: icW, height: icH))
-            var txt1 = UILabel(frame: CGRect(x:0, y: icH, width: icW, height: txH))
-            var txt2 = UILabel(frame: CGRect(x:0, y: icH, width: icW, height: txH))
-            var txt3 = UILabel(frame: CGRect(x:0, y: icH, width: icW, height: txH))
-            var txt4 = UILabel(frame: CGRect(x:0, y: icH, width: icW, height: txH))
-            var txt5 = UILabel(frame: CGRect(x:0, y: icH, width: icW, height: txH))
-            var txt6 = UILabel(frame: CGRect(x:0, y: icH, width: icW, height: txH))
-            var txt7 = UILabel(frame: CGRect(x:0, y: icH, width: icW, height: txH))
-            var txt8 = UILabel(frame: CGRect(x:0, y: icH, width: icW, height: txH))
-            var btn1 = UIButton(frame: CGRect(x:icW*0, y: icY, width: icW, height: btnH))
-            var btn2 = UIButton(frame: CGRect(x:icW*1, y: icY, width: icW, height: btnH))
-            var btn3 = UIButton(frame: CGRect(x:icW*2, y: icY, width: icW, height: btnH))
-            var btn4 = UIButton(frame: CGRect(x:icW*3, y: icY, width: icW, height: btnH))
-            var btn5 = UIButton(frame: CGRect(x:icW*0, y: icY + btnH, width: icW, height: btnH))
-            var btn6 = UIButton(frame: CGRect(x:icW*1, y: icY + btnH, width: icW, height: btnH))
-            var btn7 = UIButton(frame: CGRect(x:icW*2, y: icY + btnH, width: icW, height: btnH))
-            var btn8 = UIButton(frame: CGRect(x:icW*3, y: icY + btnH, width: icW, height: btnH))
+            var txt1 = UILabel(frame: CGRect(x:0, y: txY, width: btnW, height: txH))
+            var txt2 = UILabel(frame: CGRect(x:0, y: txY, width: btnW, height: txH))
+            var txt3 = UILabel(frame: CGRect(x:0, y: txY, width: btnW, height: txH))
+            var txt4 = UILabel(frame: CGRect(x:0, y: txY, width: btnW, height: txH))
+            var txt5 = UILabel(frame: CGRect(x:0, y: txY, width: btnW, height: txH))
+            var txt6 = UILabel(frame: CGRect(x:0, y: txY, width: btnW, height: txH))
+            var txt7 = UILabel(frame: CGRect(x:0, y: txY, width: btnW, height: txH))
+            var txt8 = UILabel(frame: CGRect(x:0, y: txY, width: btnW, height: txH))
+            var btn1 = UIButton(frame: CGRect(x:btnW*0, y: icY, width: btnW, height: btnH))
+            var btn2 = UIButton(frame: CGRect(x:btnW*1, y: icY, width: btnW, height: btnH))
+            var btn3 = UIButton(frame: CGRect(x:btnW*2, y: icY, width: btnW, height: btnH))
+            var btn4 = UIButton(frame: CGRect(x:btnW*3, y: icY, width: btnW, height: btnH))
+            var btn5 = UIButton(frame: CGRect(x:btnW*0, y: icY + btnH, width: btnW, height: btnH))
+            var btn6 = UIButton(frame: CGRect(x:btnW*1, y: icY + btnH, width: btnW, height: btnH))
+            var btn7 = UIButton(frame: CGRect(x:btnW*2, y: icY + btnH, width: btnW, height: btnH))
+            var btn8 = UIButton(frame: CGRect(x:btnW*3, y: icY + btnH, width: btnW, height: btnH))
             
             img1.image = UIImage(named: "entertainment")
             img2.image = UIImage(named: "grocery")
@@ -152,19 +152,15 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
             txt6.text = "Health";        txt6.textColor = UIColor.grayColor(); txt6.tag = 1
             txt7.text = "Makeup";        txt7.textColor = UIColor.grayColor(); txt7.tag = 1
             txt8.text = "LuckyMoney";    txt8.textColor = UIColor.grayColor(); txt8.tag = 1
-            txt1.textAlignment = NSTextAlignment.Center; txt1.font = UIFont.systemFontOfSize(15)
-            txt2.textAlignment = NSTextAlignment.Center; txt2.font = UIFont.systemFontOfSize(15)
-            txt3.textAlignment = NSTextAlignment.Center; txt3.font = UIFont.systemFontOfSize(15)
-            txt4.textAlignment = NSTextAlignment.Center; txt4.font = UIFont.systemFontOfSize(15)
-            txt5.textAlignment = NSTextAlignment.Center; txt5.font = UIFont.systemFontOfSize(15)
-            txt6.textAlignment = NSTextAlignment.Center; txt6.font = UIFont.systemFontOfSize(15)
-            txt7.textAlignment = NSTextAlignment.Center; txt7.font = UIFont.systemFontOfSize(15)
-            txt8.textAlignment = NSTextAlignment.Center; txt8.font = UIFont.systemFontOfSize(15)
+            txt1.textAlignment = NSTextAlignment.Center; txt1.font = UIFont.systemFontOfSize(13)
+            txt2.textAlignment = NSTextAlignment.Center; txt2.font = UIFont.systemFontOfSize(13)
+            txt3.textAlignment = NSTextAlignment.Center; txt3.font = UIFont.systemFontOfSize(13)
+            txt4.textAlignment = NSTextAlignment.Center; txt4.font = UIFont.systemFontOfSize(13)
+            txt5.textAlignment = NSTextAlignment.Center; txt5.font = UIFont.systemFontOfSize(13)
+            txt6.textAlignment = NSTextAlignment.Center; txt6.font = UIFont.systemFontOfSize(13)
+            txt7.textAlignment = NSTextAlignment.Center; txt7.font = UIFont.systemFontOfSize(13)
+            txt8.textAlignment = NSTextAlignment.Center; txt8.font = UIFont.systemFontOfSize(13)
             
-            btnOK.backgroundColor  = UIColor.brownColor()
-            btnOK.setTitle("Add", forState: UIControlState.Normal)
-            btnOK.tag = 0
-            btnOK.addTarget(self, action: "popupBtnTouch", forControlEvents: UIControlEvents.TouchUpInside)
             btn1.addTarget(self, action: "iconTouch:", forControlEvents: UIControlEvents.TouchUpInside)
             btn2.addTarget(self, action: "iconTouch:", forControlEvents: UIControlEvents.TouchUpInside)
             btn3.addTarget(self, action: "iconTouch:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -174,10 +170,23 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
             btn7.addTarget(self, action: "iconTouch:", forControlEvents: UIControlEvents.TouchUpInside)
             btn8.addTarget(self, action: "iconTouch:", forControlEvents: UIControlEvents.TouchUpInside)
             
+            var tip2 = UILabel(frame: CGRect(x: 8, y: bgWidth*0.7, width: bgWidth - 30, height: 30))
+            tip2.text = "Or create your own:"
+            tip2.textColor = UIColor.darkGrayColor()
+            tip2.font = UIFont.systemFontOfSize(17)
             
-            var textFiled = UITextField(frame: CGRect(x: 20, y: 300, width: 200, height: 30))
+            var textFiled = UITextField(frame: CGRect(x: bgWidth*0.053, y: bgWidth*0.8, width: bgWidth*0.53, height: 30))
             textFiled.borderStyle = UITextBorderStyle.RoundedRect
             textFiled.tag = 2
+            
+            var btnOK  = UIButton(frame: CGRect(x:bgWidth*0.65, y: bgWidth*0.8, width: bgWidth*0.22, height: 30))
+            btnOK.backgroundColor  = UIColor(red: 0.82, green: 0.43, blue: 0.37, alpha: 1)
+            btnOK.setTitle("Add", forState: UIControlState.Normal)
+            btnOK.addTarget(self, action: "popupBtnTouch", forControlEvents: UIControlEvents.TouchUpInside)
+            var btnCancel  = UIButton(frame: CGRect(x:bgWidth*0.65, y: bgWidth*0.8 - 30, width: bgWidth*0.22, height: 30))
+            btnCancel.backgroundColor  = UIColor(red: 0.94, green: 0.78, blue: 0.71, alpha: 1)
+            btnCancel.setTitle("Cancel", forState: UIControlState.Normal)
+            btnCancel.addTarget(self, action: "popupCancel", forControlEvents: UIControlEvents.TouchUpInside)
             
             btn1.addSubview(img1); btn1.addSubview(txt1)
             btn2.addSubview(img2); btn2.addSubview(txt2)
@@ -187,9 +196,9 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
             btn6.addSubview(img6); btn6.addSubview(txt6)
             btn7.addSubview(img7); btn7.addSubview(txt7)
             btn8.addSubview(img8); btn8.addSubview(txt8)
-            popupWin.addSubview(lab)
             popupWin.addSubview(title)
             popupWin.addSubview(tip1)
+            popupWin.addSubview(tip2)
             popupWin.addSubview(btn1)
             popupWin.addSubview(btn2)
             popupWin.addSubview(btn3)
@@ -200,6 +209,7 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
             popupWin.addSubview(btn8)
             popupWin.addSubview(textFiled)
             popupWin.addSubview(btnOK)
+            popupWin.addSubview(btnCancel)
             self.superview?.superview!.addSubview(transpBG)
             self.superview?.superview!.addSubview(popupWin)//将弹窗添加到NewViewController
             self.superview?.userInteractionEnabled = false//大CollectionView不能用，但是Controller能用，所以弹窗是能用的
@@ -230,7 +240,6 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
     }
     
     func popupBtnTouch (){
-        println("popup window Btn Touched.")
         var textField = popupWin.viewWithTag(2) as! UITextField
         var text = textField.text
         if (text == ""){
@@ -257,6 +266,12 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
             }
             //如果已经包含选中项，则什么都不做
         }
+        popupWin.removeFromSuperview()
+        transpBG.removeFromSuperview()
+        self.superview?.userInteractionEnabled = true
+    }
+    
+    func popupCancel(){
         popupWin.removeFromSuperview()
         transpBG.removeFromSuperview()
         self.superview?.userInteractionEnabled = true

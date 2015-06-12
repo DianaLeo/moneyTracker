@@ -8,24 +8,21 @@
 
 import UIKit
 
-protocol DailyTableViewCellDelegate: class {
-    func passRecordID (#recordID: Int)
-}
-
 class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
     
     var flagExpense = 1
     var listTable = UITableView()
-    var longPressGestureRecognizer: UILongPressGestureRecognizer?
-    weak var delegate: DailyTableViewCellDelegate?
+    var tabBtnEx = UIButton()
+    var tabBtnIn = UIButton()
     
     var bgWidth  = UIScreen.mainScreen().bounds.size.width
     var bgHeight = UIScreen.mainScreen().bounds.size.height
     
     var listTableDataSource = NSMutableArray(array: [1,2,3,4])
     var userCategoryDS = BICategory.sharedInstance()
-    lazy var dailyExpenseDS = BIExpense.dailyRecords()
-    lazy var dailyIncomeDS = BIIncome.dailyRecords()
+    lazy var dailyExpenseDS = BIExpense.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!)
+    lazy var dailyIncomeDS = BIIncome.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //高度计算
@@ -43,10 +40,10 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
         
         
         //上标签（收支）tab
-        var tabBtnEx = UIButton(frame: CGRect(x: 0, y: _naviHeight, width: bgWidth/2, height: tabHeight))
-        var tabBtnIn = UIButton(frame: CGRect(x: bgWidth/2, y: _naviHeight, width: bgWidth/2, height: tabHeight))
-        tabBtnEx.backgroundColor = UIColor(patternImage: UIImage(named: "expense")!)
-        tabBtnIn.backgroundColor = UIColor(patternImage: UIImage(named: "income")!)
+        tabBtnEx = UIButton(frame: CGRect(x: 0, y: _naviHeight, width: bgWidth/2, height: tabHeight))
+        tabBtnIn = UIButton(frame: CGRect(x: bgWidth/2, y: _naviHeight, width: bgWidth/2, height: tabHeight))
+        tabBtnEx.backgroundColor = UIColor(red: 0.82, green: 0.43, blue: 0.37, alpha: 1)
+        tabBtnIn.backgroundColor = UIColor(red: 0.94, green: 0.78, blue: 0.71, alpha: 1)
         tabBtnEx.setTitle("Expense", forState: UIControlState.Normal)
         tabBtnIn.setTitle("Income", forState: UIControlState.Normal)
         tabBtnEx.addTarget(self, action: "tabBtnExTouch", forControlEvents: UIControlEvents.TouchUpInside)
@@ -61,13 +58,14 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
         listTable.dataSource = self
         listTable.delegate   = self
         listTable.separatorStyle = UITableViewCellSeparatorStyle.None
+        listTable.bounces = false
         
-        longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongPressGesture:")
-        longPressGestureRecognizer!.numberOfTouchesRequired = 1
-        longPressGestureRecognizer!.allowableMovement = 50
-        longPressGestureRecognizer!.minimumPressDuration = 0.5
-        
-        listTable.addGestureRecognizer(longPressGestureRecognizer!)
+//        longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongPressGesture:")
+//        longPressGestureRecognizer!.numberOfTouchesRequired = 1
+//        longPressGestureRecognizer!.allowableMovement = 50
+//        longPressGestureRecognizer!.minimumPressDuration = 0.5
+//        
+//        listTable.addGestureRecognizer(longPressGestureRecognizer!)
         self.view.addSubview(listTable)
     }
     
@@ -86,7 +84,7 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
         tableView.registerClass(DailyTableViewCell.self, forCellReuseIdentifier: "DailyListCell")
         var cell = tableView.dequeueReusableCellWithIdentifier("DailyListCell", forIndexPath: indexPath) as? DailyTableViewCell
         if (indexPath.row%2 == 0) {
-            cell?.backgroundColor = UIColor.whiteColor()
+            cell?.backgroundColor = UIColor(red: 0.99, green: 0.995, blue: 0.995, alpha: 1)
         }else{
             cell?.backgroundColor = UIColor(red: 0.94, green: 0.93, blue: 0.93, alpha: 1)
         }
@@ -132,7 +130,7 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 90
+        return bgWidth*0.24
     }
     
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
@@ -152,15 +150,14 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        println("shortPress")
         var naviBtnNew = self.navigationController?.navigationBar.viewWithTag(2) as! UIButton
         var naviBtnNewImg = self.navigationController?.navigationBar.viewWithTag(3) as! UIImageView
         naviBtnNew.removeFromSuperview()
         naviBtnNewImg.removeFromSuperview()
         isModificationMode = true
+        isFromRootVC       = false
         var newViewController = NewViewController()
         self.navigationController?.pushViewController(newViewController, animated: true)
-        self.delegate?.passRecordID(recordID: indexPath.row)
         if flagExpense == 0 {
             newViewController.incomeRecord = dailyIncomeDS[indexPath.row]
             newViewController.flagExpense  = false
@@ -171,12 +168,12 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
     }
     
     //长按手势识别
-    func handleLongPressGesture(recognizer:UILongPressGestureRecognizer){
-        if (recognizer.state == UIGestureRecognizerState.Began){
-            listTable.setEditing(!listTable.editing, animated: true)
-            println("longPress")
-        }
-    }
+//    func handleLongPressGesture(recognizer:UILongPressGestureRecognizer){
+//        if (recognizer.state == UIGestureRecognizerState.Began){
+//            listTable.setEditing(!listTable.editing, animated: true)
+//            println("longPress")
+//        }
+//    }
     
     
     //导航栏按钮点击事件 - 不管点哪个都要移除右边的按钮，而左边的按钮自动移除
@@ -188,6 +185,7 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
         var newViewController = NewViewController()
         self.navigationController?.pushViewController(newViewController, animated: true)
         isModificationMode = false
+        isFromRootVC       = false
         if flagExpense == 0 {
             newViewController.flagExpense  = false
         }else{
@@ -205,11 +203,15 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
     
     func tabBtnExTouch () {
         flagExpense = 1
+        tabBtnEx.backgroundColor = UIColor(red: 0.82, green: 0.43, blue: 0.37, alpha: 1)//red
+        tabBtnIn.backgroundColor = UIColor(red: 0.94, green: 0.78, blue: 0.71, alpha: 1)//pink
         listTable.reloadData()
     }
     
     func tabBtnInTouch () {
         flagExpense = 0
+        tabBtnIn.backgroundColor = UIColor(red: 0.82, green: 0.43, blue: 0.37, alpha: 1)//red
+        tabBtnEx.backgroundColor = UIColor(red: 0.94, green: 0.78, blue: 0.71, alpha: 1)//pink
         listTable.reloadData()
     }
     
@@ -218,7 +220,7 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
         var naviLabel = self.navigationController?.navigationBar.viewWithTag(1) as! UILabel
         naviLabel.text = "\(selectedDay!)/\(selectedMonth!)/\(selectedYear!)"
         
-        var naviBtnNewRect = CGRect(x: bgWidth - 70, y: 10, width: 55, height: 55)
+        var naviBtnNewRect = CGRect(x: bgWidth - 70, y: bgHeight*0.015, width: 55, height: 55)
         var naviBtnNew     = UIButton(frame: naviBtnNewRect)
         var naviBtnNewImg  = UIImageView(frame: naviBtnNewRect)
         naviBtnNewImg.image = UIImage(named: "new")
@@ -240,7 +242,6 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
         dailyExpenseDS = BIExpense.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!)
         dailyIncomeDS = BIIncome.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!)
         
-        self.listTable.setEditing(false, animated: false)
         self.listTable.reloadData()
         
     }

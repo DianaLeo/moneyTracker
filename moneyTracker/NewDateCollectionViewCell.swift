@@ -20,7 +20,7 @@ class NewDateCollectionViewCell: NewCollectionViewCell {
         datepicker = UIDatePicker(frame: CGRect(x: 0, y: 54, width: bgWidth*0.8, height: 0.7*cellHeight))
         datepicker?.datePickerMode = UIDatePickerMode.Date
         datepicker?.hidden = true
-        
+        leftTextLabel?.text = "Date"
         rightLabel = UILabel(frame: CGRect(x: bgWidth - 400 - 50, y: 25, width: 400, height: 40))
         rightLabel?.textColor = UIColor(red: 0.53, green: 0.53, blue: 0.53, alpha: 1)
         rightLabel?.font      = UIFont.italicSystemFontOfSize(25)

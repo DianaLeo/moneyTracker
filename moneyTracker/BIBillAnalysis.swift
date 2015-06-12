@@ -17,8 +17,11 @@ class BIBillAnalysis: NSObject {
     
     //internal variables
     private var sortOrder:Array<Bool> = []
+    private var incSortOrder:Array<Bool> = []
     
     private var expUsedCategories:[String] = []
+    private var incUsedCategories:[String] = []
+    
     private var expAmtByUsedCat:[Double] = []
     private var incAmtByUsedCat:[Double] = []
     
@@ -34,23 +37,41 @@ class BIBillAnalysis: NSObject {
                 self.expUsedCategories.append(catR)
             }
         }
+        let incCatSQL:String = "SELECT Category FROM Income WHERE YearOfIncome = \(year) AND MonthOfIncome = \(month)"
+        let incCatsRepeat:[String] = BIQuery(UTF8StringQuery: incCatSQL).resultsOfQuery()
+        for incCatR in incCatsRepeat {
+            if !self.incUsedCategories.hasItem(incCatR, sameItem: incCatR) {
+                self.incUsedCategories.append(incCatR)
+            }
+        }
+        println(self.incUsedCategories)
         for catS in self.expUsedCategories {
             let expSQL:String = "SELECT SUM(Amounts) FROM Expense WHERE YearOfExpense = \(year) AND MonthOfExpense = \(month) AND Category = '\(catS)'"
             self.expAmtByUsedCat.append(BIQuery(UTF8StringQuery: expSQL).resultOfQuery() ?? 0.0)
         }
-        for catS in self.expUsedCategories {
-            let incSQL:String = "SELECT SUM(Amounts) FROM Income WHERE YearOfExpense = \(year) AND MonthOfExpense = \(month) AND Category = '\(catS)'"
+        for catS in self.incUsedCategories {
+            let incSQL:String = "SELECT SUM(Amounts) FROM Income WHERE YearOfIncome = \(year) AND MonthOfIncome = \(month) AND Category = '\(catS)'"
             self.incAmtByUsedCat.append(BIQuery(UTF8StringQuery: incSQL).resultOfQuery() ?? 0.0)
         }
         if self.expUsedCategories.count > 0 {
             sortCatsAndAmt()
             self.expAmtPercentage = amtToPercentage(self.expAmtByUsedCat)
-            self.incAmtPercentage = amtToPercentage(self.incAmtByUsedCat)
+            //self.incAmtPercentage = amtToPercentage(self.incAmtByUsedCat)
             makeExpSix()
-            makeIncSix()
+            //makeIncSix()
         }else{
             self.expCatSix = ["EmptyCategory","","","","",""]
-            self.expSix = [1,0,0,0,0,0]
+            self.expSix = [0,0,0,0,0,0]
+        }
+        if self.incUsedCategories.count > 0 {
+            incSortCatsAndAmt()
+            //self.expAmtPercentage = amtToPercentage(self.expAmtByUsedCat)
+            self.incAmtPercentage = amtToPercentage(self.incAmtByUsedCat)
+            //makeExpSix()
+            makeIncSix()
+        }else{
+            self.incCatSix = ["EmptyCategory","","","","",""]
+            self.incSix = [0,0,0,0,0,0]
         }
     }
     private func amtToPercentage(amtAry:[Double]) -> [Double]{
@@ -75,6 +96,20 @@ class BIBillAnalysis: NSObject {
         sort(&self.expUsedCategories, { [unowned self] (_,_) in
             i++
             return self.sortOrder[i-1]
+            })
+        //        println(self.usedCategories)
+        //        println(self.expAmtByUsedCat)
+    }
+    private func incSortCatsAndAmt(){
+        sort(&self.incAmtByUsedCat, { [unowned self](a,b) in
+            let bool:Bool = a > b
+            self.incSortOrder.append(bool)
+            return bool
+            })
+        var i = 0
+        sort(&self.incUsedCategories, { [unowned self] (_,_) in
+            i++
+            return self.incSortOrder[i-1]
             })
         //        println(self.usedCategories)
         //        println(self.expAmtByUsedCat)
@@ -109,28 +144,28 @@ class BIBillAnalysis: NSObject {
     }
     //Category Error: Need to update to IncCategory
     private func makeIncSix(){
-        if self.expUsedCategories.count == 6{
+        if self.incUsedCategories.count == 6{
             for i in 0...5{
                 self.incSix.append(self.incAmtPercentage[i])
-                self.incCatSix.append(self.expUsedCategories[i])
+                self.incCatSix.append(self.incUsedCategories[i])
             }
-        }else if self.expUsedCategories.count > 6 {
+        }else if self.incUsedCategories.count > 6 {
             for i in 0...4{
                 self.incSix.append(self.incAmtPercentage[i])
-                self.incCatSix.append(self.expUsedCategories[i])
+                self.incCatSix.append(self.incUsedCategories[i])
             }
             var sumAfterSix:Double = 0
-            for i in 5...self.expUsedCategories.count-1 {
+            for i in 5...self.incUsedCategories.count-1 {
                 sumAfterSix += self.incAmtPercentage[i]
             }
             self.incSix.append(sumAfterSix)
             self.incCatSix.append("Others")
         }else{
-            for i in 0...self.expUsedCategories.count-1 {
+            for i in 0...self.incUsedCategories.count-1 {
                 self.incSix.append(self.incAmtPercentage[i])
-                self.incCatSix.append(self.expUsedCategories[i])
+                self.incCatSix.append(self.incUsedCategories[i])
             }
-            for i in (self.expUsedCategories.count)...5{
+            for i in (self.incUsedCategories.count)...5{
                 self.incSix.append(0)
                 self.incCatSix.append("Others")
             }

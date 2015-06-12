@@ -8,10 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		CE2B4AC51B26CD1A0049545B /* AnalysisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2B4AC41B26CD1A0049545B /* AnalysisView.swift */; };
+		CE680BEC1B2ACB2600587BD9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE680BEB1B2ACB2600587BD9 /* Images.xcassets */; };
+		CE680BF01B2AE38A00587BD9 /* Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = CE680BEF1B2AE38A00587BD9 /* Logo.png */; };
+		CE680BF21B2AE96500587BD9 /* Logo2.png in Resources */ = {isa = PBXBuildFile; fileRef = CE680BF11B2AE96500587BD9 /* Logo2.png */; };
 		CE948F6C1B171BCE00354CFF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F6B1B171BCE00354CFF /* AppDelegate.swift */; };
 		CE948F6F1B171BCE00354CFF /* moneyTracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CE948F6D1B171BCE00354CFF /* moneyTracker.xcdatamodeld */; };
 		CE948F741B171BCE00354CFF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE948F721B171BCE00354CFF /* Main.storyboard */; };
-		CE948F761B171BCE00354CFF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE948F751B171BCE00354CFF /* Images.xcassets */; };
 		CE948F791B171BCE00354CFF /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE948F771B171BCE00354CFF /* LaunchScreen.xib */; };
 		CE948F851B171BCE00354CFF /* moneyTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F841B171BCE00354CFF /* moneyTrackerTests.swift */; };
 		CE948FA11B171CA200354CFF /* BIBillAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F8E1B171CA200354CFF /* BIBillAnalysis.swift */; };
@@ -47,12 +49,14 @@
 
 /* Begin PBXFileReference section */
 		CE2B4AC41B26CD1A0049545B /* AnalysisView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalysisView.swift; sourceTree = "<group>"; };
+		CE680BEB1B2ACB2600587BD9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		CE680BEF1B2AE38A00587BD9 /* Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Logo.png; sourceTree = "<group>"; };
+		CE680BF11B2AE96500587BD9 /* Logo2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Logo2.png; sourceTree = "<group>"; };
 		CE948F661B171BCE00354CFF /* moneyTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = moneyTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE948F6A1B171BCE00354CFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE948F6B1B171BCE00354CFF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE948F6E1B171BCE00354CFF /* moneyTracker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = moneyTracker.xcdatamodel; sourceTree = "<group>"; };
 		CE948F731B171BCE00354CFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		CE948F751B171BCE00354CFF /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		CE948F781B171BCE00354CFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		CE948F7E1B171BCE00354CFF /* moneyTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = moneyTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE948F831B171BCE00354CFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -138,7 +142,9 @@
 		CE948F691B171BCE00354CFF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				CE948F751B171BCE00354CFF /* Images.xcassets */,
+				CE680BEF1B2AE38A00587BD9 /* Logo.png */,
+				CE680BF11B2AE96500587BD9 /* Logo2.png */,
+				CE680BEB1B2ACB2600587BD9 /* Images.xcassets */,
 				CE948F6A1B171BCE00354CFF /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -296,9 +302,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE680BEC1B2ACB2600587BD9 /* Images.xcassets in Resources */,
+				CE680BF01B2AE38A00587BD9 /* Logo.png in Resources */,
 				CE948F741B171BCE00354CFF /* Main.storyboard in Resources */,
+				CE680BF21B2AE96500587BD9 /* Logo2.png in Resources */,
 				CE948F791B171BCE00354CFF /* LaunchScreen.xib in Resources */,
-				CE948F761B171BCE00354CFF /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

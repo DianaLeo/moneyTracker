@@ -17,17 +17,17 @@ var didSelectSection0 = false
 var didSelectSection1 = false
 var didSelectSection3 = false
 var isModificationMode = false
+var isFromRootVC = true
 var category = ""
 
-var choosedYear = selectedYear
-var choosedMonth = selectedMonth
-var choosedDay = selectedDay
-class NewViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,SmallCategoryCellDelegate,UITextFieldDelegate,UITextViewDelegate,DailyTableViewCellDelegate {
+class NewViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,SmallCategoryCellDelegate,UITextFieldDelegate,UITextViewDelegate {
     
     var mainCollectionView: UICollectionView?
     var naviLabel = UILabel()
     var btnChooseExpense = UIButton()
     var label = UILabel()
+    var catCellRightImg  = UIImageView()
+    var amoCellTextField = UITextField()
     var isFirstLoad = true
     var flagExpense = true
     var income = Income()
@@ -35,9 +35,9 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
     var amount = Float()
     var detail = ""
     // class inside temp time
-    var selectedYear:Int?
-    var selectedMonth:Int?
-    var selectedDay:Int?
+    var choosedYear:Int?
+    var choosedMonth:Int?
+    var choosedDay:Int?
     //incomeRecord and expenseRecord
     var incomeRecord: IncomeRecord?
     var expenseRecord: ExpenseRecord?
@@ -66,6 +66,7 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
         mainCollectionView!.dataSource = self
         mainCollectionView!.delegate   = self
         mainCollectionView?.backgroundColor = UIColor.clearColor()
+        mainCollectionView?.bounces = false
         mainCollectionView?.tag = 0
         self.view.addSubview(mainCollectionView!)
         
@@ -73,10 +74,6 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
         label.backgroundColor = UIColor.whiteColor()
         label.hidden = true
         self.view.addSubview(label)
-    }
-    
-    func passRecordID(#recordID: Int) {
-        println("\(recordID)")
     }
     
     //详细列表的实现
@@ -89,8 +86,8 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
-        var defaultCellHeight = 100 as CGFloat
-        var cellHeight = bgHeight*(1 - _naviRatio) - defaultCellHeight*3
+        var defaultCellHeight = bgWidth*0.27 as CGFloat
+        var cellHeight = bgWidth*0.71
         
         if (indexPath.section == 0) && (didSelectSection0 == true) {
             return CGSize(width: bgWidth, height: cellHeight)
@@ -142,7 +139,6 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
         //第一项 日期选择
         if (indexPath.section == 0){
             var cell = collectionView.dequeueReusableCellWithReuseIdentifier("newDateCell", forIndexPath: indexPath) as? NewDateCollectionViewCell
-            cell!.leftTextLabel?.text = "Datepicker"
             if (didSelectSection0 == true){
                 cell!.backgroundColor = UIColor.whiteColor()
                 cell!.datepicker?.hidden = false
@@ -152,23 +148,20 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
                 cell!.datepicker?.hidden = true
                 cell!.rightLabel?.hidden = false
             }
-            //判断是“修改”模式还是“新建”模式
-            if isModificationMode && isFirstLoad {
-                println("cell0: isfirstload?\(isFirstLoad)")
-                cell?.datepicker?.date = NSDate.dateFor(year: choosedYear!, month: choosedMonth!, day: choosedDay!)
+            //若为“修改”模式，或从dailyVC来的“新建”模式
+            if ((isModificationMode && isFirstLoad)||(!isFromRootVC && isFirstLoad)) {
+                cell?.datepicker?.date = NSDate.dateFor(year: selectedYear!, month: selectedMonth!, day: selectedDay!)
             }
             var dt = cell?.datepicker?.date
             cell?.rightLabel?.text = NSDateFormatter.localizedStringFromDate(dt!, dateStyle: NSDateFormatterStyle.MediumStyle, timeStyle: NSDateFormatterStyle.NoStyle)
             //存储
             var format = NSDateFormatter()
-            var format2 = NSDateFormatter()
             format.dateFormat = "yyyyMMddhhmmss"
-            //format.dateStyle = NSDateFormatterStyle.ShortStyle
             var dateString = NSString(string: format.stringFromDate(dt!))
             println(dateString)
-            self.selectedYear  = dateString.substringWithRange(NSRange(location: 0, length: 4)).toInt()
-            self.selectedMonth = dateString.substringWithRange(NSRange(location: 4, length: 2)).toInt()
-            self.selectedDay   = dateString.substringWithRange(NSRange(location: 6, length: 2)).toInt()
+            choosedYear  = dateString.substringWithRange(NSRange(location: 0, length: 4)).toInt()
+            choosedMonth = dateString.substringWithRange(NSRange(location: 4, length: 2)).toInt()
+            choosedDay   = dateString.substringWithRange(NSRange(location: 6, length: 2)).toInt()
             
             return cell!
         }
@@ -176,7 +169,7 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
         else if (indexPath.section == 1){
             var cell = collectionView.dequeueReusableCellWithReuseIdentifier("newCategoryCell", forIndexPath: indexPath) as? NewCategoryCollectionViewCell
             cell?.delegate = self
-            cell?.leftTextLabel?.text = "Category"
+            catCellRightImg = (cell?.rightImg)!
             if (didSelectSection1 == true){
                 cell!.backgroundColor = UIColor.whiteColor()
                 cell?.collectionView?.hidden = false
@@ -185,7 +178,6 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
                 cell!.backgroundColor = UIColor(red: 0.94, green: 0.93, blue: 0.93, alpha: 1)
                 //判断是“新建”模式还是“修改”模式
                 if (isModificationMode && isFirstLoad){
-                    println("cell1: isfirstload?\(isFirstLoad)")
                     var userCategoryDS = BICategory.sharedInstance()
                     if flagExpense == true {
                         if let expCat = expenseRecord?.cat{
@@ -219,11 +211,10 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
         //第三项 金额
         else if (indexPath.section == 2){
             var cell = collectionView.dequeueReusableCellWithReuseIdentifier("newAmountCell", forIndexPath: indexPath) as? NewAmountCollectionViewCell
-            cell?.leftTextLabel?.text = "Amount"
             cell?.textField?.delegate = self
+            amoCellTextField = (cell?.textField)!
             //判断是“新建”模式还是“修改”模式
             if (isModificationMode && isFirstLoad){
-                println("cell2: isfirstload?\(isFirstLoad)")
                 if flagExpense == true {
                     cell?.textField?.text = expenseRecord?.amoStr ?? "unknown"
                 }else{
@@ -236,7 +227,6 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
         //第四项 详细内容
         else if (indexPath.section == 3){
             var cell = collectionView.dequeueReusableCellWithReuseIdentifier("newDetailCell", forIndexPath: indexPath) as? NewDetailCollectionViewCell
-            cell?.leftTextLabel?.text = "Detail"
             cell?.textView?.delegate = self
             if (didSelectSection3 == true){
                 cell!.backgroundColor = UIColor.whiteColor()
@@ -250,14 +240,15 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
             //判断是“新建”模式还是“修改”模式
             if (isModificationMode && isFirstLoad){
                 isFirstLoad = false
-                println("cell3: isfirstload?\(isFirstLoad)")
-                //cell?.textView?.text = 从数据库里读取
                 if flagExpense == true {
                     cell?.textView?.text = expenseRecord?.detl
                 }else {
                     cell?.textView?.text = incomeRecord?.detl
                 }
                 
+            }
+            if (!isFromRootVC){
+                isFirstLoad = false 
             }
             cell?.rightLabel?.text = cell?.textView?.text
             detail = (cell?.textView?.text)!
@@ -306,7 +297,7 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
     
     //页面即将显示时
     override func viewWillAppear(animated: Bool) {
-        (self.navigationController?.viewControllers[1] as! DailyViewController).delegate = self
+        //(self.navigationController?.viewControllers[1] as! DailyViewController).delegate = self
 
         naviLabel = self.navigationController?.navigationBar.viewWithTag(1) as! UILabel
         if flagExpense{
@@ -315,13 +306,18 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
             naviLabel.text = "Income"
         }
         
-        btnChooseExpense = UIButton(frame: CGRect(x: bgWidth/2 + 100, y: 20, width: 20, height: 20))
-        btnChooseExpense.backgroundColor = UIColor.whiteColor()
-        btnChooseExpense.addTarget(self, action: "btnChooseExpenseTouch", forControlEvents: UIControlEvents.TouchUpInside)
-        btnChooseExpense.tag = 4
-        self.navigationController?.navigationBar.addSubview(btnChooseExpense)
+        if (isModificationMode == false){
+            btnChooseExpense = UIButton(frame: CGRect(x: bgWidth/2 + 60, y: 30, width: 20, height: 20))
+            btnChooseExpense.backgroundColor = UIColor.clearColor()
+            var btnChooseExpenseImage = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+            btnChooseExpenseImage.image = UIImage(named: "btnChooseExpenseImage")
+            btnChooseExpense.addSubview(btnChooseExpenseImage)
+            btnChooseExpense.addTarget(self, action: "btnChooseExpenseTouch", forControlEvents: UIControlEvents.TouchUpInside)
+            btnChooseExpense.tag = 4
+            self.navigationController?.navigationBar.addSubview(btnChooseExpense)
+        }
         
-        var naviBtnSaveRect = CGRect(x: bgWidth - 70, y: 10, width: 55, height: 55)
+        var naviBtnSaveRect = CGRect(x: bgWidth - 70, y: bgHeight*0.015, width: 55, height: 55)
         var naviBtnSave     = UIButton(frame: naviBtnSaveRect)
         var naviBtnSaveImg  = UIImageView(frame: naviBtnSaveRect)
         naviBtnSaveImg.image = UIImage(named: "save")
@@ -354,30 +350,35 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
     }
     
     func naviBtnSaveTouch () {
-        amount = NSString(string: ((mainCollectionView?.cellForItemAtIndexPath(NSIndexPath(forItem: 0, inSection: 2)) as! NewAmountCollectionViewCell).textField?.text)!).floatValue
-        var naviBtnSave = self.navigationController?.navigationBar.viewWithTag(2) as! UIButton
-        var naviBtnSaveImg = self.navigationController?.navigationBar.viewWithTag(3) as! UIImageView
-        var btnChooseExpense = self.navigationController?.navigationBar.viewWithTag(4) as! UIButton
-        naviBtnSave.removeFromSuperview()
-        naviBtnSaveImg.removeFromSuperview()
-        btnChooseExpense.removeFromSuperview()
-        
-        self.navigationController?.popViewControllerAnimated(true)
-        if isModificationMode {
-            isModificationMode = false
-            if flagExpense == true {
-                var newExpense = Expense(year: self.selectedYear!, month: selectedMonth!, day: self.selectedDay!, category: category, categoryDetail: nil, amount: amount, expenseDetail: detail, receiptImage: nil)
-                BIExpense.updateToDatabase(expenseID: expenseRecord!.ID, expense: newExpense)
-                
-            }else{
-                var newIncome = Income(year: self.selectedYear!, month: selectedMonth!, day: self.selectedDay!, category: category, categoryDetail: nil, amount: amount, incomeDetail: detail, receiptImage: nil)
-                BIIncome.updateToDatabase(incomeID: incomeRecord!.ID, income: newIncome)
-            }
-        }else {
-            if flagExpense{
-                BIExpense(year: self.selectedYear!, month: self.selectedMonth!, day: self.selectedDay!, category: category, categoryDetail: nil, amounts: amount, expenseDetail: detail, receiptImage: nil)
-            }else{
-                BIIncome(year: self.selectedYear!, month: self.selectedMonth!, day: self.selectedDay!, category: category, categoryDetail: nil, amounts: amount, incomeDetail: detail, receiptImage: nil)
+        if ((catCellRightImg.image == nil)||(amoCellTextField.text == "")){
+            var alert:UIAlertView? = UIAlertView(title: "Incomplete Info", message: "You can't save record without category or amount!", delegate: self, cancelButtonTitle: "Yes")
+            alert!.show()
+        }else{
+            amount = NSString(string: ((mainCollectionView?.cellForItemAtIndexPath(NSIndexPath(forItem: 0, inSection: 2)) as! NewAmountCollectionViewCell).textField?.text)!).floatValue
+            var naviBtnSave = self.navigationController?.navigationBar.viewWithTag(2) as! UIButton
+            var naviBtnSaveImg = self.navigationController?.navigationBar.viewWithTag(3) as! UIImageView
+            naviBtnSave.removeFromSuperview()
+            naviBtnSaveImg.removeFromSuperview()
+            
+            self.navigationController?.popViewControllerAnimated(true)
+            if isModificationMode {
+                isModificationMode = false
+                if flagExpense == true {
+                    var newExpense = Expense(year: choosedYear!, month: choosedMonth!, day: choosedDay!, category: category, categoryDetail: nil, amount: amount, expenseDetail: detail, receiptImage: nil)
+                    BIExpense.updateToDatabase(expenseID: expenseRecord!.ID, expense: newExpense)
+                    
+                }else{
+                    var newIncome = Income(year: choosedYear!, month: choosedMonth!, day: choosedDay!, category: category, categoryDetail: nil, amount: amount, incomeDetail: detail, receiptImage: nil)
+                    BIIncome.updateToDatabase(incomeID: incomeRecord!.ID, income: newIncome)
+                }
+            }else {
+                if flagExpense{
+                    BIExpense(year: choosedYear!, month: choosedMonth!, day: choosedDay!, category: category, categoryDetail: nil, amounts: amount, expenseDetail: detail, receiptImage: nil)
+                }else{
+                    BIIncome(year: choosedYear!, month: choosedMonth!, day: choosedDay!, category: category, categoryDetail: nil, amounts: amount, incomeDetail: detail, receiptImage: nil)
+                }
+                var btnChooseExpense = self.navigationController?.navigationBar.viewWithTag(4) as! UIButton
+                btnChooseExpense.removeFromSuperview()
             }
         }
     }
@@ -385,16 +386,17 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
     func naviBtnCancelTouch () {
         var naviBtnSave = self.navigationController?.navigationBar.viewWithTag(2) as! UIButton
         var naviBtnSaveImg = self.navigationController?.navigationBar.viewWithTag(3) as! UIImageView
-        var btnChooseExpense = self.navigationController?.navigationBar.viewWithTag(4) as! UIButton
         naviBtnSave.removeFromSuperview()
         naviBtnSaveImg.removeFromSuperview()
-        btnChooseExpense.removeFromSuperview()
 
         self.navigationController?.popViewControllerAnimated(true)
         if isModificationMode {
             var listTable = (self.navigationController?.viewControllers[1] as! DailyViewController).listTable
             listTable.deselectRowAtIndexPath(listTable.indexPathForSelectedRow()!, animated: false)
             isModificationMode = false
+        }else{
+            var btnChooseExpense = self.navigationController?.navigationBar.viewWithTag(4) as! UIButton
+            btnChooseExpense.removeFromSuperview()
         }
     }
 

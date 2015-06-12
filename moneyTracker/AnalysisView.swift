@@ -22,15 +22,37 @@ class AnalysisView: UIView {
     var pinkColor   = UIColor(red: 0.94, green: 0.78, blue: 0.71, alpha: 1)
     var blueColor   = UIColor(red: 0.53, green: 0.75, blue: 0.71, alpha: 1)
     var whiteColor  = UIColor(red: 0.93, green: 0.93, blue: 0.93, alpha: 1)
-    var colors = [UIColor]()
+    var colors      = [UIColor](count: 6, repeatedValue: UIColor.lightGrayColor())
     
     //数据
-    var categories = ["1","2","3","4","5","6"]
-    var ratios = [0.1,0.1,0.1,0.1,0.1,0.1]
+    var categories  = [String](count: 6, repeatedValue: "")
+    var ratios      = [Double](count: 6, repeatedValue: 0.0)
     
+    //属性
+    var title       = UILabel()
+    var legends     = [UILabel](count: 6, repeatedValue: UILabel())
+    var textLabels  = [UILabel](count: 6, repeatedValue: UILabel())
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        colors = [redColor,yellowColor,purpleColor,pinkColor,blueColor,whiteColor]
+        colors = [yellowColor,redColor,blueColor,pinkColor,purpleColor,whiteColor]
+        var l1Y = Int(bgWidth - 30)
+        title = UILabel(frame: CGRect(x: 25, y: 0, width: 150, height: 30))
+        title.textColor = UIColor.whiteColor()
+        title.font = UIFont.boldSystemFontOfSize(25)
+        self.addSubview(title)
+        for i in 0...5{
+            legends[i] = UILabel(frame: CGRect(x: 50, y: l1Y + 42*i, width: 80, height: 30))
+            legends[i].backgroundColor = colors[i]
+            legends[i].textAlignment = NSTextAlignment.Center
+            legends[i].textColor = UIColor.blackColor()
+            legends[i].font = UIFont.systemFontOfSize(20)
+            textLabels[i] = UILabel(frame: CGRect(x: 150, y: l1Y + 42*i, width: Int(bgWidth - 120), height: 30))
+            textLabels[i].textColor = UIColor.blackColor()
+            textLabels[i].font = UIFont.systemFontOfSize(20)
+            self.addSubview(legends[i])
+            self.addSubview(textLabels[i])
+        }
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -38,9 +60,10 @@ class AnalysisView: UIView {
     }
     
     override func drawRect(rect: CGRect) {
+        println("draw a fan figure.")
         var endAngle = 0 as Double
         var startAngle = 0 as Double
-        var context = UIGraphicsGetCurrentContext()
+        var context: CGContextRef = UIGraphicsGetCurrentContext()
 
         CGContextSetAllowsAntialiasing(context, true)
         CGContextSetLineWidth(context, 5)
@@ -53,7 +76,7 @@ class AnalysisView: UIView {
         for i in 0...5{
             endAngle = endAngle + ratios[i]
             startAngle = endAngle - ratios[i]
-            drawFanForRange(color: colors[i], start: startAngle, end: endAngle)
+            drawFanForRange(color: colors[i], start: startAngle, end: endAngle, context: context)
         }
     }
     
@@ -62,13 +85,28 @@ class AnalysisView: UIView {
         ratios = passedRatios
     }
     
-    func drawFanForRange(#color: UIColor, start: Double, end: Double){
-        var context = UIGraphicsGetCurrentContext()
+    func drawFanForRange(#color: UIColor, start: Double, end: Double, context: CGContextRef){
+        //var context = UIGraphicsGetCurrentContext()
         CGContextSetFillColorWithColor(context, color.CGColor)
         CGContextMoveToPoint(context, bgWidth/2, bgWidth/2 - 10)
         CGContextAddArc(context, bgWidth/2, bgWidth/2 - 10, bgWidth/2 - 50, CGFloat((start - 0.25)*2*M_PI), CGFloat((end - 0.25)*2*M_PI), 0)
         CGContextClosePath(context)
         CGContextFillPath(context)
+    }
+    
+    func drawLegends(){
+        var l1Y = Int(bgWidth - 50)
+        for i in 0...5{
+            if (ratios[i] != 0){
+                legends[i].text = "\(Float(Int(ratios[i]*1000+0.5))/10)%"
+                textLabels[i].text = categories[i]
+                legends[i].hidden = false
+                textLabels[i].hidden = false
+            }else{
+                legends[i].hidden = true
+                textLabels[i].hidden = true
+            }
+        }
     }
 
 }

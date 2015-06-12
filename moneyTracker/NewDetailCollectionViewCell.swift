@@ -22,7 +22,7 @@ class NewDetailCollectionViewCell: NewCollectionViewCell {
         textView?.backgroundColor = UIColor(white: 0.95, alpha: 1)
         textView?.font = UIFont.systemFontOfSize(20)
         textView?.hidden = true
-        
+        leftTextLabel?.text = "Detail"
         rightLabel = UILabel(frame: CGRect(x: bgWidth - 170 - 50, y: 30, width: 170, height: 40))
         rightLabel?.textAlignment = NSTextAlignment.Right
         rightLabel?.textColor = UIColor(red: 0.53, green: 0.53, blue: 0.53, alpha: 1)
