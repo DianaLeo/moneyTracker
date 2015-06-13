@@ -9,6 +9,7 @@
 	<key>CFBundleIconFiles</key>
 	<array>
 		<string>Logo2.png</string>
+		<string>Logo-120-120.png</string>
 	</array>
 	<key>CFBundleIdentifier</key>
 	<string>Diana.$(PRODUCT_NAME:rfc1034identifier)</string>

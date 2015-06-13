@@ -34,6 +34,7 @@
 		CE948FB21B171CA200354CFF /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948FA01B171CA200354CFF /* TestViewController.swift */; };
 		CE948FB41B171CD700354CFF /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CE948FB31B171CD700354CFF /* libsqlite3.0.dylib */; };
 		CE948FB61B171E0600354CFF /* NewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948FB51B171E0600354CFF /* NewViewController.swift */; };
+		CEA6C0591B2B1AA2005BEAE5 /* Logo-120-120.png in Resources */ = {isa = PBXBuildFile; fileRef = CEA6C0581B2B1AA2005BEAE5 /* Logo-120-120.png */; };
 		CECCD6E41B17217100BEC851 /* BICategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECCD6E31B17217100BEC851 /* BICategory.swift */; };
 /* End PBXBuildFile section */
 
@@ -80,6 +81,7 @@
 		CE948FA01B171CA200354CFF /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		CE948FB31B171CD700354CFF /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		CE948FB51B171E0600354CFF /* NewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewViewController.swift; sourceTree = "<group>"; };
+		CEA6C0581B2B1AA2005BEAE5 /* Logo-120-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Logo-120-120.png"; sourceTree = "<group>"; };
 		CECCD6E31B17217100BEC851 /* BICategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BICategory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -145,6 +147,7 @@
 				CE680BEF1B2AE38A00587BD9 /* Logo.png */,
 				CE680BF11B2AE96500587BD9 /* Logo2.png */,
 				CE680BEB1B2ACB2600587BD9 /* Images.xcassets */,
+				CEA6C0581B2B1AA2005BEAE5 /* Logo-120-120.png */,
 				CE948F6A1B171BCE00354CFF /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -304,6 +307,7 @@
 			files = (
 				CE680BEC1B2ACB2600587BD9 /* Images.xcassets in Resources */,
 				CE680BF01B2AE38A00587BD9 /* Logo.png in Resources */,
+				CEA6C0591B2B1AA2005BEAE5 /* Logo-120-120.png in Resources */,
 				CE948F741B171BCE00354CFF /* Main.storyboard in Resources */,
 				CE680BF21B2AE96500587BD9 /* Logo2.png in Resources */,
 				CE948F791B171BCE00354CFF /* LaunchScreen.xib in Resources */,

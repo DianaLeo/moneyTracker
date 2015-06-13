@@ -280,7 +280,7 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
             didSelectSection3 = false
             mainCollectionView?.reloadSections(NSIndexSet(index: 3))
         }
-        mainCollectionView?.frame.origin.y = _naviHeight - defaultCellHeight*1.2
+        mainCollectionView?.frame.origin.y = _naviHeight - defaultCellHeight*1
     }
     func textFieldDidEndEditing(textField: UITextField) {
         mainCollectionView?.frame.origin.y = _naviHeight

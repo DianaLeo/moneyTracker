@@ -12,7 +12,7 @@ protocol SmallCategoryCellDelegate :class {
     func didSelectSmallCell (#indexPath: NSIndexPath)
 }
 
-class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,LongPressDelegate {
+class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,LongPressDelegate,UITextFieldDelegate {
     
     var collectionViewDataSource = NSMutableArray()
     var userCategoryDS = BICategory.sharedInstance()
@@ -178,7 +178,7 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
             var textFiled = UITextField(frame: CGRect(x: bgWidth*0.053, y: bgWidth*0.8, width: bgWidth*0.53, height: 30))
             textFiled.borderStyle = UITextBorderStyle.RoundedRect
             textFiled.tag = 2
-            
+            textFiled.delegate = self
             var btnOK  = UIButton(frame: CGRect(x:bgWidth*0.65, y: bgWidth*0.8, width: bgWidth*0.22, height: 30))
             btnOK.backgroundColor  = UIColor(red: 0.82, green: 0.43, blue: 0.37, alpha: 1)
             btnOK.setTitle("Add", forState: UIControlState.Normal)
@@ -275,6 +275,14 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
         popupWin.removeFromSuperview()
         transpBG.removeFromSuperview()
         self.superview?.userInteractionEnabled = true
+    }
+    
+    func textFieldDidBeginEditing(textField: UITextField) {
+        popupWin.frame.origin.y = bgHeight - 250 - bgWidth*0.93
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        popupWin.frame.origin.y = bgWidth*0.267
     }
     
     //自定义代理 LongPressDelegate 方法实现
