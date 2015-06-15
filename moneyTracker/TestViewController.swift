@@ -14,15 +14,6 @@ class TestViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.grayColor()
         
-//        var analysis = BIBillAnalysis(year: 2015, month: 6)
-//        println(analysis.usedCategories)
-//        println(analysis.expAmtByUsedCat)
-        
-//        deleteDatabase()
-//        BIIncome.deleteTableInDatabase()
-//        BIExpense.deleteTableInDatabase()
-//        createDatabaseOnceIfNotExists()
-//        BIExpense(year: 2015, month: 5, day: 29, category: "L", categoryDetail: nil, amounts: 90.9, expenseDetail: nil, receiptImage: nil)
         }
         // Do any additional setup after loading the view.
 
