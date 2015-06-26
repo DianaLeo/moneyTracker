@@ -10,8 +10,6 @@ import UIKit
 
 class DailyTableViewCell: UITableViewCell {
     
-    var bgWidth = UIScreen.mainScreen().bounds.width
-    
     var leftImageView: UIImageView?
     var leftTextLabel: UILabel?
     var detailLabel: UILabel?

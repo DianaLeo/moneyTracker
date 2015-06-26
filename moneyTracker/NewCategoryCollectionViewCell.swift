@@ -22,8 +22,9 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
     var flowLayOut = UICollectionViewFlowLayout()
     var collectionView: UICollectionView?
     weak var delegate: SmallCategoryCellDelegate?
-    var popupWin = UIView()
+    var popupWin = UIButton()
     var transpBG = UILabel()
+    var textFiled = UITextField()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -88,18 +89,19 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
         //点击添加新Category时：
         if (indexPath.row == collectionViewDataSource.count){
             transpBG = UILabel(frame: CGRect(x: 0, y: 0, width: bgWidth, height: bgHeight))
-            transpBG.backgroundColor = UIColor(white: 0.2, alpha: 0.3)
+            transpBG.backgroundColor = UIColor(white: 0, alpha: 0.4)
             
-            popupWin = UIView(frame: CGRect(x: bgWidth*0.04, y: bgWidth*0.267, width: bgWidth*0.92, height: bgWidth*0.93))
+            popupWin = UIButton(frame: CGRect(x: bgWidth*0.04, y: bgWidth*0.267, width: bgWidth*0.92, height: bgWidth*0.93))
             popupWin.backgroundColor = UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1)
+            popupWin.addTarget(self, action: "popupWinTouched", forControlEvents: UIControlEvents.TouchDown)
             
-            var title = UILabel(frame: CGRect(x: 0, y: bgWidth*0.04, width: bgWidth - 30, height: 30))
+            var title = UILabel(frame: CGRect(x: 0, y: 10, width: bgWidth - 30, height: 30))
             title.text = "New Category"
             title.textAlignment = NSTextAlignment.Center
             title.textColor = UIColor.darkGrayColor()
             title.font = UIFont.boldSystemFontOfSize(20)
             
-            var tip1 = UILabel(frame: CGRect(x: 8, y: bgWidth*0.12, width: bgWidth - 30, height: 30))
+            var tip1 = UILabel(frame: CGRect(x: 8, y: 42, width: bgWidth - 30, height: 30))
             tip1.text = "Pick one from the following:"
             tip1.textColor = UIColor.darkGrayColor()
             tip1.font = UIFont.systemFontOfSize(17)
@@ -175,17 +177,15 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
             tip2.textColor = UIColor.darkGrayColor()
             tip2.font = UIFont.systemFontOfSize(17)
             
-            var textFiled = UITextField(frame: CGRect(x: bgWidth*0.053, y: bgWidth*0.8, width: bgWidth*0.53, height: 30))
+            textFiled = UITextField(frame: CGRect(x: bgWidth*0.053, y: bgWidth*0.8, width: bgWidth*0.53, height: 30))
             textFiled.borderStyle = UITextBorderStyle.RoundedRect
-            textFiled.tag = 2
             textFiled.delegate = self
             var btnOK  = UIButton(frame: CGRect(x:bgWidth*0.65, y: bgWidth*0.8, width: bgWidth*0.22, height: 30))
             btnOK.backgroundColor  = UIColor(red: 0.82, green: 0.43, blue: 0.37, alpha: 1)
             btnOK.setTitle("Add", forState: UIControlState.Normal)
             btnOK.addTarget(self, action: "popupBtnTouch", forControlEvents: UIControlEvents.TouchUpInside)
-            var btnCancel  = UIButton(frame: CGRect(x:bgWidth*0.65, y: bgWidth*0.8 - 30, width: bgWidth*0.22, height: 30))
-            btnCancel.backgroundColor  = UIColor(red: 0.94, green: 0.78, blue: 0.71, alpha: 1)
-            btnCancel.setTitle("Cancel", forState: UIControlState.Normal)
+            var btnCancel  = UIButton(frame: CGRect(x:10, y: 10, width: 28, height: 28))
+            btnCancel.setBackgroundImage(UIImage(named: "popupCancel"), forState: UIControlState.Normal)
             btnCancel.addTarget(self, action: "popupCancel", forControlEvents: UIControlEvents.TouchUpInside)
             
             btn1.addSubview(img1); btn1.addSubview(txt1)
@@ -231,17 +231,13 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
     
     //小弹窗内部功能
     func iconTouch(sender: UIButton){
-        println("icon Touched.")
-        println("\(popupWin.viewWithTag(2))")
-        println("\(sender.viewWithTag(1))")
-        var textField = popupWin.viewWithTag(2) as! UITextField
         var txtLabel = sender.viewWithTag(1) as! UILabel
-        textField.text = txtLabel.text
+        textFiled.text = txtLabel.text
+        textFiled.endEditing(true)
     }
     
     func popupBtnTouch (){
-        var textField = popupWin.viewWithTag(2) as! UITextField
-        var text = textField.text
+        var text = textFiled.text
         if (text == ""){
             println("no input")
         }else{
@@ -277,6 +273,10 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
         self.superview?.userInteractionEnabled = true
     }
     
+    func popupWinTouched(){
+        textFiled.endEditing(true)
+    }
+    
     func textFieldDidBeginEditing(textField: UITextField) {
         popupWin.frame.origin.y = bgHeight - 250 - bgWidth*0.93
     }
@@ -284,6 +284,7 @@ class NewCategoryCollectionViewCell: NewCollectionViewCell,UICollectionViewDataS
     func textFieldDidEndEditing(textField: UITextField) {
         popupWin.frame.origin.y = bgWidth*0.267
     }
+
     
     //自定义代理 LongPressDelegate 方法实现
     func passSmallCellText(#smallCellText: String) {

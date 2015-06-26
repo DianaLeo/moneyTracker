@@ -11,22 +11,29 @@ import UIKit
 class calndrCollectionViewCell: UICollectionViewCell {
     
     var imageView: UIImageView?
-    var textLabel: UILabel?
+    var textBtn: UILabel?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = UIColor.yellowColor()
+        self.backgroundColor = UIColor.whiteColor()
+        var selectedBGview = UIView(frame: frame)
+        selectedBGview.backgroundColor = UIColor(white: 0.9, alpha: 1)
+        self.selectedBackgroundView = selectedBGview
+        
         imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
-        imageView?.image = UIImage(named: "Billinfo---红包")
+        imageView?.image = UIImage(named: "calndrCellLuckyMoney")
         imageView?.contentMode = UIViewContentMode.ScaleToFill
-        textLabel = UILabel(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
-        textLabel?.backgroundColor = UIColor.whiteColor()
-        textLabel?.textAlignment = NSTextAlignment.Center
-        //textLabel?.textColor = UIColor.lightGrayColor()
+        imageView?.hidden = true
+
+        textBtn = UILabel(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
+        textBtn?.backgroundColor = UIColor.clearColor()
+        textBtn?.textAlignment = NSTextAlignment.Center
+        
         self.addSubview(imageView!)
-        self.addSubview(textLabel!)
+        self.addSubview(textBtn!)
     }
+
     
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

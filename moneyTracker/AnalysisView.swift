@@ -10,10 +10,6 @@ import UIKit
 
 class AnalysisView: UIView {
 
-    //高度计算
-    var bgWidth  = UIScreen.mainScreen().bounds.size.width
-    var bgHeight = UIScreen.mainScreen().bounds.size.height
-
     //颜色
     var edgeColor   = UIColor(red: 0.58, green: 0.30, blue: 0.41, alpha: 1)
     var redColor    = UIColor(red: 0.82, green: 0.43, blue: 0.37, alpha: 1)
@@ -36,20 +32,20 @@ class AnalysisView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         colors = [yellowColor,redColor,blueColor,pinkColor,purpleColor,whiteColor]
-        var l1Y = Int(bgWidth - 30)
-        title = UILabel(frame: CGRect(x: 25, y: 0, width: 150, height: 30))
-        title.textColor = UIColor.whiteColor()
-        title.font = UIFont.boldSystemFontOfSize(25)
+        var l1Y = Int(bgWidth - 35)//20
+        title = UILabel(frame: CGRect(x: 25, y: 10, width: 150, height: 30))
+        //title.textColor = UIColor.whiteColor()
+        title.font = UIFont.systemFontOfSize(22)
         self.addSubview(title)
         for i in 0...5{
-            legends[i] = UILabel(frame: CGRect(x: 50, y: l1Y + 42*i, width: 80, height: 30))
+            legends[i] = UILabel(frame: CGRect(x: 70, y: l1Y + 42*i, width: 80, height: 30))
             legends[i].backgroundColor = colors[i]
             legends[i].textAlignment = NSTextAlignment.Center
             legends[i].textColor = UIColor.blackColor()
-            legends[i].font = UIFont.systemFontOfSize(20)
-            textLabels[i] = UILabel(frame: CGRect(x: 150, y: l1Y + 42*i, width: Int(bgWidth - 120), height: 30))
+            legends[i].font = UIFont.systemFontOfSize(18)
+            textLabels[i] = UILabel(frame: CGRect(x: 170, y: l1Y + 42*i, width: Int(bgWidth - 120), height: 30))
             textLabels[i].textColor = UIColor.blackColor()
-            textLabels[i].font = UIFont.systemFontOfSize(20)
+            textLabels[i].font = UIFont.systemFontOfSize(18)
             self.addSubview(legends[i])
             self.addSubview(textLabels[i])
         }
@@ -95,7 +91,6 @@ class AnalysisView: UIView {
     }
     
     func drawLegends(){
-        var l1Y = Int(bgWidth - 50)
         for i in 0...5{
             if (ratios[i] != 0){
                 legends[i].text = "\(Float(Int(ratios[i]*1000+0.5))/10)%"

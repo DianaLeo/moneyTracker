@@ -25,6 +25,8 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
     var mainCollectionView: UICollectionView?
     var naviLabel = UILabel()
     var btnChooseExpense = UIButton()
+    var naviBtnSave   = UIButton()
+    var naviBtnCancel = UIButton()
     var label = UILabel()
     var catCellRightImg  = UIImageView()
     var amoCellTextField = UITextField()
@@ -38,12 +40,9 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
     var choosedYear:Int?
     var choosedMonth:Int?
     var choosedDay:Int?
-    //incomeRecord and expenseRecord
     var incomeRecord: IncomeRecord?
     var expenseRecord: ExpenseRecord?
     //高度计算
-    var bgWidth  = UIScreen.mainScreen().bounds.size.width
-    var bgHeight = UIScreen.mainScreen().bounds.size.height
     var _naviRatio = 0.15 as CGFloat
     var _naviHeight = CGFloat()
     var defaultCellHeight = CGFloat()
@@ -65,6 +64,7 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
         var bgTrans = UIImageView(frame: CGRect(x: 0, y: _naviHeight, width: bgWidth, height: bgTransHeight))
         bgTrans.image = UIImage(named: "background2")
         self.view.addSubview(bgTrans)
+        self.navigationItem.hidesBackButton = true
         
         //列表 collectionView
         var flowLayOut = UICollectionViewFlowLayout()
@@ -298,8 +298,6 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
     
     //页面即将显示时
     override func viewWillAppear(animated: Bool) {
-        //(self.navigationController?.viewControllers[1] as! DailyViewController).delegate = self
-
         naviLabel = self.navigationController?.navigationBar.viewWithTag(1) as! UILabel
         if flagExpense{
             naviLabel.text = "Expense"
@@ -318,27 +316,18 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
             self.navigationController?.navigationBar.addSubview(btnChooseExpense)
         }
         
-        var naviBtnSaveRect = CGRect(x: bgWidth - 70, y: bgHeight*0.015, width: 55, height: 55)
-        var naviBtnSave     = UIButton(frame: naviBtnSaveRect)
-        var naviBtnSaveImg  = UIImageView(frame: naviBtnSaveRect)
-        naviBtnSaveImg.image = UIImage(named: "save")
-        naviBtnSave.addSubview(naviBtnSaveImg)
+        naviBtnSave = UIButton(frame: CGRect(x: bgWidth - 70, y: bgHeight*0.015, width: 55, height: 55))
+        naviBtnSave.setBackgroundImage(UIImage(named: "save"), forState: UIControlState.Normal)
         naviBtnSave.addTarget(self, action: "naviBtnSaveTouch", forControlEvents: UIControlEvents.TouchUpInside)
-        naviBtnSave.tag    = 2
-        naviBtnSaveImg.tag = 3
         self.navigationController?.navigationBar.addSubview(naviBtnSave)
-        self.navigationController?.navigationBar.addSubview(naviBtnSaveImg)
         
-        var naviBtnCancelRect  = CGRect(x: 0, y: 10, width: 40, height: 35)
-        var naviBtnCancel      = UIButton(frame: naviBtnCancelRect)
-        var naviBtnCancelImg   = UIImageView(frame: naviBtnCancelRect)
-        naviBtnCancelImg.image = UIImage(named: "cancel")
-        naviBtnCancel.addSubview(naviBtnCancelImg)
+        naviBtnCancel = UIButton(frame: CGRect(x: 16, y: bgHeight*0.025, width: 40, height: 35))
+        naviBtnCancel.setBackgroundImage(UIImage(named: "cancel"), forState: UIControlState.Normal)
         naviBtnCancel.addTarget(self, action: "naviBtnCancelTouch", forControlEvents: UIControlEvents.TouchUpInside)
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: naviBtnCancel)
+        self.navigationController?.navigationBar.addSubview(naviBtnCancel)
     }
     
-    //导航栏按钮点击事件 - 不管点哪个都要移除右边的按钮，而左边的按钮自动移除
+    //导航栏按钮点击事件 - 不管点哪个都要移除左右两边的按钮
     func btnChooseExpenseTouch(){
         if !isModificationMode {
             flagExpense = !flagExpense
@@ -351,15 +340,14 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
     }
     
     func naviBtnSaveTouch () {
+        println("naviBtnSaveTouch!")
         if ((catCellRightImg.image == nil)||(amoCellTextField.text == "")){
             var alert:UIAlertView? = UIAlertView(title: "Incomplete Info", message: "You can't save record without category or amount!", delegate: self, cancelButtonTitle: "Yes")
             alert!.show()
         }else{
             amount = NSString(string: ((mainCollectionView?.cellForItemAtIndexPath(NSIndexPath(forItem: 0, inSection: 2)) as! NewAmountCollectionViewCell).textField?.text)!).floatValue
-            var naviBtnSave = self.navigationController?.navigationBar.viewWithTag(2) as! UIButton
-            var naviBtnSaveImg = self.navigationController?.navigationBar.viewWithTag(3) as! UIImageView
             naviBtnSave.removeFromSuperview()
-            naviBtnSaveImg.removeFromSuperview()
+            naviBtnCancel.removeFromSuperview()
             
             if isModificationMode {
                 isModificationMode = false
@@ -397,10 +385,8 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
     }
     
     func naviBtnCancelTouch () {
-        var naviBtnSave = self.navigationController?.navigationBar.viewWithTag(2) as! UIButton
-        var naviBtnSaveImg = self.navigationController?.navigationBar.viewWithTag(3) as! UIImageView
         naviBtnSave.removeFromSuperview()
-        naviBtnSaveImg.removeFromSuperview()
+        naviBtnCancel.removeFromSuperview()
 
         self.navigationController?.popViewControllerAnimated(true)
         if isModificationMode {

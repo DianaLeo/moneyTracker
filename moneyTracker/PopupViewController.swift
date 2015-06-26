@@ -2,33 +2,61 @@
 //  PopupViewController.swift
 //  moneyTracker
 //
-//  Created by User on 28/05/2015.
+//  Created by User on 19/06/2015.
 //  Copyright (c) 2015 User. All rights reserved.
 //
 
 import UIKit
 
-class PopupViewController: UIViewController {
+class PopupViewController: UIViewController,UIPickerViewDataSource,UIPickerViewDelegate {
 
-    var btn = UIButton()
-    
+    var mthPicker: UIPickerView?
+    var mthPickerDSyear:[Int] = []
+    var bgWidth  = UIScreen.mainScreen().bounds.size.width
+    var bgHeight = UIScreen.mainScreen().bounds.size.height
+
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.view.superview?.frame = CGRectMake(40, 100, 200, 200)
-        self.view.backgroundColor = UIColor.clearColor()
-//        self.modalTransitionStyle = UIModalTransitionStyle.FlipHorizontal
-//        self.modalPresentationStyle = UIModalPresentationStyle.FormSheet
-        btn = UIButton(frame: CGRect(x: 50, y: 200, width: 100, height: 100))
-        btn.backgroundColor = UIColor.magentaColor()
-        btn.addTarget(self, action: "btnTouch", forControlEvents: UIControlEvents.TouchUpInside)
-        self.view.addSubview(btn)
+        for i in 0...99 {
+            mthPickerDSyear.append(selectedYear! - 99 + i)
+        }
+        mthPicker = UIPickerView(frame: CGRect(x: 0, y: -20, width: 150, height: bgHeight))
+        mthPicker!.dataSource = self
+        mthPicker!.delegate   = self
+        mthPicker?.backgroundColor = UIColor.whiteColor()
+        mthPicker!.selectRow(mthPickerDSyear.count - 1, inComponent: 0, animated: false)
+        mthPicker!.selectRow(selectedMonth! - 1, inComponent: 1, animated: false)
 
-        // Do any additional setup after loading the view.
+        self.view.addSubview(mthPicker!)
+
+    }
+    
+    //UIPickerView
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return 2
+    }
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if (component == 0){
+            return mthPickerDSyear.count
+        }else{
+            return 12
+        }
+    }
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
+        if (component == 0){
+            return "\(mthPickerDSyear[row])"
+        }else{
+            return "\(row + 1)"
+        }
+    }
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if (component == 0){
+            selectedYear  = mthPickerDSyear[row]
+        }else{
+            selectedMonth = row + 1
+        }
     }
 
-    func btnTouch(){
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

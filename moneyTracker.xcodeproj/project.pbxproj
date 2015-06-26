@@ -34,6 +34,7 @@
 		CE948FB21B171CA200354CFF /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948FA01B171CA200354CFF /* TestViewController.swift */; };
 		CE948FB41B171CD700354CFF /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CE948FB31B171CD700354CFF /* libsqlite3.0.dylib */; };
 		CE948FB61B171E0600354CFF /* NewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948FB51B171E0600354CFF /* NewViewController.swift */; };
+		CEA10A2F1B3CFBDA009C506D /* MonthSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA10A2E1B3CFBDA009C506D /* MonthSummaryView.swift */; };
 		CEA6C0591B2B1AA2005BEAE5 /* Logo-120-120.png in Resources */ = {isa = PBXBuildFile; fileRef = CEA6C0581B2B1AA2005BEAE5 /* Logo-120-120.png */; };
 		CECCD6E41B17217100BEC851 /* BICategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECCD6E31B17217100BEC851 /* BICategory.swift */; };
 /* End PBXBuildFile section */
@@ -81,6 +82,7 @@
 		CE948FA01B171CA200354CFF /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		CE948FB31B171CD700354CFF /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		CE948FB51B171E0600354CFF /* NewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewViewController.swift; sourceTree = "<group>"; };
+		CEA10A2E1B3CFBDA009C506D /* MonthSummaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonthSummaryView.swift; sourceTree = "<group>"; };
 		CEA6C0581B2B1AA2005BEAE5 /* Logo-120-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Logo-120-120.png"; sourceTree = "<group>"; };
 		CECCD6E31B17217100BEC851 /* BICategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BICategory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -197,6 +199,7 @@
 				CE948F971B171CA200354CFF /* homeViewController.swift */,
 				CE948F941B171CA200354CFF /* calndrCollectionViewCell.swift */,
 				CE2B4AC41B26CD1A0049545B /* AnalysisView.swift */,
+				CEA10A2E1B3CFBDA009C506D /* MonthSummaryView.swift */,
 			);
 			name = HomePage;
 			sourceTree = "<group>";
@@ -336,6 +339,7 @@
 				CE948FAA1B171CA200354CFF /* homeViewController.swift in Sources */,
 				CE948F6C1B171BCE00354CFF /* AppDelegate.swift in Sources */,
 				CE948FB11B171CA200354CFF /* NewDetailCollectionViewCell.swift in Sources */,
+				CEA10A2F1B3CFBDA009C506D /* MonthSummaryView.swift in Sources */,
 				CE948FB01B171CA200354CFF /* NewDateCollectionViewCell.swift in Sources */,
 				CE948FB61B171E0600354CFF /* NewViewController.swift in Sources */,
 				CE948FA51B171CA200354CFF /* BIMonthCalendar.swift in Sources */,

@@ -10,9 +10,6 @@ import UIKit
 
 class NewCollectionViewCell: UICollectionViewCell {
     
-    var bgWidth  = UIScreen.mainScreen().bounds.width
-    var bgHeight = UIScreen.mainScreen().bounds.height
-    
     var leftTextLabel: UILabel?
     var bottomEdge: UILabel?
     var accImg: UIImageView?

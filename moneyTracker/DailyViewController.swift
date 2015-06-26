@@ -14,9 +14,9 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
     var listTable = UITableView()
     var tabBtnEx = UIButton()
     var tabBtnIn = UIButton()
-    
-    var bgWidth  = UIScreen.mainScreen().bounds.size.width
-    var bgHeight = UIScreen.mainScreen().bounds.size.height
+    var tipLabel = UILabel()
+    var naviBtnBack = UIButton()
+    var naviBtnNew  = UIButton()
     
     var listTableDataSource = NSMutableArray(array: [1,2,3,4])
     var userCategoryDS = BICategory.sharedInstance()
@@ -36,25 +36,42 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
         //背景
         var bgImage = UIImageView(frame: CGRect(x: 0, y: 0, width: bgWidth, height: bgHeight))
         bgImage.image = UIImage(named: "background1")
+        var bgTrans = UIImageView(frame: CGRect(x: 0, y: _naviHeight, width: bgWidth, height: bgHeight - _naviHeight))
+        bgTrans.image = UIImage(named: "background2")
+        var bgTransWhite = UIView(frame: CGRect(x: 0, y: _naviHeight, width: bgWidth, height: bgHeight - _naviHeight))
+        bgTransWhite.backgroundColor = UIColor(white: 1, alpha: 0.2)
         self.view.addSubview(bgImage)
-        
+        self.view.addSubview(bgTrans)
+        self.view.addSubview(bgTransWhite)
+        self.navigationItem.hidesBackButton = true
         
         //上标签（收支）tab
         tabBtnEx = UIButton(frame: CGRect(x: 0, y: _naviHeight, width: bgWidth/2, height: tabHeight))
-        tabBtnIn = UIButton(frame: CGRect(x: bgWidth/2, y: _naviHeight, width: bgWidth/2, height: tabHeight))
-        tabBtnEx.backgroundColor = UIColor(red: 0.82, green: 0.43, blue: 0.37, alpha: 1)
-        tabBtnIn.backgroundColor = UIColor(red: 0.94, green: 0.78, blue: 0.71, alpha: 1)
+        tabBtnEx.setBackgroundImage(UIImage(named: "dailyTabBtn"), forState: UIControlState.Normal)
+        tabBtnEx.setBackgroundImage(UIImage(named: "dailyTabBtn-selected"), forState: UIControlState.Selected)
         tabBtnEx.setTitle("Expense", forState: UIControlState.Normal)
-        tabBtnIn.setTitle("Income", forState: UIControlState.Normal)
         tabBtnEx.addTarget(self, action: "tabBtnExTouch", forControlEvents: UIControlEvents.TouchUpInside)
+        tabBtnEx.selected = true
+
+        tabBtnIn = UIButton(frame: CGRect(x: bgWidth/2, y: _naviHeight, width: bgWidth/2, height: tabHeight))
+        tabBtnIn.setBackgroundImage(UIImage(named: "dailyTabBtn"), forState: UIControlState.Normal)
+        tabBtnIn.setBackgroundImage(UIImage(named: "dailyTabBtn-selected"), forState: UIControlState.Selected)
+        tabBtnIn.setTitle("Income", forState: UIControlState.Normal)
         tabBtnIn.addTarget(self, action: "tabBtnInTouch", forControlEvents: UIControlEvents.TouchUpInside)
+        tabBtnIn.selected = false
         
         self.view.addSubview(tabBtnEx)
         self.view.addSubview(tabBtnIn)
         
+        tipLabel = UILabel(frame: CGRect(x: (bgWidth - 100)/2, y: _naviHeight + tabHeight + 40, width: 100, height: 30))
+        tipLabel.text = "No Record."
+        tipLabel.textAlignment = NSTextAlignment.Center
+        tipLabel.textColor = UIColor.whiteColor()
+        self.view.addSubview(tipLabel)
         
         //详细列表 list
         listTable = UITableView(frame: CGRect(x: 0, y: _naviHeight + tabHeight, width: bgWidth, height: bgHeight - _naviHeight - tabHeight), style: UITableViewStyle.Plain)
+        listTable.backgroundColor = UIColor.clearColor()
         listTable.dataSource = self
         listTable.delegate   = self
         listTable.separatorStyle = UITableViewCellSeparatorStyle.None
@@ -84,7 +101,7 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
         tableView.registerClass(DailyTableViewCell.self, forCellReuseIdentifier: "DailyListCell")
         var cell = tableView.dequeueReusableCellWithIdentifier("DailyListCell", forIndexPath: indexPath) as? DailyTableViewCell
         if (indexPath.row%2 == 0) {
-            cell?.backgroundColor = UIColor(red: 0.99, green: 0.995, blue: 0.995, alpha: 1)
+            cell?.backgroundColor = UIColor.whiteColor()
         }else{
             cell?.backgroundColor = UIColor(red: 0.94, green: 0.93, blue: 0.93, alpha: 1)
         }
@@ -102,9 +119,9 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
                     image?.image = UIImage(named: "blankCategory")
                 }
             }
-            leftText?.text = dailyExpenseDS[indexPath.row].cat//"Category"
+            leftText?.text = dailyExpenseDS[indexPath.row].cat
             detail?.text = dailyExpenseDS[indexPath.row].detl
-            righText?.text = "-\(dailyExpenseDS[indexPath.row].amoStr)"//"-75"
+            righText?.text = "-\(dailyExpenseDS[indexPath.row].amoStr)"
         }else{
             //image?.image = UIImage(named: "food")
             //BICategory.associatedImagePathFor("d")
@@ -150,10 +167,8 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var naviBtnNew = self.navigationController?.navigationBar.viewWithTag(2) as! UIButton
-        var naviBtnNewImg = self.navigationController?.navigationBar.viewWithTag(3) as! UIImageView
         naviBtnNew.removeFromSuperview()
-        naviBtnNewImg.removeFromSuperview()
+        naviBtnBack.removeFromSuperview()
         isModificationMode = true
         isFromRootVC       = false
         var newViewController = NewViewController()
@@ -176,12 +191,10 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
 //    }
     
     
-    //导航栏按钮点击事件 - 不管点哪个都要移除右边的按钮，而左边的按钮自动移除
+    //导航栏按钮点击事件 - 不管点哪个都要移除左右两边的按钮
     func naviBtnNewTouch () {
-        var naviBtnNew = self.navigationController?.navigationBar.viewWithTag(2) as! UIButton
-        var naviBtnNewImg = self.navigationController?.navigationBar.viewWithTag(3) as! UIImageView
         naviBtnNew.removeFromSuperview()
-        naviBtnNewImg.removeFromSuperview()
+        naviBtnBack.removeFromSuperview()
         var newViewController = NewViewController()
         self.navigationController?.pushViewController(newViewController, animated: true)
         isModificationMode = false
@@ -194,50 +207,43 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
     }
     
     func naviBtnBackTouch () {
-        var naviBtnNew = self.navigationController?.navigationBar.viewWithTag(2) as! UIButton
-        var naviBtnNewImg = self.navigationController?.navigationBar.viewWithTag(3) as! UIImageView
         naviBtnNew.removeFromSuperview()
-        naviBtnNewImg.removeFromSuperview()
+        naviBtnBack.removeFromSuperview()
         self.navigationController?.popToRootViewControllerAnimated(true)
     }
     
     func tabBtnExTouch () {
         flagExpense = 1
-        tabBtnEx.backgroundColor = UIColor(red: 0.82, green: 0.43, blue: 0.37, alpha: 1)//red
-        tabBtnIn.backgroundColor = UIColor(red: 0.94, green: 0.78, blue: 0.71, alpha: 1)//pink
+        tabBtnEx.selected = true
+        tabBtnIn.selected = false
+//        tabBtnEx.backgroundColor = UIColor(red: 0.82, green: 0.43, blue: 0.37, alpha: 1)//red
+//        tabBtnIn.backgroundColor = UIColor(red: 0.94, green: 0.78, blue: 0.71, alpha: 1)//pink
         listTable.reloadData()
     }
     
     func tabBtnInTouch () {
         flagExpense = 0
-        tabBtnIn.backgroundColor = UIColor(red: 0.82, green: 0.43, blue: 0.37, alpha: 1)//red
-        tabBtnEx.backgroundColor = UIColor(red: 0.94, green: 0.78, blue: 0.71, alpha: 1)//pink
+        tabBtnEx.selected = false
+        tabBtnIn.selected = true
+//        tabBtnIn.backgroundColor = UIColor(red: 0.82, green: 0.43, blue: 0.37, alpha: 1)//red
+//        tabBtnEx.backgroundColor = UIColor(red: 0.94, green: 0.78, blue: 0.71, alpha: 1)//pink
         listTable.reloadData()
     }
     
     //导航－页面即将显示
     override func viewWillAppear(animated: Bool) {
-        var naviLabel = self.navigationController?.navigationBar.viewWithTag(1) as! UILabel
-        naviLabel.text = "\(selectedDay!)/\(selectedMonth!)/\(selectedYear!)"
+        var naviLabel   = self.navigationController?.navigationBar.viewWithTag(1) as! UILabel
+        naviLabel.text  = "\(selectedDay!)/\(selectedMonth!)/\(selectedYear!)"
         
-        var naviBtnNewRect = CGRect(x: bgWidth - 70, y: bgHeight*0.015, width: 55, height: 55)
-        var naviBtnNew     = UIButton(frame: naviBtnNewRect)
-        var naviBtnNewImg  = UIImageView(frame: naviBtnNewRect)
-        naviBtnNewImg.image = UIImage(named: "new")
-        naviBtnNew.addSubview(naviBtnNewImg)
+        naviBtnNew  = UIButton(frame: CGRect(x: bgWidth - 70, y: bgHeight*0.015, width: 55, height: 55))
+        naviBtnNew.setBackgroundImage(UIImage(named: "new"), forState: UIControlState.Normal)
         naviBtnNew.addTarget(self, action: "naviBtnNewTouch", forControlEvents: UIControlEvents.TouchUpInside)
-        naviBtnNew.tag    = 2
-        naviBtnNewImg.tag = 3
         self.navigationController?.navigationBar.addSubview(naviBtnNew)
-        self.navigationController?.navigationBar.addSubview(naviBtnNewImg)
         
-        var naviBtnBackRect  = CGRect(x: 0, y: 10, width: 40, height: 35)
-        var naviBtnBack      = UIButton(frame: naviBtnBackRect)
-        var naviBtnBackImg   = UIImageView(frame: naviBtnBackRect)
-        naviBtnBackImg.image = UIImage(named: "back")
-        naviBtnBack.addSubview(naviBtnBackImg)
+        naviBtnBack = UIButton(frame: CGRect(x: 16, y: bgHeight*0.025, width: 35, height: 35))
+        naviBtnBack.setBackgroundImage(UIImage(named: "back"), forState: UIControlState.Normal)
         naviBtnBack.addTarget(self, action: "naviBtnBackTouch", forControlEvents: UIControlEvents.TouchUpInside)
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: naviBtnBack)
+        self.navigationController?.navigationBar.addSubview(naviBtnBack)
         
         dailyExpenseDS = BIExpense.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!)
         dailyIncomeDS = BIIncome.dailyRecords(year: selectedYear!, month: selectedMonth!, day: selectedDay!)

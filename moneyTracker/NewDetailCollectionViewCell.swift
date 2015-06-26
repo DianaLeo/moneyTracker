@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CoreGraphics
 
 class NewDetailCollectionViewCell: NewCollectionViewCell {
 
