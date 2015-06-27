@@ -11,6 +11,8 @@
 		CE680BEC1B2ACB2600587BD9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE680BEB1B2ACB2600587BD9 /* Images.xcassets */; };
 		CE680BF01B2AE38A00587BD9 /* Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = CE680BEF1B2AE38A00587BD9 /* Logo.png */; };
 		CE680BF21B2AE96500587BD9 /* Logo2.png in Resources */ = {isa = PBXBuildFile; fileRef = CE680BF11B2AE96500587BD9 /* Logo2.png */; };
+		CE8D06621B3E275900F456E8 /* MonthPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8D06611B3E275900F456E8 /* MonthPickerView.swift */; };
+		CE8D06651B3EC19C00F456E8 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8D06641B3EC19C00F456E8 /* CategoryViewController.swift */; };
 		CE948F6C1B171BCE00354CFF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE948F6B1B171BCE00354CFF /* AppDelegate.swift */; };
 		CE948F6F1B171BCE00354CFF /* moneyTracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CE948F6D1B171BCE00354CFF /* moneyTracker.xcdatamodeld */; };
 		CE948F741B171BCE00354CFF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE948F721B171BCE00354CFF /* Main.storyboard */; };
@@ -54,6 +56,8 @@
 		CE680BEB1B2ACB2600587BD9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		CE680BEF1B2AE38A00587BD9 /* Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Logo.png; sourceTree = "<group>"; };
 		CE680BF11B2AE96500587BD9 /* Logo2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Logo2.png; sourceTree = "<group>"; };
+		CE8D06611B3E275900F456E8 /* MonthPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonthPickerView.swift; sourceTree = "<group>"; };
+		CE8D06641B3EC19C00F456E8 /* CategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		CE948F661B171BCE00354CFF /* moneyTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = moneyTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE948F6A1B171BCE00354CFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE948F6B1B171BCE00354CFF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -106,6 +110,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CE8D06631B3EC13500F456E8 /* CategotyPage */ = {
+			isa = PBXGroup;
+			children = (
+				CE8D06641B3EC19C00F456E8 /* CategoryViewController.swift */,
+			);
+			name = CategotyPage;
+			sourceTree = "<group>";
+		};
 		CE948F5D1B171BCE00354CFF = {
 			isa = PBXGroup;
 			children = (
@@ -137,6 +149,7 @@
 				CE948FB91B171EA800354CFF /* HomePage */,
 				CE948FBB1B171F0500354CFF /* DailyPage */,
 				CE948FBA1B171EC300354CFF /* NewNotePage */,
+				CE8D06631B3EC13500F456E8 /* CategotyPage */,
 				CE948F6D1B171BCE00354CFF /* moneyTracker.xcdatamodeld */,
 				CE948F691B171BCE00354CFF /* Supporting Files */,
 			);
@@ -200,6 +213,7 @@
 				CE948F941B171CA200354CFF /* calndrCollectionViewCell.swift */,
 				CE2B4AC41B26CD1A0049545B /* AnalysisView.swift */,
 				CEA10A2E1B3CFBDA009C506D /* MonthSummaryView.swift */,
+				CE8D06611B3E275900F456E8 /* MonthPickerView.swift */,
 			);
 			name = HomePage;
 			sourceTree = "<group>";
@@ -335,8 +349,10 @@
 				CE2B4AC51B26CD1A0049545B /* AnalysisView.swift in Sources */,
 				CE948FA11B171CA200354CFF /* BIBillAnalysis.swift in Sources */,
 				CE948FA91B171CA200354CFF /* DailyViewController.swift in Sources */,
+				CE8D06651B3EC19C00F456E8 /* CategoryViewController.swift in Sources */,
 				CE948FAF1B171CA200354CFF /* NewCollectionViewCell.swift in Sources */,
 				CE948FAA1B171CA200354CFF /* homeViewController.swift in Sources */,
+				CE8D06621B3E275900F456E8 /* MonthPickerView.swift in Sources */,
 				CE948F6C1B171BCE00354CFF /* AppDelegate.swift in Sources */,
 				CE948FB11B171CA200354CFF /* NewDetailCollectionViewCell.swift in Sources */,
 				CEA10A2F1B3CFBDA009C506D /* MonthSummaryView.swift in Sources */,

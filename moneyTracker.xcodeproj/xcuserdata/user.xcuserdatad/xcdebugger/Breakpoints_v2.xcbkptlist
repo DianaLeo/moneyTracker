@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "moneyTracker/homeViewController.swift"
-            timestampString = "457007336.052592"
+            timestampString = "457088891.233299"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "133"
-            endingLineNumber = "133"
+            startingLineNumber = "136"
+            endingLineNumber = "136"
             landmarkName = "viewDidLoad()"
             landmarkType = "5">
          </BreakpointContent>
@@ -169,13 +169,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "moneyTracker/NewCategoryCollectionViewCell.swift"
-            timestampString = "457014673.91869"
+            filePath = "moneyTracker/CategoryViewController.swift"
+            timestampString = "457111492.208858"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "262"
-            endingLineNumber = "262"
-            landmarkName = "popupBtnTouch()"
+            startingLineNumber = "148"
+            endingLineNumber = "148"
+            landmarkName = "naviBtnOKTouch()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

@@ -8,17 +8,14 @@
 
 import UIKit
 
-class MonthSummaryView: UIView,UIPickerViewDataSource,UIPickerViewDelegate {
+class MonthSummaryView: UIView {
 
     var mthBtn = UIButton()
     var mthBtnAngle = UIImageView()
     var mthLabExpense = UILabel()
     var mthLabIncome  = UILabel()
-    var mthPicker = UIPickerView()
-    var mthPickerShadow = UILabel()
-    var mthPickerDSyear:[Int] = []
-    var bgMask = UIButton()
-    var bgMaskTop = UIButton()
+    var bgMaskMid = UIButton()
+    var flagPickerHidden = true
     var currentDate: NSString?
     
     var mthHeight = 60.0 as CGFloat
@@ -31,9 +28,6 @@ class MonthSummaryView: UIView,UIPickerViewDataSource,UIPickerViewDelegate {
         currentDate = NSDate().description as NSString
         selectedYear  = currentDate!.substringToIndex(4).toInt()!
         selectedMonth = currentDate!.substringWithRange(NSRange(location: 5, length: 2)).toInt()!
-        for i in 0...99 {
-            mthPickerDSyear.append(selectedYear! - 99 + i)
-        }
         
         //月收支 mth
         mthBtn = UIButton(frame: CGRect(x: 0, y: 0, width: bgWidth/3, height: mthHeight))
@@ -63,60 +57,19 @@ class MonthSummaryView: UIView,UIPickerViewDataSource,UIPickerViewDelegate {
         mthLine.backgroundColor = UIColor.whiteColor()
         mthLine2.backgroundColor = UIColor.whiteColor()
         
-        mthPicker = UIPickerView(frame: CGRect(x: 0, y: mthHeight, width: 200, height: bgHeight))
-        mthPicker.dataSource = self
-        mthPicker.delegate   = self
-        mthPicker.backgroundColor = UIColor.whiteColor()
-        mthPicker.hidden = true
-        mthPicker.selectRow(mthPickerDSyear.count - 1, inComponent: 0, animated: false)
-        mthPicker.selectRow(selectedMonth! - 1, inComponent: 1, animated: false)
-        
-        bgMask = UIButton(frame: CGRect(x: 0, y: mthHeight, width: bgWidth, height: bgHeight))
-        bgMask.backgroundColor = UIColor(white: 0, alpha: 0.4)
-        bgMask.hidden = true
-        
-        bgMaskTop = UIButton(frame: CGRect(x: bgWidth/3, y: 0, width: 2*bgWidth/3, height: mthHeight))
-        bgMaskTop.backgroundColor = UIColor(white: 0, alpha: 0.4)
-        bgMaskTop.hidden = true
+        bgMaskMid = UIButton(frame: CGRect(x: bgWidth/3, y: 0, width: 2*bgWidth/3, height: mthHeight))
+        bgMaskMid.backgroundColor = UIColor(white: 0, alpha: 0.4)
+        bgMaskMid.hidden = true
         
         addSubview(mthBtn)
         addSubview(mthLabExpense)
         addSubview(mthLabIncome)
         addSubview(mthLine)
         addSubview(mthLine2)
-        addSubview(bgMask)
-        addSubview(bgMaskTop)
-        addSubview(mthPicker)
-
+        addSubview(bgMaskMid)
     }
 
-    //UIPickerView
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
-        println("2 columns")
-        
-        return 2
-    }
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if (component == 0){
-            return mthPickerDSyear.count
-        }else{
-            return 12
-        }
-    }
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
-        if (component == 0){
-            return "\(mthPickerDSyear[row])"
-        }else{
-            return "\(row + 1)"
-        }
-    }
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if (component == 0){
-            selectedYear  = mthPickerDSyear[row]
-        }else{
-            selectedMonth = row + 1
-        }
-    }
+    
     
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

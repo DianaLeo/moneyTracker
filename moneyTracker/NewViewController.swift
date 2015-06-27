@@ -20,7 +20,7 @@ var isModificationMode = false
 var isFromRootVC = true
 var category = ""
 
-class NewViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,SmallCategoryCellDelegate,UITextFieldDelegate,UITextViewDelegate {
+class NewViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,SmallCategoryCellDelegate,CategoryViewControllerDelegate,UITextFieldDelegate,UITextViewDelegate {
     
     var mainCollectionView: UICollectionView?
     var naviLabel = UILabel()
@@ -265,6 +265,33 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
     func didSelectSmallCell (#indexPath: NSIndexPath){
         mainCollectionView?.reloadData()
     }
+    func didSelectLastCell (#indexPath: NSIndexPath){
+        naviBtnSave.removeFromSuperview()
+        naviBtnCancel.removeFromSuperview()
+        if !isModificationMode {
+            btnChooseExpense.removeFromSuperview()
+        }
+        var categoryViewController = CategoryViewController()
+        categoryViewController.delegate = self
+        self.navigationController?.pushViewController(categoryViewController, animated: true)
+    }
+    
+    func categoryVCdidSelectBtnOK(#text: String) {
+        var newCategoryCollectionViewCell = mainCollectionView?.cellForItemAtIndexPath(NSIndexPath(forItem: 0, inSection: 1)) as! NewCategoryCollectionViewCell
+        if !newCategoryCollectionViewCell.collectionViewDataSource.containsObject(text) {
+            //如果类别列表中没有选中项
+            newCategoryCollectionViewCell.userCategoryDS.choosedAssociatedImagePath = text.lowercaseString
+            if newCategoryCollectionViewCell.userCategoryDS.choosedAssociatedImagePath == "luckymoney" {
+                newCategoryCollectionViewCell.userCategoryDS.choosedAssociatedImagePath = "luckyMoney"
+            }
+            //println(userCategoryDS.choosedAssociatedImagePath)
+            newCategoryCollectionViewCell.userCategoryDS.expenseCategories.append(text)
+            //println(userCategoryDS.expenseCategories)
+            newCategoryCollectionViewCell.collectionViewDataSource = NSMutableArray(array: newCategoryCollectionViewCell.userCategoryDS.expenseCategories)
+            //println(collectionViewDataSource)
+            newCategoryCollectionViewCell.collectionView!.reloadData()
+        }
+    }
     
     func textFieldDidBeginEditing(textField: UITextField) {
         println("textField DidBeginEditing")
@@ -312,7 +339,6 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
             btnChooseExpenseImage.image = UIImage(named: "btnChooseExpenseImage")
             btnChooseExpense.addSubview(btnChooseExpenseImage)
             btnChooseExpense.addTarget(self, action: "btnChooseExpenseTouch", forControlEvents: UIControlEvents.TouchUpInside)
-            btnChooseExpense.tag = 4
             self.navigationController?.navigationBar.addSubview(btnChooseExpense)
         }
         
@@ -340,7 +366,6 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
     }
     
     func naviBtnSaveTouch () {
-        println("naviBtnSaveTouch!")
         if ((catCellRightImg.image == nil)||(amoCellTextField.text == "")){
             var alert:UIAlertView? = UIAlertView(title: "Incomplete Info", message: "You can't save record without category or amount!", delegate: self, cancelButtonTitle: "Yes")
             alert!.show()
@@ -365,20 +390,8 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
                 }else{
                     BIIncome(year: choosedYear!, month: choosedMonth!, day: choosedDay!, category: category, categoryDetail: nil, amounts: amount, incomeDetail: detail, receiptImage: nil)
                 }
-                var btnChooseExpense = self.navigationController?.navigationBar.viewWithTag(4) as! UIButton
                 btnChooseExpense.removeFromSuperview()
-            }
-            //月账分析－更新
-            var analysisViewEx = (self.navigationController?.viewControllers[0] as! homeViewController).analysisViewEx
-            var analysisViewIn = (self.navigationController?.viewControllers[0] as! homeViewController).analysisViewIn
-            var analysis = BIBillAnalysis(year: selectedYear!, month: selectedMonth!)
-            analysisViewEx.passValue(passedCategories: analysis.expCatSix, passedRatios: analysis.expSix)
-            analysisViewIn.passValue(passedCategories: analysis.incCatSix, passedRatios: analysis.incSix)
-            println(analysis.incSix)
-            analysisViewEx.drawLegends()
-            analysisViewIn.drawLegends()
-            analysisViewEx.setNeedsDisplay()
-            analysisViewIn.setNeedsDisplay()
+            }            
             self.navigationController?.popViewControllerAnimated(true)
 
         }
@@ -394,7 +407,6 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
             listTable.deselectRowAtIndexPath(listTable.indexPathForSelectedRow()!, animated: false)
             isModificationMode = false
         }else{
-            var btnChooseExpense = self.navigationController?.navigationBar.viewWithTag(4) as! UIButton
             btnChooseExpense.removeFromSuperview()
         }
     }
@@ -404,16 +416,6 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
 

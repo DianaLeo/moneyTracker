@@ -31,12 +31,13 @@ class AnalysisView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        colors = [yellowColor,redColor,blueColor,pinkColor,purpleColor,whiteColor]
+        
         var l1Y = Int(bgWidth - 35)//20
+        colors = [yellowColor,redColor,blueColor,pinkColor,purpleColor,whiteColor]
         title = UILabel(frame: CGRect(x: 25, y: 10, width: 150, height: 30))
-        //title.textColor = UIColor.whiteColor()
         title.font = UIFont.systemFontOfSize(22)
         self.addSubview(title)
+        
         for i in 0...5{
             legends[i] = UILabel(frame: CGRect(x: 70, y: l1Y + 42*i, width: 80, height: 30))
             legends[i].backgroundColor = colors[i]

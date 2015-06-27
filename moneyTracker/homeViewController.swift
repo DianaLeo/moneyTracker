@@ -27,11 +27,11 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
     var indexOfFirstDay: Int?
     var indexOfLastDay: Int?
     var mthSumView = MonthSummaryView()
+    var mthPickerView = MonthPickerView()
     var calndrCollectionView: UICollectionView?
     var calndrBG = UIImageView()
     var tabCalndrBtn   = UIButton()
     var tabAnalyBtn    = UIButton()
-    var tabBG          = UIView()
     var scrollView: UIScrollView?
     var analysisViewEx = AnalysisView()
     var analysisViewIn = AnalysisView()
@@ -93,10 +93,12 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
         self.navigationController?.navigationBar.addSubview(naviLabel)
 
         //月总收入支出
-        mthSumView = MonthSummaryView(frame: CGRect(x: 0, y: _naviHeight, width: bgWidth, height: bgHeight))
+        mthSumView = MonthSummaryView(frame: CGRect(x: 0, y: _naviHeight, width: bgWidth, height: mthHeight))
         mthSumView.mthBtn.addTarget(self, action: "mtnBtnTouch", forControlEvents: UIControlEvents.TouchUpInside)
-        mthSumView.bgMask.addTarget(self, action: "mthPickerDismiss", forControlEvents: UIControlEvents.TouchUpInside)
-        mthSumView.bgMaskTop.addTarget(self, action: "mthPickerDismiss", forControlEvents: UIControlEvents.TouchUpInside)
+        mthSumView.bgMaskMid.addTarget(self, action: "mthPickerDismiss", forControlEvents: UIControlEvents.TouchUpInside)
+        mthPickerView = MonthPickerView(frame: CGRect(x: 0, y: _naviHeight + mthHeight, width: bgWidth, height: bgHeight - _naviHeight - mthHeight))
+        mthPickerView.bgMask.addTarget(self, action: "mthPickerDismiss", forControlEvents: UIControlEvents.TouchUpInside)
+        mthPickerView.bgMaskTop.addTarget(self, action: "mthPickerDismiss", forControlEvents: UIControlEvents.TouchUpInside)
         self.view.addSubview(mthSumView)
         
         //日历 calndr
@@ -123,7 +125,8 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
         var analysis = BIBillAnalysis(year: selectedYear!, month: selectedMonth!)
         analysisViewEx.passValue(passedCategories: analysis.expCatSix, passedRatios: analysis.expSix)
         analysisViewIn.passValue(passedCategories: analysis.incCatSix , passedRatios: analysis.incSix)
-        println(analysis.incSix)
+        analysisViewEx.drawLegends()
+        analysisViewIn.drawLegends()
 
         //ScrollView
         scrollView = UIScrollView(frame: CGRect(x: 0, y: _naviHeight + mthHeight, width: bgWidth, height: scrollHeight))
@@ -137,8 +140,6 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
         self.view.addSubview(scrollView!)
         
         //下标签 tab
-        tabBG = UIView(frame: CGRect(x: 0, y: bgHeight - tabHeight, width: bgWidth, height: tabHeight))
-        tabBG.backgroundColor = UIColor(white: 1, alpha: 0.4)
         tabCalndrBtn   = UIButton(frame: CGRect(x: 8, y: bgHeight - tabHeight, width: tabHeight - 10, height: tabHeight - 10))//x: bgWidth/4 - tabHeight/2
         tabCalndrBtn.setBackgroundImage(UIImage(named: "calendar"), forState: UIControlState.Normal)
         tabCalndrBtn.setBackgroundImage(UIImage(named: "calendar-selected"), forState: UIControlState.Selected)
@@ -151,7 +152,6 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
         tabAnalyBtn.backgroundColor = UIColor.clearColor()
         tabAnalyBtn.addTarget(self, action: "tabAnalyBtnTouch", forControlEvents: UIControlEvents.TouchDown)
         tabAnalyBtn.selected = false
-        //self.view.addSubview(tabBG)
         self.view.addSubview(tabCalndrBtn)
         self.view.addSubview(tabAnalyBtn)
         
@@ -171,11 +171,19 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
         naviBtnNew.setBackgroundImage(UIImage(named: "new"), forState: UIControlState.Normal)
         naviBtnNew.addTarget(self, action: "naviBtnNewTouch", forControlEvents: UIControlEvents.TouchUpInside)
         naviBtnNew.tag = 2
-        
         self.navigationController?.navigationBar.addSubview(naviBtnNew)
-        self.calndrCollectionView?.reloadData()
+        
         mthSumView.mthLabExpense.text = "Expense:\n\(BIExpense.monthSum(year: selectedYear!, month: selectedMonth!))"
         mthSumView.mthLabIncome.text  = "Income:\n\(BIIncome.monthSum(year: selectedYear!, month: selectedMonth!))"
+        
+        self.calndrCollectionView?.reloadData()
+        var analysis = BIBillAnalysis(year: selectedYear!, month: selectedMonth!)
+        analysisViewEx.passValue(passedCategories: analysis.expCatSix, passedRatios: analysis.expSix)
+        analysisViewIn.passValue(passedCategories: analysis.incCatSix, passedRatios: analysis.incSix)
+        analysisViewEx.drawLegends()
+        analysisViewIn.drawLegends()
+        analysisViewEx.setNeedsDisplay()
+        analysisViewIn.setNeedsDisplay()
     }
     
     
@@ -219,7 +227,6 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        NSThread.sleepForTimeInterval(0.1)
         //当前月之内
         if (indexPath.item >= indexOfFirstDay && indexPath.item <= indexOfLastDay) {
             selectedDay = (self.monthStrArray?.objectAtIndex(indexPath.item) as! String).toInt()
@@ -250,6 +257,8 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
         scrollView?.hidden = true
         calndrCollectionView?.hidden = false
         calndrBG.hidden = false
+        
+        calndrCollectionView?.reloadData()
     }
     
     func tabAnalyBtnTouch(){
@@ -269,13 +278,12 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
     }
     
     func mtnBtnTouch() {
-        if mthSumView.mthPicker.hidden {
-            NSThread.sleepForTimeInterval(0.1)
+        if mthSumView.flagPickerHidden {//展开
+            mthSumView.flagPickerHidden = false
             mthSumView.mthBtnAngle.hidden = true
-            mthSumView.mthPicker.hidden = false
-            mthSumView.bgMask.hidden = false
-            mthSumView.bgMaskTop.hidden = false
-            self.view.bringSubviewToFront(mthSumView)
+            mthSumView.bgMaskMid.hidden = false
+            self.view.addSubview(mthPickerView)
+            self.navigationController?.navigationBar.addSubview(mthPickerView.bgMaskTop)
             calndrCollectionView?.userInteractionEnabled = false
             tabCalndrBtn.userInteractionEnabled = false
             tabAnalyBtn.userInteractionEnabled = false
@@ -285,32 +293,36 @@ class homeViewController: UIViewController,UICollectionViewDataSource,UICollecti
     }
     //mthPicker关闭
     func mthPickerDismiss(){
+        mthSumView.flagPickerHidden = true
         mthSumView.mthBtnAngle.hidden = false
-        mthSumView.mthPicker.hidden = true
-        mthSumView.bgMask.hidden = true
-        mthSumView.bgMaskTop.hidden = true
+        mthSumView.bgMaskMid.hidden = true
         mthSumView.mthBtn.setTitle("\(selectedYear!)-\(selectedMonth!)", forState: UIControlState.Normal)
         monthStrArray = NSArray(array: BIMonthCalender(dateForMonthCalender: NSDate.dateFor(year: selectedYear!, month: selectedMonth!)).monthCalender())
         mthSumView.mthLabExpense.text = "Expense:\n\(BIExpense.monthSum(year: selectedYear!, month: selectedMonth!))"
         mthSumView.mthLabIncome.text  = "Income:\n\(BIIncome.monthSum(year: selectedYear!, month: selectedMonth!))"
-        self.view.bringSubviewToFront(calndrCollectionView!)
-        self.view.bringSubviewToFront(tabCalndrBtn)
-        self.view.bringSubviewToFront(tabAnalyBtn)
+
+        mthPickerView.removeFromSuperview()
+        mthPickerView.bgMaskTop.removeFromSuperview()
+        
         indexOfFirstDay = self.monthStrArray?.indexOfObject("1")
         indexOfLastDay  = (self.monthStrArray?.indexOfObject("1", inRange: NSRange(location: indexOfFirstDay! + 1, length: 41 - indexOfFirstDay!)))! - 1
         
-        calndrCollectionView?.reloadData()
+        if (tabCalndrBtn.selected == true){
+            calndrCollectionView?.reloadData()
+        }else{
+            var analysis = BIBillAnalysis(year: selectedYear!, month: selectedMonth!)
+            analysisViewEx.passValue(passedCategories: analysis.expCatSix, passedRatios: analysis.expSix)
+            analysisViewIn.passValue(passedCategories: analysis.incCatSix, passedRatios: analysis.incSix)
+            analysisViewEx.drawLegends()
+            analysisViewIn.drawLegends()
+            analysisViewEx.setNeedsDisplay()
+            analysisViewIn.setNeedsDisplay()
+        }
         calndrCollectionView?.userInteractionEnabled = true
         tabCalndrBtn.userInteractionEnabled = true
         tabAnalyBtn.userInteractionEnabled = true
         
-        var analysis = BIBillAnalysis(year: selectedYear!, month: selectedMonth!)
-        analysisViewEx.passValue(passedCategories: analysis.expCatSix, passedRatios: analysis.expSix)
-        analysisViewIn.passValue(passedCategories: analysis.incCatSix, passedRatios: analysis.incSix)
-        analysisViewEx.drawLegends()
-        analysisViewIn.drawLegends()
-        analysisViewEx.setNeedsDisplay()
-        analysisViewIn.setNeedsDisplay()
+        
     }
     
     
