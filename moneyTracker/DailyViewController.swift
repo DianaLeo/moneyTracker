@@ -111,7 +111,6 @@ class DailyViewController: UIViewController,UITableViewDataSource,UITableViewDel
         var righText = cell?.rightTextLabel
         
         if (flagExpense == 1){
-            //image?.image = UIImage(named: "clothing")
             if let imagePath = userCategoryDS.associatedImagePathFor(category: dailyExpenseDS[indexPath.row].cat){
                 if defaultCategoryImages.containsObject(imagePath) {
                     image?.image = UIImage(named: imagePath)

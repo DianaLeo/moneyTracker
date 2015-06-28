@@ -284,6 +284,13 @@ class NewViewController: UIViewController,UICollectionViewDataSource,UICollectio
             if newCategoryCollectionViewCell.userCategoryDS.choosedAssociatedImagePath == "luckymoney" {
                 newCategoryCollectionViewCell.userCategoryDS.choosedAssociatedImagePath = "luckyMoney"
             }
+            if newCategoryCollectionViewCell.userCategoryDS.choosedAssociatedImagePath == "fulltimejob" {
+                newCategoryCollectionViewCell.userCategoryDS.choosedAssociatedImagePath = "fullTimeJob"
+            }
+            
+            if newCategoryCollectionViewCell.userCategoryDS.choosedAssociatedImagePath == "parttimejob" {
+                newCategoryCollectionViewCell.userCategoryDS.choosedAssociatedImagePath = "partTimeJob"
+            }
             //println(userCategoryDS.choosedAssociatedImagePath)
             newCategoryCollectionViewCell.userCategoryDS.expenseCategories.append(text)
             //println(userCategoryDS.expenseCategories)

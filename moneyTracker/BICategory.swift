@@ -24,7 +24,7 @@ extension Array{
     }
 }
 typealias CategoryImagePath = String
-let defaultCategoryImages = NSArray(array: ["clothing","food","accommodation","transport","commnication","entertainment","grocery","luxury","gift","health","makeup","luckyMoney"])
+let defaultCategoryImages = NSArray(array: ["clothing","food","accommodation","transport","commnication","entertainment","grocery","luxury","gift","health","makeup","luckyMoney","fullTimeJob","partTimeJob","selling","education"])
 
 struct BICategoryImagePath {
     static var Clothing:CategoryImagePath = "clothing"
