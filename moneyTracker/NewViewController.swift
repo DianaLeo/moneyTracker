@@ -7,7 +7,7 @@
 //
 
 
-//备注：代码实现flow layout太尼玛烦了！注意两个全局变量（collectionview & flowlayout）的初始化方法。
+//备注：注意两个全局变量（collectionview & flowlayout）的初始化方法。
 //备注：打开键盘的方法 ⌘K； 批量修改变量名； 自定义函数传参; uilabel文字换行显示
 //备注：改变模态窗口大小的两种方法（on completion & 背景设透明）但两个view controller不能同时存在，所以还得用添加subview的方式;返回时取消上一界面cell的选种状态；
 
